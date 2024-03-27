@@ -1,6 +1,5 @@
 import { Command } from "commander";
 import { existsSync, writeFile, mkdir } from "fs";
-import { execa } from "execa";
 import { getPackageManager } from "../utils/getPackageManager.js";
 import { getComponentInfos } from "../utils/getComponentInfos.js";
 import { installDependencies } from "../utils/installDependencies.js";
@@ -45,7 +44,7 @@ export const add = program
           mkdir(dir, { recursive: true }, async (error) => {
             if (error) {
               console.error(`Error creating directory ${dir}:`, error);
-              return;
+              process.exit(1);
             }
 
             writeFileWithContent(filePath, fileContent);

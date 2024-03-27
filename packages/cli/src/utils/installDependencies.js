@@ -1,3 +1,5 @@
+import { execa } from "execa";
+
 export const installDependencies = async (
   packageManager,
   dependencies,
