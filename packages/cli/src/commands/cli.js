@@ -11,6 +11,7 @@ const loadComponentInfos = () => {
       "/Users/ghdtjgus/Desktop/cli/cli/packages/registry/components.json",
       "utf8"
     );
+
     return JSON.parse(data);
   } catch (error) {
     console.error("Error reading components.json:", error);
@@ -22,6 +23,11 @@ export const add = program
   .name("add")
   .description("add a component to your project")
   .argument("[components...]", "the components to add")
+  .option(
+    "-c, --cwd <cwd>",
+    "the working directory. defaults to the current directory.",
+    process.cwd()
+  )
   .requiredOption("-p, --path <path>", "the path to add the component to.")
   .action(async (components, opts) => {
     const path = opts.path;
@@ -62,7 +68,6 @@ export const add = program
             });
 
             if (dependencies?.length) {
-              console.log(packageManager, dependencies, cwd);
               await execa(
                 packageManager,
                 [packageManager === "npm" ? "install" : "add", ...dependencies],
