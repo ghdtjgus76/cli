@@ -13,6 +13,7 @@
   "devDependencies": {
     "@antfu/ni": "^0.21.12",
     "execa": "^8.0.1",
-    "tsup": "^8.0.2"
+    "tsup": "^8.0.2",
+    "zod": "^3.22.4"
   }
 }
