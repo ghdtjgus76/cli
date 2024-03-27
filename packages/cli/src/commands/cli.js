@@ -1,5 +1,6 @@
 import { Command } from "commander";
-import readline from 'readline';
+import readline from "readline";
+import { existsSync } from "fs";
 
 const program = new Command();
 
@@ -9,10 +10,18 @@ const getDirectory = () => {
     output: process.stdout,
   });
 
-  rl.question("type your folder path to add your component ", (answer) => {
-    console.log(answer);
-  })
-}
+  rl.question("the path to add the component to ", (answer) => {
+    // 디렉토리 존재 여부 체크
+    if (existsSync(answer)) {
+      console.log(`디렉토리: ${answer}`);
+    } else {
+      console.error(`The path ${answer} does not exist. Please try again.`);
+      process.exit(1);
+    }
+
+    rl.close();
+  });
+};
 
 export const add = program
   .name("add")
