@@ -1,23 +1,10 @@
 import { Command } from "commander";
-import { existsSync, readFileSync, writeFile, mkdir } from "fs";
+import { existsSync, writeFile, mkdir } from "fs";
 import { execa } from "execa";
 import { getPackageManager } from "../utils/getPackageManager.js";
+import { getComponentInfos } from "../utils/getComponentInfos.js";
 
 const program = new Command();
-
-const loadComponentInfos = () => {
-  try {
-    const data = readFileSync(
-      "/Users/ghdtjgus/Desktop/cli/cli/packages/registry/components.json",
-      "utf8"
-    );
-
-    return JSON.parse(data);
-  } catch (error) {
-    console.error("Error reading components.json:", error);
-    return [];
-  }
-};
 
 export const add = program
   .name("add")
@@ -38,7 +25,7 @@ export const add = program
     }
 
     components.forEach(async (component) => {
-      const componentInfos = loadComponentInfos();
+      const componentInfos = getComponentInfos();
 
       const targetComponentInfo = componentInfos.find(
         (componentInfo) => componentInfo.name === component
