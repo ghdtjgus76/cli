@@ -1,8 +1,9 @@
 import { Command } from "commander";
-import { existsSync, writeFile, mkdir } from "fs";
+import { existsSync, mkdir } from "fs";
 import { getPackageManager } from "../utils/getPackageManager.js";
 import { getComponentInfos } from "../utils/getComponentInfos.js";
 import { installDependencies } from "../utils/installDependencies.js";
+import { writeFileWithContent } from "../utils/writeFileWithContent.js";
 
 const program = new Command();
 
@@ -48,11 +49,11 @@ export const add = program
             }
 
             writeFileWithContent(filePath, fileContent);
-            installDependencies(packageManager, dependencies, cwd);
+            installDependencies(packageManager, dependencies, path);
           });
         } else {
           writeFileWithContent(filePath, fileContent);
-          installDependencies(packageManager, dependencies, cwd);
+          installDependencies(packageManager, dependencies, path);
         }
       }
     });
