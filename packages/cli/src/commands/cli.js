@@ -3,6 +3,7 @@ import { existsSync, writeFile, mkdir } from "fs";
 import { execa } from "execa";
 import { getPackageManager } from "../utils/getPackageManager.js";
 import { getComponentInfos } from "../utils/getComponentInfos.js";
+import { installDependencies } from "../utils/installDependencies.js";
 
 const program = new Command();
 
@@ -17,7 +18,7 @@ export const add = program
   )
   .requiredOption("-p, --path <path>", "the path to add the component to.")
   .action(async (components, opts) => {
-    const path = opts.path;
+    const { cwd, path } = opts;
 
     if (!existsSync(path)) {
       console.error(`The path ${path} does not exist. Please try again.`);
@@ -36,7 +37,7 @@ export const add = program
         const dir = `${path}/${file.dir}`;
         const filePath = `${path}/${file.dir}/${file.name}`;
         const dependencies = targetComponentInfo.dependencies;
-        const cwd = opts.cwd;
+
         const packageManager = await getPackageManager(cwd);
 
         if (!existsSync(dir)) {
@@ -54,15 +55,7 @@ export const add = program
               }
             });
 
-            if (dependencies?.length) {
-              await execa(
-                packageManager,
-                [packageManager === "npm" ? "install" : "add", ...dependencies],
-                {
-                  cwd,
-                }
-              );
-            }
+            installDependencies(packageManager, dependencies, cwd);
           });
         } else {
           writeFile(filePath, file.content, (error) => {
@@ -73,15 +66,7 @@ export const add = program
             }
           });
 
-          if (dependencies?.length) {
-            await execa(
-              packageManager,
-              [packageManager === "npm" ? "install" : "add", ...dependencies],
-              {
-                cwd,
-              }
-            );
-          }
+          installDependencies(packageManager, dependencies, cwd);
         }
       }
     });
