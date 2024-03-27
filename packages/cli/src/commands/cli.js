@@ -24,7 +24,6 @@ export const add = program
   .action(async (components, opts) => {
     const path = opts.path;
 
-    // 디렉토리가 존재하지 않는다면 에러 발생, 종료
     if (!existsSync(path)) {
       console.error(`The path ${path} does not exist. Please try again.`);
       process.exit(1);
