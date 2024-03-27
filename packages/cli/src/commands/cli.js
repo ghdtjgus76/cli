@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { existsSync, readFileSync } from "fs";
+import { existsSync, readFileSync, writeFile, mkdir } from "fs";
 
 const program = new Command();
 
@@ -33,7 +33,40 @@ export const add = program
     components.forEach((component) => {
       const componentInfos = loadComponentInfos();
 
-      console.log(componentInfos);
+      const targetComponentInfo = componentInfos.find(
+        (componentInfo) => componentInfo.name === component
+      );
+
+      if (targetComponentInfo) {
+        const file = targetComponentInfo.files[0];
+        const dir = `${path}/${file.dir}`;
+        const filePath = `${path}/${file.dir}/${file.name}`;
+
+        if (!existsSync(dir)) {
+          mkdir(dir, { recursive: true }, (error) => {
+            if (error) {
+              console.error(`Error creating directory ${dir}:`, error);
+              return;
+            }
+
+            writeFile(filePath, file.content, (error) => {
+              if (error) {
+                console.error(`Error writing file ${filePath}:`, error);
+              } else {
+                console.log(`File ${filePath} has been written.`);
+              }
+            });
+          });
+        } else {
+          writeFile(filePath, file.content, (error) => {
+            if (error) {
+              console.error(`Error writing file ${filePath}:`, error);
+            } else {
+              console.log(`File ${filePath} has been written.`);
+            }
+          });
+        }
+      }
     });
   });
 
