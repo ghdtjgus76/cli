@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@antfu/ni": "^0.21.12",
+    "execa": "^8.0.1",
     "tsup": "^8.0.2"
   }
 }
