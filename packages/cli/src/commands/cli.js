@@ -1,5 +1,7 @@
 import { Command } from "commander";
 import { existsSync, readFileSync, writeFile, mkdir } from "fs";
+import { execa } from "execa";
+import { getPackageManager } from "../utils/getPackageManager.js";
 
 const program = new Command();
 
@@ -29,7 +31,7 @@ export const add = program
       process.exit(1);
     }
 
-    components.forEach((component) => {
+    components.forEach(async (component) => {
       const componentInfos = loadComponentInfos();
 
       const targetComponentInfo = componentInfos.find(
@@ -40,9 +42,12 @@ export const add = program
         const file = targetComponentInfo.files[0];
         const dir = `${path}/${file.dir}`;
         const filePath = `${path}/${file.dir}/${file.name}`;
+        const dependencies = targetComponentInfo.dependencies;
+        const cwd = opts.cwd;
+        const packageManager = await getPackageManager(cwd);
 
         if (!existsSync(dir)) {
-          mkdir(dir, { recursive: true }, (error) => {
+          mkdir(dir, { recursive: true }, async (error) => {
             if (error) {
               console.error(`Error creating directory ${dir}:`, error);
               return;
@@ -55,6 +60,17 @@ export const add = program
                 console.log(`File ${filePath} has been written.`);
               }
             });
+
+            if (dependencies?.length) {
+              console.log(packageManager, dependencies, cwd);
+              await execa(
+                packageManager,
+                [packageManager === "npm" ? "install" : "add", ...dependencies],
+                {
+                  cwd,
+                }
+              );
+            }
           });
         } else {
           writeFile(filePath, file.content, (error) => {
@@ -64,6 +80,16 @@ export const add = program
               console.log(`File ${filePath} has been written.`);
             }
           });
+
+          if (dependencies?.length) {
+            await execa(
+              packageManager,
+              [packageManager === "npm" ? "install" : "add", ...dependencies],
+              {
+                cwd,
+              }
+            );
+          }
         }
       }
     });
