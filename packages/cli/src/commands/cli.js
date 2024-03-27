@@ -1,9 +1,16 @@
 import { Command } from "commander";
 import { existsSync, mkdir } from "fs";
+import { z } from "zod";
 import { getPackageManager } from "../utils/getPackageManager.js";
 import { getComponentInfos } from "../utils/getComponentInfos.js";
 import { installDependencies } from "../utils/installDependencies.js";
 import { writeFileWithContent } from "../utils/writeFileWithContent.js";
+
+const addOptionsSchema = z.object({
+  components: z.array(z.string()).optional(),
+  cwd: z.string(),
+  path: z.string(),
+});
 
 const program = new Command();
 
@@ -16,13 +23,18 @@ export const add = program
     "the working directory. defaults to the current directory.",
     process.cwd()
   )
-  .requiredOption(
+  .option(
     "-p, --path <path>",
     "the path to add the component to.",
     process.cwd()
   )
   .action(async (components, opts) => {
-    const { cwd, path } = opts;
+    const options = addOptionsSchema.parse({
+      components,
+      ...opts,
+    })
+
+    const { cwd, path, components: selectedComponents } = options;
 
     if (!existsSync(path)) {
       console.error(`The path ${path} does not exist. Please try again.`);
@@ -31,7 +43,7 @@ export const add = program
 
     const componentInfos = getComponentInfos();
 
-    components.slice(1).forEach(async (component) => {
+    selectedComponents.slice(1).forEach(async (component) => {
       const targetComponentInfo = componentInfos.find(
         (componentInfo) => componentInfo.name === component
       );
