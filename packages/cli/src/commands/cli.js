@@ -1,7 +1,20 @@
 import { Command } from "commander";
-import { existsSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 
 const program = new Command();
+
+const loadComponentInfos = () => {
+  try {
+    const data = readFileSync(
+      "/Users/ghdtjgus/Desktop/cli/cli/packages/registry/components.json",
+      "utf8"
+    );
+    return JSON.parse(data);
+  } catch (error) {
+    console.error("Error reading components.json:", error);
+    return [];
+  }
+};
 
 export const add = program
   .name("add")
@@ -15,9 +28,13 @@ export const add = program
     if (!existsSync(path)) {
       console.error(`The path ${path} does not exist. Please try again.`);
       process.exit(1);
-    } 
+    }
 
-    console.log(path);
+    components.forEach((component) => {
+      const componentInfos = loadComponentInfos();
+
+      console.log(componentInfos);
+    });
   });
 
 program.parse();
