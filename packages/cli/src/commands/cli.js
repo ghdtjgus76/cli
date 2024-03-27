@@ -16,7 +16,11 @@ export const add = program
     "the working directory. defaults to the current directory.",
     process.cwd()
   )
-  .requiredOption("-p, --path <path>", "the path to add the component to.")
+  .requiredOption(
+    "-p, --path <path>",
+    "the path to add the component to.",
+    process.cwd()
+  )
   .action(async (components, opts) => {
     const { cwd, path } = opts;
 
@@ -25,9 +29,9 @@ export const add = program
       process.exit(1);
     }
 
-    components.forEach(async (component) => {
-      const componentInfos = getComponentInfos();
+    const componentInfos = getComponentInfos();
 
+    components.slice(1).forEach(async (component) => {
       const targetComponentInfo = componentInfos.find(
         (componentInfo) => componentInfo.name === component
       );
@@ -55,6 +59,9 @@ export const add = program
           writeFileWithContent(filePath, fileContent);
           installDependencies(packageManager, dependencies, path);
         }
+      } else {
+        console.error(`Error Finding ${component} component.`);
+        process.exit(1);
       }
     });
   });
