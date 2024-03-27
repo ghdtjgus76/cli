@@ -32,7 +32,7 @@ export const add = program
     const options = addOptionsSchema.parse({
       components,
       ...opts,
-    })
+    });
 
     const { cwd, path, components: selectedComponents } = options;
 
@@ -43,7 +43,7 @@ export const add = program
 
     const componentInfos = getComponentInfos();
 
-    selectedComponents.slice(1).forEach(async (component) => {
+    selectedComponents.forEach(async (component) => {
       const targetComponentInfo = componentInfos.find(
         (componentInfo) => componentInfo.name === component
       );
