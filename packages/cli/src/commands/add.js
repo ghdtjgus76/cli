@@ -74,14 +74,14 @@ export const add = program
             dependencies,
             options.path,
             () => {
-              spinner.succeed(`Done.`);
+              spinner.succeed(`${component} installed successfully.`);
             }
           );
         });
       } else {
         writeFileWithContent(filePath, fileContent);
         installDependencies(packageManager, dependencies, options.path, () => {
-          spinner.succeed(`Done.`);
+          spinner.succeed(`${component} installed successfully.`);
         });
       }
     });
