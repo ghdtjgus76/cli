@@ -3,14 +3,17 @@ import { existsSync, mkdir } from "fs";
 import { z } from "zod";
 import path from "path";
 import ora from "ora";
+import prompts from "prompts";
 import { getPackageManager } from "../utils/getPackageManager.js";
 import { getComponentInfo } from "../utils/getComponentInfo.js";
 import { installDependencies } from "../utils/installDependencies.js";
 import { writeFileWithContent } from "../utils/writeFileWithContent.js";
+import { getRegistryInfo } from "../utils/getRegistryInfo.js";
 
 const addOptionsSchema = z.object({
   components: z.array(z.string()).optional(),
   cwd: z.string(),
+  all: z.boolean(),
   path: z.string(),
 });
 
@@ -25,6 +28,7 @@ export const add = program
     "the working directory. defaults to the current directory.",
     process.cwd()
   )
+  .option("-a, --all", "add all available components", false)
   .option(
     "-p, --path <path>",
     "the path to add the component to.",
@@ -43,7 +47,29 @@ export const add = program
       process.exit(1);
     }
 
-    options.components?.forEach(async (component) => {
+    const registryInfo = await getRegistryInfo();
+
+    let selectedComponents = options.all
+      ? registryInfo.map((info) => info.name)
+      : options.components;
+
+    if (!options.components?.length && !options.all) {
+      const { components } = await prompts({
+        type: "multiselect",
+        name: "components",
+        message: "Which components would you like to add?",
+        hint: "Space to select. A to toggle all. Enter to submit.",
+        choices: registryInfo.map((info) => ({
+          title: info.name,
+          value: info.name,
+          selected: options.components?.includes(info.name),
+        })),
+      });
+
+      selectedComponents = components;
+    }
+
+    selectedComponents?.forEach(async (component) => {
       const componentInfo = await getComponentInfo(component);
 
       if (!componentInfo) {
