@@ -69,15 +69,20 @@ export const add = program
           }
 
           writeFileWithContent(filePath, fileContent);
-          installDependencies(packageManager, dependencies, options.path);
-
-          spinner.succeed(`Done.`);
+          installDependencies(
+            packageManager,
+            dependencies,
+            options.path,
+            () => {
+              spinner.succeed(`Done.`);
+            }
+          );
         });
       } else {
         writeFileWithContent(filePath, fileContent);
-        installDependencies(packageManager, dependencies, options.path);
-
-        spinner.succeed(`Done.`);
+        installDependencies(packageManager, dependencies, options.path, () => {
+          spinner.succeed(`Done.`);
+        });
       }
     });
   });

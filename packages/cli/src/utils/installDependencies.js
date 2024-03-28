@@ -3,15 +3,24 @@ import { execa } from "execa";
 export const installDependencies = async (
   packageManager,
   dependencies,
-  cwd
+  cwd,
+  onSuccess
 ) => {
-  if (dependencies?.length) {
-    await execa(
-      packageManager,
-      [packageManager === "npm" ? "install" : "add", ...dependencies],
-      {
-        cwd,
-      }
-    );
+  try {
+    if (dependencies?.length) {
+      await execa(
+        packageManager,
+        [packageManager === "npm" ? "install" : "add", ...dependencies],
+        {
+          cwd,
+        }
+      );
+    }
+
+    if (typeof onSuccess === "function") {
+      onSuccess();
+    }
+  } catch (error) {
+    console.error("Error installing dependencies:", error);
   }
 };
