@@ -1,8 +1,9 @@
 import { Command } from "commander";
 import { existsSync, mkdir } from "fs";
 import { z } from "zod";
+import path from "path";
 import { getPackageManager } from "../utils/getPackageManager.js";
-import { getComponentInfos } from "../utils/getComponentInfos.js";
+import { getComponentInfo } from "../utils/getComponentInfo.js";
 import { installDependencies } from "../utils/installDependencies.js";
 import { writeFileWithContent } from "../utils/writeFileWithContent.js";
 
@@ -34,26 +35,25 @@ export const add = program
       ...opts,
     });
 
-    const { cwd, path, components: selectedComponents } = options;
+    const cwd = path.resolve(options.cwd);
 
-    if (!existsSync(path) || !existsSync(cwd)) {
+    if (!existsSync(options.path) || !existsSync(cwd)) {
       console.error(`The path ${path} does not exist. Please try again.`);
       process.exit(1);
     }
 
-    const componentInfos = getComponentInfos();
+    options.components?.forEach(async (component) => {
+      const componentInfo = await getComponentInfo(component);
 
-    selectedComponents.forEach(async (component) => {
-      const targetComponentInfo = componentInfos.find(
-        (componentInfo) => componentInfo.name === component
-      );
-
-      if (targetComponentInfo) {
-        const file = targetComponentInfo.files[0];
-        const dir = `${path}/${file.dir}`;
-        const fileContent = file.content;
-        const filePath = `${path}/${file.dir}/${file.name}`;
-        const dependencies = targetComponentInfo.dependencies;
+      if (!componentInfo) {
+        console.error(`Error Finding ${component} component.`);
+        process.exit(1);
+      } else {
+        const file = componentInfo.files[0];
+        const dir = path.join(options.path, "components", "ui");
+        const { content: fileContent, name: fileName } = file;
+        const filePath = path.join(dir, fileName);
+        const dependencies = componentInfo.dependencies;
 
         const packageManager = await getPackageManager(cwd);
 
@@ -65,15 +65,12 @@ export const add = program
             }
 
             writeFileWithContent(filePath, fileContent);
-            installDependencies(packageManager, dependencies, path);
+            installDependencies(packageManager, dependencies, options.path);
           });
         } else {
           writeFileWithContent(filePath, fileContent);
-          installDependencies(packageManager, dependencies, path);
+          installDependencies(packageManager, dependencies, options.path);
         }
-      } else {
-        console.error(`Error Finding ${component} component.`);
-        process.exit(1);
       }
     });
   });
