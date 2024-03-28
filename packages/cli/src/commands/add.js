@@ -36,7 +36,7 @@ export const add = program
 
     const { cwd, path, components: selectedComponents } = options;
 
-    if (!existsSync(path)) {
+    if (!existsSync(path) || !existsSync(cwd)) {
       console.error(`The path ${path} does not exist. Please try again.`);
       process.exit(1);
     }
