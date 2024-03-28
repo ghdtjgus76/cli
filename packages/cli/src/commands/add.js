@@ -2,6 +2,7 @@ import { Command } from "commander";
 import { existsSync, mkdir } from "fs";
 import { z } from "zod";
 import path from "path";
+import ora from "ora";
 import { getPackageManager } from "../utils/getPackageManager.js";
 import { getComponentInfo } from "../utils/getComponentInfo.js";
 import { installDependencies } from "../utils/installDependencies.js";
@@ -48,29 +49,35 @@ export const add = program
       if (!componentInfo) {
         console.error(`Error Finding ${component} component.`);
         process.exit(1);
-      } else {
-        const file = componentInfo.files[0];
-        const dir = path.join(options.path, "components", "ui");
-        const { content: fileContent, name: fileName } = file;
-        const filePath = path.join(dir, fileName);
-        const dependencies = componentInfo.dependencies;
+      }
 
-        const packageManager = await getPackageManager(cwd);
+      const spinner = ora(`Installing ${component}...\n`).start();
 
-        if (!existsSync(dir)) {
-          mkdir(dir, { recursive: true }, async (error) => {
-            if (error) {
-              console.error(`Error creating directory ${dir}:`, error);
-              process.exit(1);
-            }
+      const file = componentInfo.files[0];
+      const dir = path.join(options.path, "components", "ui");
+      const { content: fileContent, name: fileName } = file;
+      const filePath = path.join(dir, fileName);
+      const dependencies = componentInfo.dependencies;
 
-            writeFileWithContent(filePath, fileContent);
-            installDependencies(packageManager, dependencies, options.path);
-          });
-        } else {
+      const packageManager = await getPackageManager(cwd);
+
+      if (!existsSync(dir)) {
+        mkdir(dir, { recursive: true }, async (error) => {
+          if (error) {
+            console.error(`Error creating directory ${dir}:`, error);
+            process.exit(1);
+          }
+
           writeFileWithContent(filePath, fileContent);
           installDependencies(packageManager, dependencies, options.path);
-        }
+
+          spinner.succeed(`Done.`);
+        });
+      } else {
+        writeFileWithContent(filePath, fileContent);
+        installDependencies(packageManager, dependencies, options.path);
+
+        spinner.succeed(`Done.`);
       }
     });
   });
