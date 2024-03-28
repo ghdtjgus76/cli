@@ -51,7 +51,7 @@ export const add = program
         process.exit(1);
       }
 
-      const spinner = ora(`Installing ${component}...\n`).start();
+      const spinner = ora(`Installing... ${component}`).start();
 
       const file = componentInfo.files[0];
       const dir = path.join(options.path, "components", "ui");
