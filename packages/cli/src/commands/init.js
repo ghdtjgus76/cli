@@ -3,8 +3,6 @@ import { existsSync } from "fs";
 import path from "path";
 import { z } from "zod";
 import ora from "ora";
-import { execa } from "execa";
-import chalk from "chalk";
 import { getNearestPackageJson } from "../utils/getNearestPackageJson.js";
 import { getPackageManager } from "../utils/getPackageManager.js";
 import { installDependencies } from "../utils/installDependencies.js";
@@ -55,71 +53,11 @@ export const init = program
           async () => {
             installSpinner.succeed(`@pandacss/dev installed successfully.\n`);
 
-            const styledSystemPath = path.join(
-              path.dirname(packageJsonPath),
-              "styled-system"
-            );
-
-            if (existsSync(styledSystemPath)) {
-              console.log(
-                `${chalk.green(
-                  "Success!"
-                )} Project initialization completed. You may now add components.`
-              );
-              process.exit(1);
-            } else {
-              console.log("You need to run 'panda init' to use this command");
-
-              const initSpinner = ora(`Running panda init...`).start();
-              try {
-                await execa(packageManager, ["panda", "init"], { cwd });
-
-                initSpinner.succeed(`panda init runned successfully.\n`);
-
-                console.log(
-                  `${chalk.green(
-                    "Success!"
-                  )} Project initialization completed. You may now add components.`
-                );
-                process.exit(1);
-              } catch (error) {
-                console.error("Error running panda init", error);
-              }
-            }
+            runInitPandacss(packageJsonPath, packageManager, cwd);
           }
         );
       } else {
-        const styledSystemPath = path.join(
-          path.dirname(packageJsonPath),
-          "styled-system"
-        );
-
-        if (existsSync(styledSystemPath)) {
-          console.log(
-            `${chalk.green(
-              "Success!"
-            )} Project initialization completed. You may now add components.`
-          );
-          process.exit(1);
-        } else {
-          console.log("You need to run 'panda init' to use this command");
-
-          const initSpinner = ora(`Running panda init...`).start();
-          try {
-            await execa(packageManager, ["panda", "init"], { cwd });
-
-            initSpinner.succeed(`panda init runned successfully.\n`);
-
-            console.log(
-              `${chalk.green(
-                "Success!"
-              )} Project initialization completed. You may now add components.`
-            );
-            process.exit(1);
-          } catch (error) {
-            console.error("Error running panda init", error);
-          }
-        }
+        runInitPandacss(packageJsonPath, packageManager, cwd);
       }
     }
   });
