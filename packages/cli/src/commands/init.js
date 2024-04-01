@@ -9,6 +9,7 @@ import { installDependencies } from "../utils/installDependencies.js";
 
 const initOptionSchema = z.object({
   cwd: z.string(),
+  path: z.string(),
 });
 
 const program = new Command();
@@ -21,16 +22,22 @@ export const init = program
     "the working directory. defaults to the current directory.",
     process.cwd()
   )
+  .option(
+    "-p, --path <path>",
+    "the path to add the component to.",
+    process.cwd()
+  )
   .action(async (opts) => {
     const options = initOptionSchema.parse(opts);
     const cwd = path.resolve(options.cwd);
 
-    if (!existsSync(cwd)) {
-      console.error(`The path ${cwd} does not exist. Please try again.`);
+
+    if (!existsSync(options.path) || !existsSync(cwd)) {
+      console.error(`The path does not exist. Please try again.`);
       process.exit(1);
     }
 
-    const packageJsonPath = getNearestPackageJson(cwd);
+    const packageJsonPath = getNearestPackageJson(options.path);
 
     if (packageJsonPath) {
       const packageManager = await getPackageManager(cwd);
@@ -50,7 +57,7 @@ export const init = program
         installDependencies(
           packageManager,
           ["@pandacss/dev"],
-          cwd,
+          options.path,
           async () => {
             installSpinner.succeed(`@pandacss/dev installed successfully.\n`);
 

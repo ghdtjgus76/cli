@@ -44,11 +44,11 @@ export const add = program
     const cwd = path.resolve(options.cwd);
 
     if (!existsSync(options.path) || !existsSync(cwd)) {
-      console.error(`The path ${path} does not exist. Please try again.`);
+      console.error(`The path does not exist. Please try again.`);
       process.exit(1);
     }
 
-    isInitialized(cwd);
+    isInitialized(options.path);
 
     const registryInfo = await getRegistryInfo();
 
