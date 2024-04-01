@@ -34,6 +34,7 @@ export const init = program
 
     if (packageJsonPath) {
       const packageManager = await getPackageManager(cwd);
+
       const pandaCssPath = path.join(
         path.dirname(packageJsonPath),
         "node_modules",
@@ -59,6 +60,10 @@ export const init = program
       } else {
         runInitPandacss(packageJsonPath, packageManager, cwd);
       }
+    } else {
+      console.error(
+        "node_modules or package.json not found in the current directory or its parent directories"
+      );
     }
   });
 

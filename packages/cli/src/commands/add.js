@@ -9,6 +9,7 @@ import { getComponentInfo } from "../utils/getComponentInfo.js";
 import { installDependencies } from "../utils/installDependencies.js";
 import { writeFileWithContent } from "../utils/writeFileWithContent.js";
 import { getRegistryInfo } from "../utils/getRegistryInfo.js";
+import { isInitialized } from "../utils/isInitialized.js";
 
 const addOptionsSchema = z.object({
   components: z.array(z.string()).optional(),
@@ -46,6 +47,8 @@ export const add = program
       console.error(`The path ${path} does not exist. Please try again.`);
       process.exit(1);
     }
+
+    isInitialized(cwd);
 
     const registryInfo = await getRegistryInfo();
 
