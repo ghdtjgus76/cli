@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { existsSync } from "fs";
+import { existsSync, accessSync } from "fs";
 import path from "path";
 import { z } from "zod";
 import { getNearestPackageJson } from "../utils/getNearestPackageJson.js";
@@ -33,7 +33,21 @@ export const init = program
     const packageJsonPath = getNearestPackageJson(cwd);
 
     if (packageJsonPath) {
-      console.log(packageJsonPath);
+      const pandaCssPath = path.join(
+        path.dirname(packageJsonPath),
+        "node_modules",
+        "@pandacss",
+        "dev",
+        "package.json"
+      );
+
+      if (existsSync(pandaCssPath)) {
+        console.log("@pandacss/dev is installed at:", pandaCssPath);
+      } else {
+        console.error(
+          "You need to install '@pandacss/dev' to use this command"
+        );
+      }
     } else {
       console.error(
         "node_modules or package.json not found in the current directory or its parent directories"
