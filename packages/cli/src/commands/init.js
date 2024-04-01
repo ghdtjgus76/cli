@@ -6,6 +6,7 @@ import ora from "ora";
 import { getNearestPackageJson } from "../utils/getNearestPackageJson.js";
 import { getPackageManager } from "../utils/getPackageManager.js";
 import { installDependencies } from "../utils/installDependencies.js";
+import { runInitPandacss } from "../utils/runInitPandacss.js";
 
 const initOptionSchema = z.object({
   cwd: z.string(),
@@ -30,7 +31,6 @@ export const init = program
   .action(async (opts) => {
     const options = initOptionSchema.parse(opts);
     const cwd = path.resolve(options.cwd);
-
 
     if (!existsSync(options.path) || !existsSync(cwd)) {
       console.error(`The path does not exist. Please try again.`);
