@@ -42,7 +42,16 @@ export const init = program
       );
 
       if (existsSync(pandaCssPath)) {
-        console.log("@pandacss/dev is installed at:", pandaCssPath);
+        const styledSystemPath = path.join(
+          path.dirname(packageJsonPath),
+          "styled-system"
+        );
+
+        if (existsSync(styledSystemPath)) {
+          console.log("panda init succeeded");
+        } else {
+          console.error("You need to run 'panda init' to use this command");
+        }
       } else {
         console.error(
           "You need to install '@pandacss/dev' to use this command"
