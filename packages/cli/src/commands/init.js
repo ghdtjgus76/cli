@@ -1,10 +1,13 @@
 import { Command } from "commander";
-import { existsSync, accessSync } from "fs";
+import { existsSync } from "fs";
 import path from "path";
 import { z } from "zod";
+import ora from "ora";
+import { execa } from "execa";
+import chalk from "chalk";
 import { getNearestPackageJson } from "../utils/getNearestPackageJson.js";
-
-const projectDependencies = ["@pandacss/dev"];
+import { getPackageManager } from "../utils/getPackageManager.js";
+import { installDependencies } from "../utils/installDependencies.js";
 
 const initOptionSchema = z.object({
   cwd: z.string(),
@@ -20,9 +23,8 @@ export const init = program
     "the working directory. defaults to the current directory.",
     process.cwd()
   )
-  .action((opts) => {
+  .action(async (opts) => {
     const options = initOptionSchema.parse(opts);
-
     const cwd = path.resolve(options.cwd);
 
     if (!existsSync(cwd)) {
@@ -33,6 +35,7 @@ export const init = program
     const packageJsonPath = getNearestPackageJson(cwd);
 
     if (packageJsonPath) {
+      const packageManager = await getPackageManager(cwd);
       const pandaCssPath = path.join(
         path.dirname(packageJsonPath),
         "node_modules",
@@ -41,26 +44,83 @@ export const init = program
         "package.json"
       );
 
-      if (existsSync(pandaCssPath)) {
+      if (!existsSync(pandaCssPath)) {
+        console.log("You need to install '@pandacss/dev' to use this command");
+
+        const installSpinner = ora(`Installing... @pandacss/dev\n`).start();
+        installDependencies(
+          packageManager,
+          ["@pandacss/dev"],
+          cwd,
+          async () => {
+            installSpinner.succeed(`@pandacss/dev installed successfully.\n`);
+
+            const styledSystemPath = path.join(
+              path.dirname(packageJsonPath),
+              "styled-system"
+            );
+
+            if (existsSync(styledSystemPath)) {
+              console.log(
+                `${chalk.green(
+                  "Success!"
+                )} Project initialization completed. You may now add components.`
+              );
+              process.exit(1);
+            } else {
+              console.log("You need to run 'panda init' to use this command");
+
+              const initSpinner = ora(`Running panda init...`).start();
+              try {
+                await execa(packageManager, ["panda", "init"], { cwd });
+
+                initSpinner.succeed(`panda init runned successfully.\n`);
+
+                console.log(
+                  `${chalk.green(
+                    "Success!"
+                  )} Project initialization completed. You may now add components.`
+                );
+                process.exit(1);
+              } catch (error) {
+                console.error("Error running panda init", error);
+              }
+            }
+          }
+        );
+      } else {
         const styledSystemPath = path.join(
           path.dirname(packageJsonPath),
           "styled-system"
         );
 
         if (existsSync(styledSystemPath)) {
-          console.log("panda init succeeded");
+          console.log(
+            `${chalk.green(
+              "Success!"
+            )} Project initialization completed. You may now add components.`
+          );
+          process.exit(1);
         } else {
-          console.error("You need to run 'panda init' to use this command");
+          console.log("You need to run 'panda init' to use this command");
+
+          const initSpinner = ora(`Running panda init...`).start();
+          try {
+            await execa(packageManager, ["panda", "init"], { cwd });
+
+            initSpinner.succeed(`panda init runned successfully.\n`);
+
+            console.log(
+              `${chalk.green(
+                "Success!"
+              )} Project initialization completed. You may now add components.`
+            );
+            process.exit(1);
+          } catch (error) {
+            console.error("Error running panda init", error);
+          }
         }
-      } else {
-        console.error(
-          "You need to install '@pandacss/dev' to use this command"
-        );
       }
-    } else {
-      console.error(
-        "node_modules or package.json not found in the current directory or its parent directories"
-      );
     }
   });
 
