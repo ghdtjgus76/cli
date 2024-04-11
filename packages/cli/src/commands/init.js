@@ -61,7 +61,7 @@ export const init = program
           async () => {
             installSpinner.succeed(`@pandacss/dev installed successfully.\n`);
 
-            runInitPandacss(packageJsonPath, options.path, packageManager, cwd);
+            runInitPandacss(packageJsonPath, packageManager, options.path);
           }
         );
       } else {
