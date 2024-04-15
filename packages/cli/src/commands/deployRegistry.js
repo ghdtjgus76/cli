@@ -5,8 +5,6 @@ import { filterExistingPath } from "../utils/filterExistingPath.js";
 
 const program = new Command();
 
-// TODO 1: 해당 컴포넌트 의존성 불러오기
-// TODO 2: 컴포넌트 파일 내용 불러오기
 export const deployRegistry = program
   .name("deployRegistry")
   .description("deploy component registry file")
@@ -27,8 +25,6 @@ export const deployRegistry = program
       }
     });
 
-    console.log(dependencies);
-
     const filePath = `${component}.json`;
 
     const fileContent = {
@@ -37,7 +33,7 @@ export const deployRegistry = program
       files: [
         {
           name: `${component}.tsx`,
-          content: "content",
+          content: sourceFile.getText(),
         },
       ],
     };
