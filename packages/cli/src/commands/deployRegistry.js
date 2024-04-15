@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import { promises as fs } from "fs";
 import { Project } from "ts-morph";
+import { filterExistingPath } from "../utils/filterExistingPath.js";
 
 const program = new Command();
 
@@ -16,15 +17,23 @@ export const deployRegistry = program
       `/Users/ghdtjgus/Desktop/design-system-cli/design-system-cli/packages/ui/components/${component}.tsx`
     );
 
+    const dependencies = [];
+
     sourceFile.getImportDeclarations().forEach((importDeclaration) => {
-      console.log(importDeclaration.getModuleSpecifier().getLiteralValue());
+      const module = importDeclaration.getModuleSpecifier().getLiteralValue();
+
+      if (filterExistingPath(module)) {
+        dependencies.push(module);
+      }
     });
+
+    console.log(dependencies);
 
     const filePath = `${component}.json`;
 
     const fileContent = {
       name: `${component}`,
-      dependencies: ["dependency1"],
+      dependencies,
       files: [
         {
           name: `${component}.tsx`,
