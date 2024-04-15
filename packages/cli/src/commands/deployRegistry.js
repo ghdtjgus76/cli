@@ -8,7 +8,7 @@ export const deployRegistry = program
   .description("deploy component registry file")
   .argument("component", "the component to deploy registry")
   .action(async (component) => {
-    const filePath = `/registry/${component}.json`;
+    const filePath = `${component}.json`;
 
     const fileContent = {
       name: `${component}`,
@@ -20,9 +20,9 @@ export const deployRegistry = program
         },
       ],
     };
-
     const stringifiedFileContent = JSON.stringify(fileContent);
-    console.log(stringifiedFileContent);
+
+    await fs.writeFile(filePath, stringifiedFileContent);
   });
 
 program.parse();
