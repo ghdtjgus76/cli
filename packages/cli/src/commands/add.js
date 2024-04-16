@@ -11,7 +11,6 @@ import { writeFileWithContent } from "../utils/writeFileWithContent.js";
 import { getRegistryInfo } from "../utils/getRegistryInfo.js";
 import { isInitialized } from "../utils/isInitialized.js";
 
-// TODO cva 컴포넌트 의존성 설치 안 되는 문제 해결
 const addOptionsSchema = z.object({
   components: z.array(z.string()).optional(),
   cwd: z.string(),

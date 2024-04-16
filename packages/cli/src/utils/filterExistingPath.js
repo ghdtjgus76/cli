@@ -6,7 +6,8 @@ export const filterExistingPath = (importPath) => {
     importPath.startsWith("@/") ||
     importPath.startsWith(".") ||
     importPath === "react" ||
-    importPath === "lucide-react"
+    importPath === "lucide-react" ||
+    importPath === "class-variance-authority"
   ) {
     return false;
   }
