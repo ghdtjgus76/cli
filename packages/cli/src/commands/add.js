@@ -20,6 +20,7 @@ const addOptionsSchema = z.object({
 
 const program = new Command();
 
+// TODO 비동기로 동작해서 제대로 add 및 의존성 설치 안 되는 문제 해결
 export const add = program
   .name("add")
   .description("add a component to your project")
