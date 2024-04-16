@@ -5,20 +5,20 @@ import { filterExistingPath } from "../utils/filterExistingPath.js";
 import { z } from "zod";
 import path from "path";
 
-const deployRegistryOptionSchema = z.object({
+const registryOptionSchema = z.object({
   component: z.string(),
   path: z.string(),
 });
 
 const program = new Command();
 
-export const deployRegistry = program
-  .name("deployRegistry")
-  .description("deploy component registry file")
-  .argument("component", "the component to deploy registry")
+export const registry = program
+  .name("registry")
+  .description("create component registry file")
+  .argument("component", "the component to create registry")
   .requiredOption("-p, --path <path>", "the path of the component")
   .action(async (component, opts) => {
-    const options = deployRegistryOptionSchema.parse({
+    const options = registryOptionSchema.parse({
       component,
       ...opts,
     });
