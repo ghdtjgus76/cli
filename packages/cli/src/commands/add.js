@@ -11,6 +11,7 @@ import { writeFileWithContent } from "../utils/writeFileWithContent.js";
 import { getRegistryInfo } from "../utils/getRegistryInfo.js";
 import { isInitialized } from "../utils/isInitialized.js";
 
+// TODO 컴포넌트 여러 개 설치 시 의존성 제대로 다운로드 안 되는 문제 해결 필요
 const addOptionsSchema = z.object({
   components: z.array(z.string()).optional(),
   cwd: z.string(),
@@ -72,7 +73,7 @@ export const add = program
       selectedComponents = components;
     }
 
-    selectedComponents?.forEach(async (component) => {
+    for (const component of selectedComponents) {
       const componentInfo = await getComponentInfo(component);
 
       if (!componentInfo) {
@@ -83,7 +84,7 @@ export const add = program
       const spinner = ora(`Installing... ${component}`).start();
 
       const file = componentInfo.files[0];
-      const dir = path.join(options.path, "components", "ui");
+      const dir = path.join(options.path, "components");
       const { content: fileContent, name: fileName } = file;
       const filePath = path.join(dir, fileName);
       const dependencies = componentInfo.dependencies;
@@ -98,7 +99,7 @@ export const add = program
           }
 
           writeFileWithContent(filePath, fileContent);
-          installDependencies(
+          await installDependencies(
             packageManager,
             dependencies,
             options.path,
@@ -109,11 +110,16 @@ export const add = program
         });
       } else {
         writeFileWithContent(filePath, fileContent);
-        installDependencies(packageManager, dependencies, options.path, () => {
-          spinner.succeed(`${component} installed successfully.`);
-        });
+        await installDependencies(
+          packageManager,
+          dependencies,
+          options.path,
+          () => {
+            spinner.succeed(`${component} installed successfully.`);
+          }
+        );
       }
-    });
+    }
   });
 
 program.parse();
