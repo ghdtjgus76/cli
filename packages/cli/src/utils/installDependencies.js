@@ -15,11 +15,13 @@ export const installDependencies = async (
           cwd,
         }
       );
+
+      if (typeof onSuccess === "function") {
+        onSuccess();
+      }
     }
 
-    if (typeof onSuccess === "function") {
-      onSuccess();
-    }
+    onSuccess();
   } catch (error) {
     console.error("Error installing dependencies:", error);
   }
