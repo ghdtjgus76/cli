@@ -19,9 +19,9 @@ export const installDependencies = async (
       if (typeof onSuccess === "function") {
         onSuccess();
       }
+    } else {
+      onSuccess();
     }
-
-    onSuccess();
   } catch (error) {
     console.error("Error installing dependencies:", error);
   }
