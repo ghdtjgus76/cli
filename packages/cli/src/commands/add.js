@@ -11,7 +11,7 @@ import { writeFileWithContent } from "../utils/writeFileWithContent.js";
 import { getRegistryInfo } from "../utils/getRegistryInfo.js";
 import { isInitialized } from "../utils/isInitialized.js";
 
-// TODO 컴포넌트 여러 개 설치 시 의존성 제대로 다운로드 안 되는 문제 해결 필요
+// TODO cva 컴포넌트 의존성 설치 안 되는 문제 해결
 const addOptionsSchema = z.object({
   components: z.array(z.string()).optional(),
   cwd: z.string(),
