@@ -2,7 +2,17 @@ import { promises as fs, existsSync } from "fs";
 import { Project } from "ts-morph";
 import { filterExistingPath } from "../utils/filterExistingPath.js";
 
-const buildRegistry = async (componentDir, registryPath) => {
+const buildRegistry = (componentName, dependencies) => {
+  const fileContent = {
+    name: componentName,
+    dependencies,
+    files: `${componentName}.tsx`,
+  };
+
+  return fileContent;
+};
+
+const buildComponentRegistries = async (componentDir, registryPath) => {
   if (!existsSync(componentDir) || !existsSync(registryPath)) {
     console.error(`The path does not exist. Please try again.`);
     process.exit(1);
@@ -10,27 +20,28 @@ const buildRegistry = async (componentDir, registryPath) => {
 
   const project = new Project();
   const componentFiles = await fs.readdir(componentDir);
+  const registryFileContent = [];
+
   componentFiles.forEach(async (componentFile) => {
     const componentFilePath = componentDir + "/" + componentFile;
     const sourceFile = project.addSourceFileAtPath(componentFilePath);
-
-    const dependencies = [];
+    const componentDependencies = [];
 
     sourceFile.getImportDeclarations().forEach((importDeclaration) => {
       const module = importDeclaration.getModuleSpecifier().getLiteralValue();
 
       if (filterExistingPath(module)) {
-        dependencies.push(module);
+        componentDependencies.push(module);
       }
     });
 
     const componentName = componentFile.split(".")[0];
 
-    const filePath = `${registryPath}/${componentName}.json`;
+    const ComponentFilePath = `${registryPath}/${componentName}.json`;
 
-    const fileContent = {
+    const ComponentFileContent = {
       name: `${componentName}`,
-      dependencies,
+      dependencies: componentDependencies,
       files: [
         {
           name: `${componentName}.tsx`,
@@ -38,15 +49,25 @@ const buildRegistry = async (componentDir, registryPath) => {
         },
       ],
     };
-    const stringifiedFileContent = JSON.stringify(fileContent);
+    const stringifiedComponentFileContent =
+      JSON.stringify(ComponentFileContent);
 
-    await fs.writeFile(filePath, stringifiedFileContent);
+    const registryComponentFileContent = buildRegistry(
+      componentName,
+      componentDependencies
+    );
+    registryFileContent.push(registryComponentFileContent);
+
+    await fs.writeFile(ComponentFilePath, stringifiedComponentFileContent);
   });
+
+  await fs.writeFile(
+    `${registryPath}/index.json`,
+    JSON.stringify(registryFileContent)
+  );
 };
 
-buildRegistry(process.argv[2], process.argv[3], process.argv[4]).catch(
-  (error) => {
-    console.error("An error occurred:", error);
-    process.exit(1);
-  }
-);
+buildComponentRegistries(process.argv[2], process.argv[3]).catch((error) => {
+  console.error("An error occurred:", error);
+  process.exit(1);
+});

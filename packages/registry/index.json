@@ -1,0 +1,29 @@
+[
+  {
+    "name": "accordion",
+    "dependencies": ["@radix-ui/react-accordion"],
+    "files": "accordion.tsx"
+  },
+  {
+    "name": "alert-dialog",
+    "dependencies": ["@radix-ui/react-alert-dialog"],
+    "files": "alert-dialog.tsx"
+  },
+  { "name": "alert", "dependencies": [], "files": "alert.tsx" },
+  {
+    "name": "aspect-ratio",
+    "dependencies": ["@radix-ui/react-aspect-ratio"],
+    "files": "aspect-ratio.tsx"
+  },
+  {
+    "name": "avatar",
+    "dependencies": ["@radix-ui/react-avatar"],
+    "files": "avatar.tsx"
+  },
+  { "name": "card", "dependencies": [], "files": "card.tsx" },
+  {
+    "name": "carousel",
+    "dependencies": ["embla-carousel-react"],
+    "files": "carousel.tsx"
+  }
+]
