@@ -3,7 +3,7 @@ import { promises as fs } from "fs";
 import { Project } from "ts-morph";
 import { filterExistingPath } from "../utils/filterExistingPath.js";
 
-const buildRegistry = async (component, componentPath) => {
+const buildRegistry = async (component, componentPath, registryPath) => {
   const absoluteComponentPath = path.resolve(componentPath);
 
   const project = new Project();
@@ -19,7 +19,7 @@ const buildRegistry = async (component, componentPath) => {
     }
   });
 
-  const filePath = `${component}.json`;
+  const filePath = `${registryPath}/${component}.json`;
 
   const fileContent = {
     name: `${component}`,
@@ -36,7 +36,9 @@ const buildRegistry = async (component, componentPath) => {
   await fs.writeFile(filePath, stringifiedFileContent);
 };
 
-buildRegistry(process.argv[2], process.argv[3]).catch((error) => {
-  console.error("An error occurred:", error);
-  process.exit(1);
-});
+buildRegistry(process.argv[2], process.argv[3], process.argv[4]).catch(
+  (error) => {
+    console.error("An error occurred:", error);
+    process.exit(1);
+  }
+);
