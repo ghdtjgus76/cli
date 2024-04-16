@@ -1,7 +1,7 @@
 export const getComponentInfo = async (component) => {
   try {
     const data = await fetch(
-      `https://ui.shadcn.com/registry/styles/default/${component}.json`
+      `https://ghdtjgus76.github.io/design-system-cli/packages/registry/${component}.json`
     );
 
     if (data.status === 404) {
