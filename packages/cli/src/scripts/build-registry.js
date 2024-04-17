@@ -1,6 +1,7 @@
 import { promises as fs, existsSync } from "fs";
 import { Project } from "ts-morph";
 import { filterExistingPath } from "../utils/filterExistingPath.js";
+import path from "path";
 
 const buildRegistry = (componentName, dependencies) => {
   const fileContent = {
@@ -13,17 +14,25 @@ const buildRegistry = (componentName, dependencies) => {
 };
 
 const buildComponentRegistries = async (componentDir, registryPath) => {
-  if (!existsSync(componentDir) || !existsSync(registryPath)) {
+  const {
+    componentDir: absoluteComponentDir,
+    registryPath: absoluteRegistryPath,
+  } = {
+    componentDir: path.resolve(componentDir),
+    registryPath: path.resolve(registryPath),
+  };
+
+  if (!existsSync(absoluteComponentDir) || !existsSync(absoluteRegistryPath)) {
     console.error(`The path does not exist. Please try again.`);
     process.exit(1);
   }
 
   const project = new Project();
-  const componentFiles = await fs.readdir(componentDir);
+  const componentFiles = await fs.readdir(absoluteComponentDir);
   const registryFileContent = [];
 
   componentFiles.forEach(async (componentFile) => {
-    const componentFilePath = componentDir + "/" + componentFile;
+    const componentFilePath = absoluteComponentDir + "/" + componentFile;
     const sourceFile = project.addSourceFileAtPath(componentFilePath);
     const componentDependencies = [];
 
@@ -37,7 +46,7 @@ const buildComponentRegistries = async (componentDir, registryPath) => {
 
     const componentName = componentFile.split(".")[0];
 
-    const componentRegistryFilePath = `${registryPath}/${componentName}.json`;
+    const componentRegistryFilePath = `${absoluteRegistryPath}/${componentName}.json`;
 
     const componentRegistryFileContent = {
       name: `${componentName}`,
@@ -71,7 +80,7 @@ const buildComponentRegistries = async (componentDir, registryPath) => {
   );
 };
 
-buildComponentRegistries(process.argv[2], process.argv[3]).catch((error) => {
+buildComponentRegistries("../ui/components", "../registry").catch((error) => {
   console.error("An error occurred:", error);
   process.exit(1);
 });
