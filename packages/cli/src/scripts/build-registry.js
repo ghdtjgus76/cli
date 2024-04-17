@@ -37,9 +37,9 @@ const buildComponentRegistries = async (componentDir, registryPath) => {
 
     const componentName = componentFile.split(".")[0];
 
-    const ComponentFilePath = `${registryPath}/${componentName}.json`;
+    const componentRegistryFilePath = `${registryPath}/${componentName}.json`;
 
-    const ComponentFileContent = {
+    const componentRegistryFileContent = {
       name: `${componentName}`,
       dependencies: componentDependencies,
       files: [
@@ -49,8 +49,9 @@ const buildComponentRegistries = async (componentDir, registryPath) => {
         },
       ],
     };
-    const stringifiedComponentFileContent =
-      JSON.stringify(ComponentFileContent);
+    const stringifiedComponentFileContent = JSON.stringify(
+      componentRegistryFileContent
+    );
 
     const registryComponentFileContent = buildRegistry(
       componentName,
@@ -58,7 +59,10 @@ const buildComponentRegistries = async (componentDir, registryPath) => {
     );
     registryFileContent.push(registryComponentFileContent);
 
-    await fs.writeFile(ComponentFilePath, stringifiedComponentFileContent);
+    await fs.writeFile(
+      componentRegistryFilePath,
+      stringifiedComponentFileContent
+    );
   });
 
   await fs.writeFile(
