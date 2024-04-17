@@ -1,6 +1,6 @@
 import { promises as fs, existsSync } from "fs";
 import { Project } from "ts-morph";
-import { filterExistingPath } from "../utils/filterExistingPath.js";
+import { filterExistingPath } from "../cli/src/utils/filterExistingPath.js";
 import path from "path";
 
 const buildRegistry = (componentName, dependencies) => {
@@ -80,7 +80,9 @@ const buildComponentRegistries = async (componentDir, registryPath) => {
   );
 };
 
-buildComponentRegistries("../ui/components", "../registry").catch((error) => {
-  console.error("An error occurred:", error);
-  process.exit(1);
-});
+buildComponentRegistries("../ui/components/designed-ui", "../registry").catch(
+  (error) => {
+    console.error("An error occurred:", error);
+    process.exit(1);
+  }
+);

@@ -5,8 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:registry": "node ./src/scripts/build-registry.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +16,6 @@
     "execa": "^8.0.1",
     "ora": "^8.0.1",
     "prompts": "^2.4.2",
-    "ts-morph": "^22.0.0",
     "tsup": "^8.0.2",
     "zod": "^3.22.4"
   },
