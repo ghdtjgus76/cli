@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { existsSync, mkdir } from "fs";
+import { promises as fs, existsSync } from "fs";
 import { z } from "zod";
 import path from "path";
 import ora from "ora";
@@ -72,6 +72,11 @@ export const add = program
       selectedComponents = components;
     }
 
+    if (!selectedComponents) {
+      console.error(`No components selected.`);
+      process.exit(1);
+    }
+
     for (const component of selectedComponents) {
       const componentInfo = await getComponentInfo(component);
 
@@ -83,7 +88,7 @@ export const add = program
       const spinner = ora(`Installing... ${component}`).start();
 
       const file = componentInfo.files[0];
-      const dir = path.join(options.path, "components");
+      const dir = path.join(options.path, "components", "designed-ui");
       const { content: fileContent, name: fileName } = file;
       const filePath = path.join(dir, fileName);
       const dependencies = componentInfo.dependencies;
@@ -91,7 +96,7 @@ export const add = program
       const packageManager = await getPackageManager(cwd);
 
       if (!existsSync(dir)) {
-        mkdir(dir, { recursive: true }, async (error) => {
+        await fs.mkdir(dir, { recursive: true }, async (error) => {
           if (error) {
             console.error(`Error creating directory ${dir}:`, error);
             process.exit(1);
