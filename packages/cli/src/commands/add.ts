@@ -4,12 +4,12 @@ import { z } from "zod";
 import path from "path";
 import ora from "ora";
 import prompts from "prompts";
-import { getPackageManager } from "../utils/getPackageManager.js";
-import { getComponentInfo } from "../utils/getComponentInfo.js";
-import { installDependencies } from "../utils/installDependencies.js";
-import { writeFileWithContent } from "../utils/writeFileWithContent.js";
-import { getRegistryInfo } from "../utils/getRegistryInfo.js";
-import { isInitialized } from "../utils/isInitialized.js";
+import { getPackageManager } from "../utils/getPackageManager.ts";
+import { getComponentInfo } from "../utils/getComponentInfo.ts";
+import { installDependencies } from "../utils/installDependencies.ts";
+import { writeFileWithContent } from "../utils/writeFileWithContent.ts";
+import { getRegistryInfo } from "../utils/getRegistryInfo.ts";
+import { isInitialized } from "../utils/isInitialized.ts";
 
 type RegistryInfoType = { name: string; dependencies: string[]; files: string };
 

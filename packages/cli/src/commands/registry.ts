@@ -1,9 +1,9 @@
 import { Command } from "commander";
 import { promises as fs } from "fs";
 import { Project } from "ts-morph";
-import { filterExistingPath } from "../utils/filterExistingPath.js";
 import { z } from "zod";
 import path from "path";
+import { filterExistingPath } from "../utils/filterExistingPath.ts";
 
 const registryOptionSchema = z.object({
   component: z.string(),

@@ -3,10 +3,10 @@ import { existsSync } from "fs";
 import path from "path";
 import { z } from "zod";
 import ora from "ora";
-import { getNearestPackageJson } from "../utils/getNearestPackageJson.js";
-import { getPackageManager } from "../utils/getPackageManager.js";
-import { installDependencies } from "../utils/installDependencies.js";
-import { runInitPandacss } from "../utils/runInitPandacss.js";
+import { getNearestPackageJson } from "../utils/getNearestPackageJson.ts";
+import { getPackageManager } from "../utils/getPackageManager.ts";
+import { installDependencies } from "../utils/installDependencies.ts";
+import { runInitPandacss } from "../utils/runInitPandacss.ts";
 
 const initOptionSchema = z.object({
   cwd: z.string(),

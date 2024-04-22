@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { init } from "./commands/init.js";
-import { add } from "./commands/add.js";
+import { init } from "./commands/init.ts";
+import { add } from "./commands/add.ts";
 
 async function main() {
   const program = new Command()
