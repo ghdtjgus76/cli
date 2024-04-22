@@ -24,7 +24,7 @@ const addOptionsSchema = z.object({
 const program = new Command();
 
 export const add = program
-  .name("add")
+  .name("design-system-cli add")
   .description("add a component to your project")
   .argument("[components...]", "the components to add")
   .option(
