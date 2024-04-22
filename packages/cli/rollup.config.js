@@ -10,13 +10,11 @@ const extensions = [".js", ".jsx", ".ts", ".tsx"]; // 어떤 확장자를 처리
 process.env.BABEL_ENV = "production";
 
 export default {
-  input: {
-    init: "./src/commands/init.ts",
-    add: "./src/commands/add.ts",
-  },
+  input: "./src/index.ts",
   output: {
     dir: "./dist",
     format: "esm",
+    entryFileNames: "[name].js"
   },
   plugins: [
     peerDepsExternal(), // peerDependencies로 설치한 라이브러리들을 external 모듈로 설정

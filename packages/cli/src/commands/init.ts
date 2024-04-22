@@ -73,5 +73,3 @@ export const init = program
       );
     }
   });
-
-program.parse();

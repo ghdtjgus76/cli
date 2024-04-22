@@ -126,5 +126,3 @@ export const add = program
       }
     }
   });
-
-program.parse();
