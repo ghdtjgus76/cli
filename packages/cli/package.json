@@ -20,11 +20,18 @@
   },
   "keywords": [],
   "license": "ISC",
-  "exports": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "bin": "./dist/index.js",
   "devDependencies": {
     "@antfu/ni": "^0.21.12",
+    "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "@svgr/rollup": "^8.1.0",
     "@types/prompts": "^2.4.9",
     "@types/rollup-plugin-peer-deps-external": "^2.2.5",
@@ -33,10 +40,10 @@
     "execa": "^8.0.1",
     "ora": "^8.0.1",
     "prompts": "^2.4.2",
-    "r": "^0.0.5",
     "rollup": "^4.16.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-polyfills": "^0.2.1",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "typescript": "^5.4.2",
