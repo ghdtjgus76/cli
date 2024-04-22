@@ -3,7 +3,7 @@ import { existsSync } from "fs";
 import chalk from "chalk";
 import { getNearestPackageJson } from "./getNearestPackageJson.js";
 
-export const isInitialized = (cwd) => {
+export const isInitialized = (cwd: string) => {
   const packageJsonPath = getNearestPackageJson(cwd);
 
   if (packageJsonPath) {

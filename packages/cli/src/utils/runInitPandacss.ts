@@ -4,7 +4,11 @@ import chalk from "chalk";
 import { execa } from "execa";
 import ora from "ora";
 
-export const runInitPandacss = async (packageJsonPath, packageManager, cwd) => {
+export const runInitPandacss = async (
+  packageJsonPath: string,
+  packageManager: string,
+  cwd: string
+) => {
   const styledSystemPath = path.join(
     path.dirname(packageJsonPath),
     "styled-system"

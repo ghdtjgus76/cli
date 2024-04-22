@@ -1,10 +1,10 @@
 import { execa } from "execa";
 
 export const installDependencies = async (
-  packageManager,
-  dependencies,
-  cwd,
-  onSuccess
+  packageManager: string,
+  dependencies: string[],
+  cwd: string,
+  onSuccess: () => void
 ) => {
   try {
     if (dependencies?.length) {

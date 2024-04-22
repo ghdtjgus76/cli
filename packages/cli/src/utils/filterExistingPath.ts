@@ -1,7 +1,7 @@
 import path from "path";
 import { existsSync } from "fs";
 
-export const filterExistingPath = (importPath) => {
+export const filterExistingPath = (importPath: string) => {
   if (
     importPath.startsWith("@/") ||
     importPath.startsWith(".") ||

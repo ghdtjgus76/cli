@@ -1,6 +1,6 @@
 import { detect } from "@antfu/ni";
 
-export const getPackageManager = async (targetDir) => {
+export const getPackageManager = async (targetDir: string) => {
   const packageManager = await detect({ programmatic: true, cwd: targetDir });
 
   if (packageManager === "yarn@berry") return "yarn";

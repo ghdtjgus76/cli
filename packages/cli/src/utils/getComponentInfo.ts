@@ -1,4 +1,4 @@
-export const getComponentInfo = async (component) => {
+export const getComponentInfo = async (component: string) => {
   try {
     const data = await fetch(
       `https://ghdtjgus76.github.io/design-system-cli/packages/registry/${component}.json`

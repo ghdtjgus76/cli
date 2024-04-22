@@ -1,7 +1,7 @@
 import path from "path";
 import { existsSync } from "fs";
 
-export const getNearestPackageJson = (cwd) => {
+export const getNearestPackageJson = (cwd: string) => {
   let currentDir = cwd;
 
   while (true) {
