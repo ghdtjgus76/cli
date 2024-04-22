@@ -17,7 +17,7 @@ const initOptionSchema = z.object({
 const program = new Command();
 
 export const init = program
-  .name("design-system-cli init")
+  .name("init")
   .description("initialize your project and install dependencies")
   .option(
     "-c, --cwd <cwd>",

@@ -1,2 +1,4 @@
-tsup.config.ts
 src/*
+.babelrc
+rollup.config.js
+tsconfig.json
