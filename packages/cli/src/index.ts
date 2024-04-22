@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --no-warnings=ExperimentalWarning
 import { Command } from "commander";
 import { init } from "./commands/init.ts";
 import { add } from "./commands/add.ts";
