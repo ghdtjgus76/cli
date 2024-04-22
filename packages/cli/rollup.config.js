@@ -11,14 +11,12 @@ process.env.BABEL_ENV = "production";
 
 export default {
   input: {
-    add: "./src/commands/add.ts",
     init: "./src/commands/init.ts",
+    add: "./src/commands/add.ts",
   },
   output: {
     dir: "./dist",
     format: "esm",
-    entryFileNames: "[name].js",
-    chunkFileNames: "[name]-[hash].js",
   },
   plugins: [
     peerDepsExternal(), // peerDependencies로 설치한 라이브러리들을 external 모듈로 설정

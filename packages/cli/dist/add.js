@@ -1,5 +1,4 @@
-#!/usr/bin/env node
-import { _ as _unsupportedIterableToArray, a as _typeof, g as getDefaultExportFromCjs, b as _asyncToGenerator, c as _regeneratorRuntime, d as getNearestPackageJson, e as chalk, z, C as Command, i as installDependencies, o as ora, f as getPackageManager } from './getNearestPackageJson-BCvw2xnZ.js';
+import { d as _unsupportedIterableToArray, f as _typeof, h as getDefaultExportFromCjs, _ as _asyncToGenerator, a as _regeneratorRuntime, g as getNearestPackageJson, c as chalk, z, C as Command, i as installDependencies, o as ora, b as getPackageManager } from './installDependencies-B80Fk2Wp.js';
 import { writeFile, existsSync, promises } from 'fs';
 import path from 'path';
 import require$$0 from 'readline';

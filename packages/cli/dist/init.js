@@ -1,5 +1,4 @@
-#!/usr/bin/env node
-import { b as _asyncToGenerator, c as _regeneratorRuntime, e as chalk, o as ora, h as execa, z, C as Command, i as installDependencies, d as getNearestPackageJson, f as getPackageManager } from './getNearestPackageJson-BCvw2xnZ.js';
+import { _ as _asyncToGenerator, a as _regeneratorRuntime, c as chalk, o as ora, e as execa, z, C as Command, i as installDependencies, g as getNearestPackageJson, b as getPackageManager } from './installDependencies-B80Fk2Wp.js';
 import { existsSync } from 'fs';
 import path from 'path';
 import 'events';

@@ -331,21 +331,6 @@ function _regeneratorRuntime() {
   }, e;
 }
 
-function _arrayLikeToArray(arr, len) {
-  len = arr.length;
-  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-  return arr2;
-}
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-}
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -11215,6 +11200,22 @@ function ora(options) {
 	return new Ora(options);
 }
 
+var getNearestPackageJson = function getNearestPackageJson(cwd) {
+  var currentDir = cwd;
+  while (true) {
+    var packageJsonPath = path$5.join(currentDir, "package.json");
+    if (existsSync(packageJsonPath)) {
+      return packageJsonPath;
+    }
+    var parentDir = path$5.resolve(currentDir, "..");
+    if (parentDir === currentDir) {
+      break;
+    }
+    currentDir = parentDir;
+  }
+  return null;
+};
+
 function npmRun(agent) {
   return (args) => {
     if (args.length > 1)
@@ -17619,12 +17620,27 @@ var getPackageManager = /*#__PURE__*/function () {
   };
 }();
 
+function _arrayLikeToArray(arr, len) {
+  len = arr.length;
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+  return arr2;
+}
+
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) return _arrayLikeToArray(arr);
 }
 
 function _iterableToArray(iter) {
   if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
 }
 
 function _nonIterableSpread() {
@@ -20069,20 +20085,4 @@ var installDependencies = /*#__PURE__*/function () {
   };
 }();
 
-var getNearestPackageJson = function getNearestPackageJson(cwd) {
-  var currentDir = cwd;
-  while (true) {
-    var packageJsonPath = path$5.join(currentDir, "package.json");
-    if (existsSync(packageJsonPath)) {
-      return packageJsonPath;
-    }
-    var parentDir = path$5.resolve(currentDir, "..");
-    if (parentDir === currentDir) {
-      break;
-    }
-    currentDir = parentDir;
-  }
-  return null;
-};
-
-export { Command as C, _unsupportedIterableToArray as _, _typeof as a, _asyncToGenerator as b, _regeneratorRuntime as c, getNearestPackageJson as d, chalk as e, getPackageManager as f, getDefaultExportFromCjs$1 as g, execa as h, installDependencies as i, ora as o, z };
+export { Command as C, _asyncToGenerator as _, _regeneratorRuntime as a, getPackageManager as b, chalk as c, _unsupportedIterableToArray as d, execa as e, _typeof as f, getNearestPackageJson as g, getDefaultExportFromCjs$1 as h, installDependencies as i, ora as o, z };
