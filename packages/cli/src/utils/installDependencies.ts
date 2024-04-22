@@ -1,7 +1,7 @@
 import { execa } from "execa";
 
 export const installDependencies = async (
-  packageManager: string,
+  packageManager: "yarn" | "pnpm" | "bun" | "npm",
   dependencies: string[],
   cwd: string,
   onSuccess: () => void

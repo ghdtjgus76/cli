@@ -11,6 +11,8 @@ import { writeFileWithContent } from "../utils/writeFileWithContent.js";
 import { getRegistryInfo } from "../utils/getRegistryInfo.js";
 import { isInitialized } from "../utils/isInitialized.js";
 
+type RegistryInfoType = { name: string; dependencies: string[]; files: string };
+
 const addOptionsSchema = z.object({
   components: z.array(z.string()).optional(),
   cwd: z.string(),
@@ -53,7 +55,7 @@ export const add = program
     const registryInfo = await getRegistryInfo();
 
     let selectedComponents = options.all
-      ? registryInfo.map((info) => info.name)
+      ? registryInfo.map((info: RegistryInfoType) => info.name)
       : options.components;
 
     if (!options.components?.length && !options.all) {
@@ -62,7 +64,7 @@ export const add = program
         name: "components",
         message: "Which components would you like to add?",
         hint: "Space to select. A to toggle all. Enter to submit.",
-        choices: registryInfo.map((info) => ({
+        choices: registryInfo.map((info: RegistryInfoType) => ({
           title: info.name,
           value: info.name,
           selected: options.components?.includes(info.name),
@@ -96,14 +98,8 @@ export const add = program
       const packageManager = await getPackageManager(cwd);
 
       if (!existsSync(dir)) {
-        await fs.mkdir(dir, { recursive: true }, async (error) => {
-          if (error) {
-            console.error(`Error creating directory ${dir}:`, error);
-            process.exit(1);
-          }
-
-          console.log(component);
-
+        try {
+          await fs.mkdir(dir, { recursive: true });
           writeFileWithContent(filePath, fileContent);
           await installDependencies(
             packageManager,
@@ -113,7 +109,10 @@ export const add = program
               spinner.succeed(`${component} installed successfully.`);
             }
           );
-        });
+        } catch (error) {
+          console.error(`Error creating directory ${dir}:`, error);
+          process.exit(1);
+        }
       } else {
         writeFileWithContent(filePath, fileContent);
         await installDependencies(

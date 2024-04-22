@@ -6,7 +6,7 @@ import ora from "ora";
 
 export const runInitPandacss = async (
   packageJsonPath: string,
-  packageManager: string,
+  packageManager: "yarn" | "pnpm" | "bun" | "npm",
   cwd: string
 ) => {
   const styledSystemPath = path.join(

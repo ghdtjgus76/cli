@@ -28,7 +28,7 @@ export const registry = program
     const project = new Project();
     const sourceFile = project.addSourceFileAtPath(componentPath);
 
-    const dependencies = [];
+    const dependencies: string[] = [];
 
     sourceFile.getImportDeclarations().forEach((importDeclaration) => {
       const module = importDeclaration.getModuleSpecifier().getLiteralValue();
