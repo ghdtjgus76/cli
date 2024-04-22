@@ -1,15 +1,38 @@
 {
-  "name": "cli",
-  "version": "1.0.0",
+  "name": "design-system-cli",
+  "version": "0.0.1",
   "type": "module",
-  "description": "",
-  "main": "index.js",
+  "description": "Add components to your apps.",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": {
+    "name": "ghdtjgus76"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ghdtjgus76/design-system-cli.git",
+    "directory": "packages/cli"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup"
+  },
+  "tsup": {
+    "bundle": true,
+    "treeshake": true,
+    "target": "node18",
+    "format": [
+      "esm"
+    ],
+    "entry": [
+      "src/index.ts"
+    ]
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
+  "exports": "./dist/index.js",
+  "bin": "./dist/index.js",
   "devDependencies": {
     "@antfu/ni": "^0.21.12",
     "chalk": "^5.3.0",
@@ -17,9 +40,7 @@
     "ora": "^8.0.1",
     "prompts": "^2.4.2",
     "tsup": "^8.0.2",
-    "zod": "^3.22.4"
-  },
-  "dependencies": {
+    "zod": "^3.22.4",
     "typescript": "^5.4.2"
   }
 }
