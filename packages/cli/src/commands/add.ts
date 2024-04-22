@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command } from "commander";
 import { promises as fs, existsSync } from "fs";
 import { z } from "zod";

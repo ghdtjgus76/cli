@@ -1,8 +1,7 @@
-#!/usr/bin/env node
 import require$$2 from 'events';
 import require$$1 from 'child_process';
 import path$5 from 'path';
-import require$$0$1, { existsSync, writeFile, promises as promises$1 } from 'fs';
+import require$$0$1, { existsSync } from 'fs';
 import require$$4 from 'process';
 import process$4 from 'node:process';
 import require$$0$2 from 'assert';
@@ -330,6 +329,21 @@ function _regeneratorRuntime() {
       }, "next" === this.method && (this.arg = t), y;
     }
   }, e;
+}
+
+function _arrayLikeToArray(arr, len) {
+  len = arr.length;
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+  return arr2;
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
 }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -3680,7 +3694,7 @@ var commander = /*@__PURE__*/getDefaultExportFromCjs$1(commanderExports);
 
 // wrapper to provide named exports for ESM.
 const {
-  program: program$2,
+  program,
   createCommand,
   createArgument,
   createOption,
@@ -3693,7 +3707,7 @@ const {
   Help
 } = commander;
 
-var util$3;
+var util$1;
 (function (util) {
     util.assertEqual = (val) => val;
     function assertIs(_arg) { }
@@ -3755,7 +3769,7 @@ var util$3;
         }
         return value;
     };
-})(util$3 || (util$3 = {}));
+})(util$1 || (util$1 = {}));
 var objectUtil;
 (function (objectUtil) {
     objectUtil.mergeShapes = (first, second) => {
@@ -3765,7 +3779,7 @@ var objectUtil;
         };
     };
 })(objectUtil || (objectUtil = {}));
-const ZodParsedType = util$3.arrayToEnum([
+const ZodParsedType = util$1.arrayToEnum([
     "string",
     "nan",
     "number",
@@ -3832,7 +3846,7 @@ const getParsedType = (data) => {
     }
 };
 
-const ZodIssueCode = util$3.arrayToEnum([
+const ZodIssueCode = util$1.arrayToEnum([
     "invalid_type",
     "invalid_literal",
     "custom",
@@ -3931,7 +3945,7 @@ class ZodError extends Error {
         return this.message;
     }
     get message() {
-        return JSON.stringify(this.issues, util$3.jsonStringifyReplacer, 2);
+        return JSON.stringify(this.issues, util$1.jsonStringifyReplacer, 2);
     }
     get isEmpty() {
         return this.issues.length === 0;
@@ -3971,19 +3985,19 @@ const errorMap = (issue, _ctx) => {
             }
             break;
         case ZodIssueCode.invalid_literal:
-            message = `Invalid literal value, expected ${JSON.stringify(issue.expected, util$3.jsonStringifyReplacer)}`;
+            message = `Invalid literal value, expected ${JSON.stringify(issue.expected, util$1.jsonStringifyReplacer)}`;
             break;
         case ZodIssueCode.unrecognized_keys:
-            message = `Unrecognized key(s) in object: ${util$3.joinValues(issue.keys, ", ")}`;
+            message = `Unrecognized key(s) in object: ${util$1.joinValues(issue.keys, ", ")}`;
             break;
         case ZodIssueCode.invalid_union:
             message = `Invalid input`;
             break;
         case ZodIssueCode.invalid_union_discriminator:
-            message = `Invalid discriminator value. Expected ${util$3.joinValues(issue.options)}`;
+            message = `Invalid discriminator value. Expected ${util$1.joinValues(issue.options)}`;
             break;
         case ZodIssueCode.invalid_enum_value:
-            message = `Invalid enum value. Expected ${util$3.joinValues(issue.options)}, received '${issue.received}'`;
+            message = `Invalid enum value. Expected ${util$1.joinValues(issue.options)}, received '${issue.received}'`;
             break;
         case ZodIssueCode.invalid_arguments:
             message = `Invalid function arguments`;
@@ -4009,7 +4023,7 @@ const errorMap = (issue, _ctx) => {
                     message = `Invalid input: must end with "${issue.validation.endsWith}"`;
                 }
                 else {
-                    util$3.assertNever(issue.validation);
+                    util$1.assertNever(issue.validation);
                 }
             }
             else if (issue.validation !== "regex") {
@@ -4079,7 +4093,7 @@ const errorMap = (issue, _ctx) => {
             break;
         default:
             message = _ctx.defaultError;
-            util$3.assertNever(issue);
+            util$1.assertNever(issue);
     }
     return { message };
 };
@@ -4809,7 +4823,7 @@ class ZodString extends ZodType {
                 }
             }
             else {
-                util$3.assertNever(check);
+                util$1.assertNever(check);
             }
         }
         return { status: status.value, value: input.data };
@@ -5034,7 +5048,7 @@ class ZodNumber extends ZodType {
         const status = new ParseStatus();
         for (const check of this._def.checks) {
             if (check.kind === "int") {
-                if (!util$3.isInteger(input.data)) {
+                if (!util$1.isInteger(input.data)) {
                     ctx = this._getOrReturnCtx(input, ctx);
                     addIssueToContext(ctx, {
                         code: ZodIssueCode.invalid_type,
@@ -5101,7 +5115,7 @@ class ZodNumber extends ZodType {
                 }
             }
             else {
-                util$3.assertNever(check);
+                util$1.assertNever(check);
             }
         }
         return { status: status.value, value: input.data };
@@ -5224,7 +5238,7 @@ class ZodNumber extends ZodType {
     }
     get isInt() {
         return !!this._def.checks.find((ch) => ch.kind === "int" ||
-            (ch.kind === "multipleOf" && util$3.isInteger(ch.value)));
+            (ch.kind === "multipleOf" && util$1.isInteger(ch.value)));
     }
     get isFinite() {
         let max = null, min = null;
@@ -5321,7 +5335,7 @@ class ZodBigInt extends ZodType {
                 }
             }
             else {
-                util$3.assertNever(check);
+                util$1.assertNever(check);
             }
         }
         return { status: status.value, value: input.data };
@@ -5506,7 +5520,7 @@ class ZodDate extends ZodType {
                 }
             }
             else {
-                util$3.assertNever(check);
+                util$1.assertNever(check);
             }
         }
         return {
@@ -5879,7 +5893,7 @@ class ZodObject extends ZodType {
         if (this._cached !== null)
             return this._cached;
         const shape = this._def.shape();
-        const keys = util$3.objectKeys(shape);
+        const keys = util$1.objectKeys(shape);
         return (this._cached = { shape, keys });
     }
     _parse(input) {
@@ -6120,7 +6134,7 @@ class ZodObject extends ZodType {
     }
     pick(mask) {
         const shape = {};
-        util$3.objectKeys(mask).forEach((key) => {
+        util$1.objectKeys(mask).forEach((key) => {
             if (mask[key] && this.shape[key]) {
                 shape[key] = this.shape[key];
             }
@@ -6132,7 +6146,7 @@ class ZodObject extends ZodType {
     }
     omit(mask) {
         const shape = {};
-        util$3.objectKeys(this.shape).forEach((key) => {
+        util$1.objectKeys(this.shape).forEach((key) => {
             if (!mask[key]) {
                 shape[key] = this.shape[key];
             }
@@ -6150,7 +6164,7 @@ class ZodObject extends ZodType {
     }
     partial(mask) {
         const newShape = {};
-        util$3.objectKeys(this.shape).forEach((key) => {
+        util$1.objectKeys(this.shape).forEach((key) => {
             const fieldSchema = this.shape[key];
             if (mask && !mask[key]) {
                 newShape[key] = fieldSchema;
@@ -6166,7 +6180,7 @@ class ZodObject extends ZodType {
     }
     required(mask) {
         const newShape = {};
-        util$3.objectKeys(this.shape).forEach((key) => {
+        util$1.objectKeys(this.shape).forEach((key) => {
             if (mask && !mask[key]) {
                 newShape[key] = this.shape[key];
             }
@@ -6185,7 +6199,7 @@ class ZodObject extends ZodType {
         });
     }
     keyof() {
-        return createZodEnum(util$3.objectKeys(this.shape));
+        return createZodEnum(util$1.objectKeys(this.shape));
     }
 }
 ZodObject.create = (shape, params) => {
@@ -6434,8 +6448,8 @@ function mergeValues(a, b) {
         return { valid: true, data: a };
     }
     else if (aType === ZodParsedType.object && bType === ZodParsedType.object) {
-        const bKeys = util$3.objectKeys(b);
-        const sharedKeys = util$3
+        const bKeys = util$1.objectKeys(b);
+        const sharedKeys = util$1
             .objectKeys(a)
             .filter((key) => bKeys.indexOf(key) !== -1);
         const newObj = { ...a, ...b };
@@ -6985,7 +6999,7 @@ class ZodEnum extends ZodType {
             const ctx = this._getOrReturnCtx(input);
             const expectedValues = this._def.values;
             addIssueToContext(ctx, {
-                expected: util$3.joinValues(expectedValues),
+                expected: util$1.joinValues(expectedValues),
                 received: ctx.parsedType,
                 code: ZodIssueCode.invalid_type,
             });
@@ -7037,20 +7051,20 @@ class ZodEnum extends ZodType {
 ZodEnum.create = createZodEnum;
 class ZodNativeEnum extends ZodType {
     _parse(input) {
-        const nativeEnumValues = util$3.getValidEnumValues(this._def.values);
+        const nativeEnumValues = util$1.getValidEnumValues(this._def.values);
         const ctx = this._getOrReturnCtx(input);
         if (ctx.parsedType !== ZodParsedType.string &&
             ctx.parsedType !== ZodParsedType.number) {
-            const expectedValues = util$3.objectValues(nativeEnumValues);
+            const expectedValues = util$1.objectValues(nativeEnumValues);
             addIssueToContext(ctx, {
-                expected: util$3.joinValues(expectedValues),
+                expected: util$1.joinValues(expectedValues),
                 received: ctx.parsedType,
                 code: ZodIssueCode.invalid_type,
             });
             return INVALID;
         }
         if (nativeEnumValues.indexOf(input.data) === -1) {
-            const expectedValues = util$3.objectValues(nativeEnumValues);
+            const expectedValues = util$1.objectValues(nativeEnumValues);
             addIssueToContext(ctx, {
                 received: ctx.data,
                 code: ZodIssueCode.invalid_enum_value,
@@ -7222,7 +7236,7 @@ class ZodEffects extends ZodType {
                 });
             }
         }
-        util$3.assertNever(effect);
+        util$1.assertNever(effect);
     }
 }
 ZodEffects.create = (schema, effect, params) => {
@@ -7615,7 +7629,7 @@ var z = /*#__PURE__*/Object.freeze({
     isDirty: isDirty,
     isValid: isValid,
     isAsync: isAsync,
-    get util () { return util$3; },
+    get util () { return util$1; },
     get objectUtil () { return objectUtil; },
     ZodParsedType: ZodParsedType,
     getParsedType: getParsedType,
@@ -9419,7 +9433,7 @@ var squish = {
 		"╪"
 	]
 };
-var toggle$3 = {
+var toggle$1 = {
 	interval: 250,
 	frames: [
 		"⊶",
@@ -10226,7 +10240,7 @@ var require$$0 = {
 	circleQuarters: circleQuarters,
 	circleHalves: circleHalves,
 	squish: squish,
-	toggle: toggle$3,
+	toggle: toggle$1,
 	toggle2: toggle2,
 	toggle3: toggle3,
 	toggle4: toggle4,
@@ -11200,22 +11214,6 @@ class Ora {
 function ora(options) {
 	return new Ora(options);
 }
-
-var getNearestPackageJson = function getNearestPackageJson(cwd) {
-  var currentDir = cwd;
-  while (true) {
-    var packageJsonPath = path$5.join(currentDir, "package.json");
-    if (existsSync(packageJsonPath)) {
-      return packageJsonPath;
-    }
-    var parentDir = path$5.resolve(currentDir, "..");
-    if (parentDir === currentDir) {
-      break;
-    }
-    currentDir = parentDir;
-  }
-  return null;
-};
 
 function npmRun(agent) {
   return (args) => {
@@ -14425,7 +14423,7 @@ terminalLink.isSupported = supportsHyperlinks$1.stdout;
 terminalLink.stderr = (text, url, options = {}) => terminalLink(text, url, {target: 'stderr', ...options});
 terminalLink.stderr.isSupported = supportsHyperlinks$1.stderr;
 
-var prompts$3$1 = {};
+var prompts$3 = {};
 
 let FORCE_COLOR$1, NODE_DISABLE_COLORS$1, NO_COLOR$1, TERM$1, isTTY$1=true;
 if (typeof process !== 'undefined') {
@@ -14534,9 +14532,9 @@ function init$1(open, close) {
 	};
 }
 
-var kleur$1 = $$1;
+var kleur = $$1;
 
-var action$1$1 = (key, isSelect) => {
+var action$1 = (key, isSelect) => {
   if (key.meta && key.name !== 'escape') return;
 
   if (key.ctrl) {
@@ -14644,12 +14642,12 @@ const erase$7 = {
   }
 };
 
-var src$1 = { cursor: cursor$b, scroll, erase: erase$7, beep: beep$1 };
+var src = { cursor: cursor$b, scroll, erase: erase$7, beep: beep$1 };
 
-const strip$1$1 = strip$2;
-const { erase: erase$6, cursor: cursor$a } = src$1;
+const strip$1 = strip$2;
+const { erase: erase$6, cursor: cursor$a } = src;
 
-const width = str => [...strip$1$1(str)].length;
+const width = str => [...strip$1(str)].length;
 
 /**
  * @param {string} prompt
@@ -14667,7 +14665,7 @@ var clear$9 = function(prompt, perLine) {
   return erase$6.lines(rows);
 };
 
-const main$1 = {
+const main = {
   arrowUp: '↑',
   arrowDown: '↓',
   arrowLeft: '←',
@@ -14682,10 +14680,10 @@ const main$1 = {
   pointer: '❯'	
 };	
 const win = {
-  arrowUp: main$1.arrowUp,
-  arrowDown: main$1.arrowDown,
-  arrowLeft: main$1.arrowLeft,
-  arrowRight: main$1.arrowRight,
+  arrowUp: main.arrowUp,
+  arrowDown: main.arrowDown,
+  arrowLeft: main.arrowLeft,
+  arrowRight: main.arrowRight,
   radioOn: '(*)',
   radioOff: '( )',	
   tick: '√',	
@@ -14695,12 +14693,12 @@ const win = {
   line: '─',	
   pointer: '>'	
 };	
-const figures$8 = process.platform === 'win32' ? win : main$1;	
+const figures$8 = process.platform === 'win32' ? win : main;	
 
- var figures_1$2 = figures$8;
+ var figures_1 = figures$8;
 
-const c = kleur$1;
-const figures$7 = figures_1$2;
+const c = kleur;
+const figures$7 = figures_1;
 
 // rendering user input.
 const styles = Object.freeze({
@@ -14738,14 +14736,14 @@ var style$9 = {
   item
 };
 
-const strip$3 = strip$2;
+const strip = strip$2;
 
 /**
  * @param {string} msg
  * @param {number} perLine
  */
 var lines$2 = function (msg, perLine) {
-  let lines = String(strip$3(msg) || '').split(/\r?\n/);
+  let lines = String(strip(msg) || '').split(/\r?\n/);
 
   if (!perLine) return lines.length;
   return lines.map(l => Math.ceil(l.length / perLine))
@@ -14798,22 +14796,22 @@ var entriesToDisplay$3 = (cursor, total, maxVisible)  => {
   return { startIndex, endIndex };
 };
 
-var util$2 = {
-  action: action$1$1,
+var util = {
+  action: action$1,
   clear: clear$9,
   style: style$9,
   strip: strip$2,
-  figures: figures_1$2,
+  figures: figures_1,
   lines: lines$2,
   wrap: wrap$3,
   entriesToDisplay: entriesToDisplay$3
 };
 
 const readline = require$$0$3;
-const { action: action$2 } = util$2;
+const { action } = util;
 const EventEmitter = require$$2;
-const { beep, cursor: cursor$9 } = src$1;
-const color$9 = kleur$1;
+const { beep, cursor: cursor$9 } = src;
+const color$9 = kleur;
 
 /**
  * Base prompt skeleton
@@ -14834,7 +14832,7 @@ let Prompt$8 = class Prompt extends EventEmitter {
     if (this.in.isTTY) this.in.setRawMode(true);
     const isSelect = [ 'SelectPrompt', 'MultiselectPrompt' ].indexOf(this.constructor.name) > -1;
     const keypress = (str, key) => {
-      let a = action$2(key, isSelect);
+      let a = action(key, isSelect);
       if (a === false) {
         this._ && this._(str, key);
       } else if (typeof this[a] === 'function') {
@@ -14874,12 +14872,12 @@ let Prompt$8 = class Prompt extends EventEmitter {
   }
 };
 
-var prompt$1$1 = Prompt$8;
+var prompt$1 = Prompt$8;
 
-const color$8 = kleur$1;
-const Prompt$7 = prompt$1$1;
-const { erase: erase$5, cursor: cursor$8 } = src$1;
-const { style: style$8, clear: clear$8, lines: lines$1$1, figures: figures$6 } = util$2;
+const color$8 = kleur;
+const Prompt$7 = prompt$1;
+const { erase: erase$5, cursor: cursor$8 } = src;
+const { style: style$8, clear: clear$8, lines: lines$1, figures: figures$6 } = util;
 
 /**
  * TextPrompt Base Element
@@ -15061,7 +15059,7 @@ class TextPrompt extends Prompt$7 {
     if (this.closed) return;
     if (!this.firstRender) {
       if (this.outputError)
-        this.out.write(cursor$8.down(lines$1$1(this.outputError, this.out.columns) - 1) + clear$8(this.outputError, this.out.columns));
+        this.out.write(cursor$8.down(lines$1(this.outputError, this.out.columns) - 1) + clear$8(this.outputError, this.out.columns));
       this.out.write(clear$8(this.outputText, this.out.columns));
     }
     super.render();
@@ -15083,12 +15081,12 @@ class TextPrompt extends Prompt$7 {
   }
 }
 
-var text$2 = TextPrompt;
+var text = TextPrompt;
 
-const color$7 = kleur$1;
-const Prompt$6 = prompt$1$1;
-const { style: style$7, clear: clear$7, figures: figures$5, wrap: wrap$2, entriesToDisplay: entriesToDisplay$2 } = util$2;
-const { cursor: cursor$7 } = src$1;
+const color$7 = kleur;
+const Prompt$6 = prompt$1;
+const { style: style$7, clear: clear$7, figures: figures$5, wrap: wrap$2, entriesToDisplay: entriesToDisplay$2 } = util;
+const { cursor: cursor$7 } = src;
 
 /**
  * SelectPrompt Base Element
@@ -15257,12 +15255,12 @@ class SelectPrompt extends Prompt$6 {
   }
 }
 
-var select$2 = SelectPrompt;
+var select = SelectPrompt;
 
-const color$6 = kleur$1;
-const Prompt$5 = prompt$1$1;
-const { style: style$6, clear: clear$6 } = util$2;
-const { cursor: cursor$6, erase: erase$4 } = src$1;
+const color$6 = kleur;
+const Prompt$5 = prompt$1;
+const { style: style$6, clear: clear$6 } = util;
+const { cursor: cursor$6, erase: erase$4 } = src;
 
 /**
  * TogglePrompt Base Element
@@ -15376,7 +15374,7 @@ class TogglePrompt extends Prompt$5 {
   }
 }
 
-var toggle$2 = TogglePrompt;
+var toggle = TogglePrompt;
 
 let DatePart$9 = class DatePart {
   constructor({token, date, parts, locales}) {
@@ -15408,9 +15406,9 @@ let DatePart$9 = class DatePart {
   }
 };
 
-var datepart$2 = DatePart$9;
+var datepart = DatePart$9;
 
-const DatePart$8 = datepart$2;
+const DatePart$8 = datepart;
 
 let Meridiem$1 = class Meridiem extends DatePart$8 {
   constructor(opts={}) {
@@ -15431,9 +15429,9 @@ let Meridiem$1 = class Meridiem extends DatePart$8 {
   }
 };
 
-var meridiem$2 = Meridiem$1;
+var meridiem = Meridiem$1;
 
-const DatePart$7 = datepart$2;
+const DatePart$7 = datepart;
 
 const pos = n => {
   n = n % 10;
@@ -15472,9 +15470,9 @@ let Day$1 = class Day extends DatePart$7 {
   }
 };
 
-var day$2 = Day$1;
+var day = Day$1;
 
-const DatePart$6 = datepart$2;
+const DatePart$6 = datepart;
 
 let Hours$1 = class Hours extends DatePart$6 {
   constructor(opts={}) {
@@ -15501,9 +15499,9 @@ let Hours$1 = class Hours extends DatePart$6 {
   }
 };
 
-var hours$2 = Hours$1;
+var hours = Hours$1;
 
-const DatePart$5 = datepart$2;
+const DatePart$5 = datepart;
 
 let Milliseconds$1 = class Milliseconds extends DatePart$5 {
   constructor(opts={}) {
@@ -15528,9 +15526,9 @@ let Milliseconds$1 = class Milliseconds extends DatePart$5 {
   }
 };
 
-var milliseconds$2 = Milliseconds$1;
+var milliseconds = Milliseconds$1;
 
-const DatePart$4 = datepart$2;
+const DatePart$4 = datepart;
 
 let Minutes$1 = class Minutes extends DatePart$4 {
   constructor(opts={}) {
@@ -15555,9 +15553,9 @@ let Minutes$1 = class Minutes extends DatePart$4 {
   }
 };
 
-var minutes$2 = Minutes$1;
+var minutes = Minutes$1;
 
-const DatePart$3 = datepart$2;
+const DatePart$3 = datepart;
 
 let Month$1 = class Month extends DatePart$3 {
   constructor(opts={}) {
@@ -15587,9 +15585,9 @@ let Month$1 = class Month extends DatePart$3 {
   }
 };
 
-var month$2 = Month$1;
+var month = Month$1;
 
-const DatePart$2 = datepart$2;
+const DatePart$2 = datepart;
 
 let Seconds$1 = class Seconds extends DatePart$2 {
   constructor(opts={}) {
@@ -15614,9 +15612,9 @@ let Seconds$1 = class Seconds extends DatePart$2 {
   }
 };
 
-var seconds$2 = Seconds$1;
+var seconds = Seconds$1;
 
-const DatePart$1 = datepart$2;
+const DatePart$1 = datepart;
 
 let Year$1 = class Year extends DatePart$1 {
   constructor(opts={}) {
@@ -15641,25 +15639,25 @@ let Year$1 = class Year extends DatePart$1 {
   }
 };
 
-var year$2 = Year$1;
+var year = Year$1;
 
-var dateparts$2 = {
-  DatePart: datepart$2,
-  Meridiem: meridiem$2,
-  Day: day$2,
-  Hours: hours$2,
-  Milliseconds: milliseconds$2,
-  Minutes: minutes$2,
-  Month: month$2,
-  Seconds: seconds$2,
-  Year: year$2,
+var dateparts = {
+  DatePart: datepart,
+  Meridiem: meridiem,
+  Day: day,
+  Hours: hours,
+  Milliseconds: milliseconds,
+  Minutes: minutes,
+  Month: month,
+  Seconds: seconds,
+  Year: year,
 };
 
-const color$5 = kleur$1;
-const Prompt$4 = prompt$1$1;
-const { style: style$5, clear: clear$5, figures: figures$4 } = util$2;
-const { erase: erase$3, cursor: cursor$5 } = src$1;
-const { DatePart, Meridiem, Day, Hours, Milliseconds, Minutes, Month, Seconds, Year } = dateparts$2;
+const color$5 = kleur;
+const Prompt$4 = prompt$1;
+const { style: style$5, clear: clear$5, figures: figures$4 } = util;
+const { erase: erase$3, cursor: cursor$5 } = src;
+const { DatePart, Meridiem, Day, Hours, Milliseconds, Minutes, Month, Seconds, Year } = dateparts;
 
 const regex = /\\(.)|"((?:\\["\\]|[^"])+)"|(D[Do]?|d{3,4}|d)|(M{1,4})|(YY(?:YY)?)|([aA])|([Hh]{1,2})|(m{1,2})|(s{1,2})|(S{1,4})|./g;
 const regexGroups = {
@@ -15861,12 +15859,12 @@ class DatePrompt extends Prompt$4 {
   }
 }
 
-var date$2 = DatePrompt;
+var date = DatePrompt;
 
-const color$4 = kleur$1;
-const Prompt$3 = prompt$1$1;
-const { cursor: cursor$4, erase: erase$2 } = src$1;
-const { style: style$4, figures: figures$3, clear: clear$4, lines: lines$3 } = util$2;
+const color$4 = kleur;
+const Prompt$3 = prompt$1;
+const { cursor: cursor$4, erase: erase$2 } = src;
+const { style: style$4, figures: figures$3, clear: clear$4, lines } = util;
 
 const isNumber = /[0-9]/;
 const isDef = any => any !== undefined;
@@ -16050,7 +16048,7 @@ class NumberPrompt extends Prompt$3 {
     if (this.closed) return;
     if (!this.firstRender) {
       if (this.outputError)
-        this.out.write(cursor$4.down(lines$3(this.outputError, this.out.columns) - 1) + clear$4(this.outputError, this.out.columns));
+        this.out.write(cursor$4.down(lines(this.outputError, this.out.columns) - 1) + clear$4(this.outputError, this.out.columns));
       this.out.write(clear$4(this.outputText, this.out.columns));
     }
     super.render();
@@ -16075,12 +16073,12 @@ class NumberPrompt extends Prompt$3 {
   }
 }
 
-var number$2 = NumberPrompt;
+var number = NumberPrompt;
 
-const color$3 = kleur$1;
-const { cursor: cursor$3 } = src$1;
-const Prompt$2 = prompt$1$1;
-const { clear: clear$3, figures: figures$2, style: style$3, wrap: wrap$1$1, entriesToDisplay: entriesToDisplay$1$1 } = util$2;
+const color$3 = kleur;
+const { cursor: cursor$3 } = src;
+const Prompt$2 = prompt$1;
+const { clear: clear$3, figures: figures$2, style: style$3, wrap: wrap$1, entriesToDisplay: entriesToDisplay$1 } = util;
 
 /**
  * MultiselectPrompt Base Element
@@ -16267,7 +16265,7 @@ let MultiselectPrompt$1 = class MultiselectPrompt extends Prompt$2 {
         desc = ` - ${v.description}`;
         if (prefix.length + title.length + desc.length >= this.out.columns
           || v.description.split(/\r?\n/).length > 1) {
-          desc = '\n' + wrap$1$1(v.description, { margin: prefix.length, width: this.out.columns });
+          desc = '\n' + wrap$1(v.description, { margin: prefix.length, width: this.out.columns });
         }
       }
     }
@@ -16281,7 +16279,7 @@ let MultiselectPrompt$1 = class MultiselectPrompt extends Prompt$2 {
       return color$3.red('No matches for this query.');
     }
 
-    let { startIndex, endIndex } = entriesToDisplay$1$1(this.cursor, options.length, this.optionsPerPage);
+    let { startIndex, endIndex } = entriesToDisplay$1(this.cursor, options.length, this.optionsPerPage);
     let prefix, styledOptions = [];
 
     for (let i = startIndex; i < endIndex; i++) {
@@ -16345,12 +16343,12 @@ let MultiselectPrompt$1 = class MultiselectPrompt extends Prompt$2 {
   }
 };
 
-var multiselect$2 = MultiselectPrompt$1;
+var multiselect = MultiselectPrompt$1;
 
-const color$2 = kleur$1;
-const Prompt$1 = prompt$1$1;
-const { erase: erase$1, cursor: cursor$2 } = src$1;
-const { style: style$2, clear: clear$2, figures: figures$1, wrap: wrap$4, entriesToDisplay: entriesToDisplay$4 } = util$2;
+const color$2 = kleur;
+const Prompt$1 = prompt$1;
+const { erase: erase$1, cursor: cursor$2 } = src;
+const { style: style$2, clear: clear$2, figures: figures$1, wrap, entriesToDisplay } = util;
 
 const getVal = (arr, i) => arr[i] && (arr[i].value || arr[i].title || arr[i]);
 const getTitle = (arr, i) => arr[i] && (arr[i].title || arr[i].value || arr[i]);
@@ -16570,7 +16568,7 @@ class AutocompletePrompt extends Prompt$1 {
       desc = ` - ${v.description}`;
       if (prefix.length + title.length + desc.length >= this.out.columns
         || v.description.split(/\r?\n/).length > 1) {
-        desc = '\n' + wrap$4(v.description, { margin: 3, width: this.out.columns });
+        desc = '\n' + wrap(v.description, { margin: 3, width: this.out.columns });
       }
     }
     return prefix + ' ' + title + color$2.gray(desc || '');
@@ -16582,7 +16580,7 @@ class AutocompletePrompt extends Prompt$1 {
     else this.out.write(clear$2(this.outputText, this.out.columns));
     super.render();
 
-    let { startIndex, endIndex } = entriesToDisplay$4(this.select, this.choices.length, this.limit);
+    let { startIndex, endIndex } = entriesToDisplay(this.select, this.choices.length, this.limit);
 
     this.outputText = [
       style$2.symbol(this.done, this.aborted, this.exited),
@@ -16608,12 +16606,12 @@ class AutocompletePrompt extends Prompt$1 {
   }
 }
 
-var autocomplete$2 = AutocompletePrompt;
+var autocomplete = AutocompletePrompt;
 
-const color$1 = kleur$1;
-const { cursor: cursor$1 } = src$1;
-const MultiselectPrompt = multiselect$2;
-const { clear: clear$1$1, style: style$1$1, figures } = util$2;
+const color$1 = kleur;
+const { cursor: cursor$1 } = src;
+const MultiselectPrompt = multiselect;
+const { clear: clear$1, style: style$1, figures } = util;
 /**
  * MultiselectPrompt Base Element
  * @param {Object} opts Options
@@ -16631,7 +16629,7 @@ class AutocompleteMultiselectPrompt extends MultiselectPrompt {
     opts.overrideRender = true;
     super(opts);
     this.inputValue = '';
-    this.clear = clear$1$1('', this.out.columns);
+    this.clear = clear$1('', this.out.columns);
     this.filteredOptions = this.value;
     this.render();
   }
@@ -16785,9 +16783,9 @@ Filtered results for: ${this.inputValue ? this.inputValue : color$1.gray('Enter 
     // print prompt
 
     let prompt = [
-      style$1$1.symbol(this.done, this.aborted),
+      style$1.symbol(this.done, this.aborted),
       color$1.bold(this.msg),
-      style$1$1.delimiter(false),
+      style$1.delimiter(false),
       this.renderDoneOrInstructions()
     ].join(' ');
 
@@ -16798,16 +16796,16 @@ Filtered results for: ${this.inputValue ? this.inputValue : color$1.gray('Enter 
     prompt += this.renderOptions(this.filteredOptions);
 
     this.out.write(this.clear + prompt);
-    this.clear = clear$1$1(prompt, this.out.columns);
+    this.clear = clear$1(prompt, this.out.columns);
   }
 }
 
-var autocompleteMultiselect$2 = AutocompleteMultiselectPrompt;
+var autocompleteMultiselect = AutocompleteMultiselectPrompt;
 
-const color = kleur$1;
-const Prompt = prompt$1$1;
-const { style: style$a, clear: clear$a } = util$2;
-const { erase, cursor } = src$1;
+const color = kleur;
+const Prompt = prompt$1;
+const { style, clear } = util;
+const { erase, cursor } = src;
 
 /**
  * ConfirmPrompt Base Element
@@ -16877,13 +16875,13 @@ class ConfirmPrompt extends Prompt {
   render() {
     if (this.closed) return;
     if (this.firstRender) this.out.write(cursor.hide);
-    else this.out.write(clear$a(this.outputText, this.out.columns));
+    else this.out.write(clear(this.outputText, this.out.columns));
     super.render();
 
     this.outputText = [
-      style$a.symbol(this.done, this.aborted),
+      style.symbol(this.done, this.aborted),
       color.bold(this.msg),
-      style$a.delimiter(this.done),
+      style.delimiter(this.done),
       this.done ? (this.value ? this.yesMsg : this.noMsg)
           : color.gray(this.initialValue ? this.yesOption : this.noOption)
     ].join(' ');
@@ -16892,23 +16890,23 @@ class ConfirmPrompt extends Prompt {
   }
 }
 
-var confirm$2 = ConfirmPrompt;
+var confirm = ConfirmPrompt;
 
-var elements$2 = {
-  TextPrompt: text$2,
-  SelectPrompt: select$2,
-  TogglePrompt: toggle$2,
-  DatePrompt: date$2,
-  NumberPrompt: number$2,
-  MultiselectPrompt: multiselect$2,
-  AutocompletePrompt: autocomplete$2,
-  AutocompleteMultiselectPrompt: autocompleteMultiselect$2,
-  ConfirmPrompt: confirm$2
+var elements = {
+  TextPrompt: text,
+  SelectPrompt: select,
+  TogglePrompt: toggle,
+  DatePrompt: date,
+  NumberPrompt: number,
+  MultiselectPrompt: multiselect,
+  AutocompletePrompt: autocomplete,
+  AutocompleteMultiselectPrompt: autocompleteMultiselect,
+  ConfirmPrompt: confirm
 };
 
 (function (exports) {
 	const $ = exports;
-	const el = elements$2;
+	const el = elements;
 	const noop = v => v;
 
 	function toPrompt(type, args, opts={}) {
@@ -17112,9 +17110,9 @@ var elements$2 = {
 	  args.choices = [].concat(args.choices || []);
 	  return toPrompt('AutocompletePrompt', args);
 	}; 
-} (prompts$3$1));
+} (prompts$3));
 
-const prompts$2$1 = prompts$3$1;
+const prompts$2 = prompts$3;
 
 const passOn = ['suggest', 'format', 'onState', 'validate', 'onRender', 'type'];
 const noop$2 = () => {};
@@ -17126,9 +17124,9 @@ const noop$2 = () => {};
  * @param {Function} [onCancel] Callback function called on cancel/abort
  * @returns {Object} Object with values from user input
  */
-async function prompt$2(questions=[], { onSubmit=noop$2, onCancel=noop$2 }={}) {
+async function prompt(questions=[], { onSubmit=noop$2, onCancel=noop$2 }={}) {
   const answers = {};
-  const override = prompt$2._override || {};
+  const override = prompt._override || {};
   questions = [].concat(questions);
   let answer, question, quit, name, type, lastPrompt;
 
@@ -17165,7 +17163,7 @@ async function prompt$2(questions=[], { onSubmit=noop$2, onCancel=noop$2 }={}) {
     // update vars in case they changed
     ({ name, type } = question);
 
-    if (prompts$2$1[type] === void 0) {
+    if (prompts$2[type] === void 0) {
       throw new Error(`prompt type (${type}) is not defined`);
     }
 
@@ -17179,7 +17177,7 @@ async function prompt$2(questions=[], { onSubmit=noop$2, onCancel=noop$2 }={}) {
 
     try {
       // Get the injected answer if there is one or prompt the user
-      answer = prompt$2._injected ? getInjectedAnswer(prompt$2._injected, question.initial) : await prompts$2$1[type](question);
+      answer = prompt._injected ? getInjectedAnswer(prompt._injected, question.initial) : await prompts$2[type](question);
       answers[name] = answer = await getFormattedAnswer(question, answer, true);
       quit = await onSubmit(question, answer, answers);
     } catch (err) {
@@ -17202,18 +17200,18 @@ function getInjectedAnswer(injected, deafultValue) {
 }
 
 function inject(answers) {
-  prompt$2._injected = (prompt$2._injected || []).concat(answers);
+  prompt._injected = (prompt._injected || []).concat(answers);
 }
 
 function override(answers) {
-  prompt$2._override = Object.assign({}, answers);
+  prompt._override = Object.assign({}, answers);
 }
 
-var lib$1 = Object.assign(prompt$2, { prompt: prompt$2, prompts: prompts$2$1, inject, override });
+var lib$1 = Object.assign(prompt, { prompt, prompts: prompts$2, inject, override });
 
-var prompts$4 = lib$1;
+var prompts = lib$1;
 
-const prompts$1$1 = /*@__PURE__*/getDefaultExportFromCjs(prompts$4);
+const prompts$1 = /*@__PURE__*/getDefaultExportFromCjs(prompts);
 
 var cjs = {};
 
@@ -17509,10 +17507,10 @@ const whichSync$2 = (cmd, opt = {}) => {
   throw getNotFoundError$2(cmd)
 };
 
-var lib$2 = which$4;
+var lib = which$4;
 which$4.sync = whichSync$2;
 
-const which$1$1 = /*@__PURE__*/getDefaultExportFromCjs(lib$2);
+const which$1$1 = /*@__PURE__*/getDefaultExportFromCjs(lib);
 
 join$1(os$1.tmpdir(), "antfu-ni");
 function cmdExists(cmd) {
@@ -17557,7 +17555,7 @@ async function detect({ autoInstall, programmatic, cwd } = {}) {
       if (process$4.env.CI)
         process$4.exit(1);
       const link = terminalLink(agent, INSTALL_PAGE[agent]);
-      const { tryInstall } = await prompts$1$1({
+      const { tryInstall } = await prompts$1({
         name: "tryInstall",
         type: "confirm",
         message: `Would you like to globally install ${link}?`
@@ -17621,27 +17619,12 @@ var getPackageManager = /*#__PURE__*/function () {
   };
 }();
 
-function _arrayLikeToArray(arr, len) {
-  len = arr.length;
-  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-  return arr2;
-}
-
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) return _arrayLikeToArray(arr);
 }
 
 function _iterableToArray(iter) {
   if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
-}
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
 }
 
 function _nonIterableSpread() {
@@ -20086,6749 +20069,20 @@ var installDependencies = /*#__PURE__*/function () {
   };
 }();
 
-var runInitPandacss = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(packageJsonPath, packageManager, cwd) {
-    var styledSystemPath, initSpinner;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
-        case 0:
-          styledSystemPath = path$5.join(path$5.dirname(packageJsonPath), "styled-system");
-          if (!existsSync(styledSystemPath)) {
-            _context.next = 6;
-            break;
-          }
-          console.log("".concat(chalk.green("Success!"), " Project initialization completed. You may now add components."));
-          process.exit(1);
-          _context.next = 19;
-          break;
-        case 6:
-          console.log("You need to run 'panda init' to use this command");
-          initSpinner = ora("Running panda init...").start();
-          _context.prev = 8;
-          _context.next = 11;
-          return execa(packageManager, ["panda", "init"], {
-            cwd: cwd
-          });
-        case 11:
-          initSpinner.succeed("panda init runned successfully.\n");
-          console.log("".concat(chalk.green("Success!"), " Project initialization completed. You may now add components."));
-          process.exit(1);
-          _context.next = 19;
-          break;
-        case 16:
-          _context.prev = 16;
-          _context.t0 = _context["catch"](8);
-          console.error("Error running panda init", _context.t0);
-        case 19:
-        case "end":
-          return _context.stop();
-      }
-    }, _callee, null, [[8, 16]]);
-  }));
-  return function runInitPandacss(_x, _x2, _x3) {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-var initOptionSchema = z.object({
-  cwd: z.string(),
-  path: z.string()
-});
-var program$1 = new Command();
-var init = program$1.name("init").description("initialize your project and install dependencies").option("-c, --cwd <cwd>", "the working directory. defaults to the current directory.", process.cwd()).option("-p, --path <path>", "the path to add the component to.", process.cwd()).action( /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(opts) {
-    var options, cwd, packageJsonPath, packageManager, pandaCssPath, installSpinner;
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
-        case 0:
-          options = initOptionSchema.parse(opts);
-          cwd = path$5.resolve(options.cwd);
-          if (!existsSync(options.path) || !existsSync(cwd)) {
-            console.error("The path does not exist. Please try again.");
-            process.exit(1);
-          }
-          packageJsonPath = getNearestPackageJson(options.path);
-          if (!packageJsonPath) {
-            _context2.next = 12;
-            break;
-          }
-          _context2.next = 7;
-          return getPackageManager(cwd);
-        case 7:
-          packageManager = _context2.sent;
-          pandaCssPath = path$5.join(path$5.dirname(packageJsonPath), "node_modules", "@pandacss", "dev", "package.json");
-          if (!existsSync(pandaCssPath)) {
-            console.log("You need to install '@pandacss/dev' to use this command");
-            installSpinner = ora("Installing... @pandacss/dev\n").start();
-            installDependencies(packageManager, ["@pandacss/dev"], options.path, /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-              return _regeneratorRuntime().wrap(function _callee$(_context) {
-                while (1) switch (_context.prev = _context.next) {
-                  case 0:
-                    installSpinner.succeed("@pandacss/dev installed successfully.\n");
-                    runInitPandacss(packageJsonPath, packageManager, options.path);
-                  case 2:
-                  case "end":
-                    return _context.stop();
-                }
-              }, _callee);
-            })));
-          } else {
-            runInitPandacss(packageJsonPath, packageManager, options.path);
-          }
-          _context2.next = 13;
-          break;
-        case 12:
-          console.error("node_modules or package.json not found in the current directory or its parent directories");
-        case 13:
-        case "end":
-          return _context2.stop();
-      }
-    }, _callee2);
-  }));
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-}());
-program$1.parse();
-
-function _createForOfIteratorHelper(o, allowArrayLike) {
-  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
-  if (!it) {
-    if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike  ) {
-      if (it) o = it;
-      var i = 0;
-      var F = function F() {};
-      return {
-        s: F,
-        n: function n() {
-          if (i >= o.length) return {
-            done: true
-          };
-          return {
-            done: false,
-            value: o[i++]
-          };
-        },
-        e: function e(_e) {
-          throw _e;
-        },
-        f: F
-      };
+var getNearestPackageJson = function getNearestPackageJson(cwd) {
+  var currentDir = cwd;
+  while (true) {
+    var packageJsonPath = path$5.join(currentDir, "package.json");
+    if (existsSync(packageJsonPath)) {
+      return packageJsonPath;
     }
-    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-  var normalCompletion = true,
-    didErr = false,
-    err;
-  return {
-    s: function s() {
-      it = it.call(o);
-    },
-    n: function n() {
-      var step = it.next();
-      normalCompletion = step.done;
-      return step;
-    },
-    e: function e(_e2) {
-      didErr = true;
-      err = _e2;
-    },
-    f: function f() {
-      try {
-        if (!normalCompletion && it["return"] != null) it["return"]();
-      } finally {
-        if (didErr) throw err;
-      }
+    var parentDir = path$5.resolve(currentDir, "..");
+    if (parentDir === currentDir) {
+      break;
     }
-  };
-}
-
-function _toPrimitive(input, hint) {
-  if (_typeof(input) !== "object" || input === null) return input;
-  var prim = input[Symbol.toPrimitive];
-  if (prim !== undefined) {
-    var res = prim.call(input, hint );
-    if (_typeof(res) !== "object") return res;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
+    currentDir = parentDir;
   }
-  return (String )(input);
-}
-
-function _toPropertyKey(arg) {
-  var key = _toPrimitive(arg, "string");
-  return _typeof(key) === "symbol" ? key : String(key);
-}
-
-function _defineProperty(obj, key, value) {
-  key = _toPropertyKey(key);
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-  return obj;
-}
-
-function ownKeys(e, r) {
-  var t = Object.keys(e);
-  if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function (r) {
-      return Object.getOwnPropertyDescriptor(e, r).enumerable;
-    })), t.push.apply(t, o);
-  }
-  return t;
-}
-function _objectSpread2(e) {
-  for (var r = 1; r < arguments.length; r++) {
-    var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
-      _defineProperty(e, r, t[r]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
-      Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
-    });
-  }
-  return e;
-}
-
-var prompts$3 = {};
-
-var kleur;
-var hasRequiredKleur;
-
-function requireKleur () {
-	if (hasRequiredKleur) return kleur;
-	hasRequiredKleur = 1;
-
-	const { FORCE_COLOR, NODE_DISABLE_COLORS, TERM } = process.env;
-
-	const $ = {
-		enabled: !NODE_DISABLE_COLORS && TERM !== 'dumb' && FORCE_COLOR !== '0',
-
-		// modifiers
-		reset: init(0, 0),
-		bold: init(1, 22),
-		dim: init(2, 22),
-		italic: init(3, 23),
-		underline: init(4, 24),
-		inverse: init(7, 27),
-		hidden: init(8, 28),
-		strikethrough: init(9, 29),
-
-		// colors
-		black: init(30, 39),
-		red: init(31, 39),
-		green: init(32, 39),
-		yellow: init(33, 39),
-		blue: init(34, 39),
-		magenta: init(35, 39),
-		cyan: init(36, 39),
-		white: init(37, 39),
-		gray: init(90, 39),
-		grey: init(90, 39),
-
-		// background colors
-		bgBlack: init(40, 49),
-		bgRed: init(41, 49),
-		bgGreen: init(42, 49),
-		bgYellow: init(43, 49),
-		bgBlue: init(44, 49),
-		bgMagenta: init(45, 49),
-		bgCyan: init(46, 49),
-		bgWhite: init(47, 49)
-	};
-
-	function run(arr, str) {
-		let i=0, tmp, beg='', end='';
-		for (; i < arr.length; i++) {
-			tmp = arr[i];
-			beg += tmp.open;
-			end += tmp.close;
-			if (str.includes(tmp.close)) {
-				str = str.replace(tmp.rgx, tmp.close + tmp.open);
-			}
-		}
-		return beg + str + end;
-	}
-
-	function chain(has, keys) {
-		let ctx = { has, keys };
-
-		ctx.reset = $.reset.bind(ctx);
-		ctx.bold = $.bold.bind(ctx);
-		ctx.dim = $.dim.bind(ctx);
-		ctx.italic = $.italic.bind(ctx);
-		ctx.underline = $.underline.bind(ctx);
-		ctx.inverse = $.inverse.bind(ctx);
-		ctx.hidden = $.hidden.bind(ctx);
-		ctx.strikethrough = $.strikethrough.bind(ctx);
-
-		ctx.black = $.black.bind(ctx);
-		ctx.red = $.red.bind(ctx);
-		ctx.green = $.green.bind(ctx);
-		ctx.yellow = $.yellow.bind(ctx);
-		ctx.blue = $.blue.bind(ctx);
-		ctx.magenta = $.magenta.bind(ctx);
-		ctx.cyan = $.cyan.bind(ctx);
-		ctx.white = $.white.bind(ctx);
-		ctx.gray = $.gray.bind(ctx);
-		ctx.grey = $.grey.bind(ctx);
-
-		ctx.bgBlack = $.bgBlack.bind(ctx);
-		ctx.bgRed = $.bgRed.bind(ctx);
-		ctx.bgGreen = $.bgGreen.bind(ctx);
-		ctx.bgYellow = $.bgYellow.bind(ctx);
-		ctx.bgBlue = $.bgBlue.bind(ctx);
-		ctx.bgMagenta = $.bgMagenta.bind(ctx);
-		ctx.bgCyan = $.bgCyan.bind(ctx);
-		ctx.bgWhite = $.bgWhite.bind(ctx);
-
-		return ctx;
-	}
-
-	function init(open, close) {
-		let blk = {
-			open: `\x1b[${open}m`,
-			close: `\x1b[${close}m`,
-			rgx: new RegExp(`\\x1b\\[${close}m`, 'g')
-		};
-		return function (txt) {
-			if (this !== void 0 && this.has !== void 0) {
-				this.has.includes(open) || (this.has.push(open),this.keys.push(blk));
-				return txt === void 0 ? this : $.enabled ? run(this.keys, txt+'') : txt+'';
-			}
-			return txt === void 0 ? chain([open], [blk]) : $.enabled ? run([blk], txt+'') : txt+'';
-		};
-	}
-
-	kleur = $;
-	return kleur;
-}
-
-var action$1;
-var hasRequiredAction$1;
-
-function requireAction$1 () {
-	if (hasRequiredAction$1) return action$1;
-	hasRequiredAction$1 = 1;
-
-	action$1 = (key, isSelect) => {
-	  if (key.meta && key.name !== 'escape') return;
-
-	  if (key.ctrl) {
-	    if (key.name === 'a') return 'first';
-	    if (key.name === 'c') return 'abort';
-	    if (key.name === 'd') return 'abort';
-	    if (key.name === 'e') return 'last';
-	    if (key.name === 'g') return 'reset';
-	  }
-
-	  if (isSelect) {
-	    if (key.name === 'j') return 'down';
-	    if (key.name === 'k') return 'up';
-	  }
-
-	  if (key.name === 'return') return 'submit';
-	  if (key.name === 'enter') return 'submit'; // ctrl + J
-
-	  if (key.name === 'backspace') return 'delete';
-	  if (key.name === 'delete') return 'deleteForward';
-	  if (key.name === 'abort') return 'abort';
-	  if (key.name === 'escape') return 'exit';
-	  if (key.name === 'tab') return 'next';
-	  if (key.name === 'pagedown') return 'nextPage';
-	  if (key.name === 'pageup') return 'prevPage'; // TODO create home() in prompt types (e.g. TextPrompt)
-
-	  if (key.name === 'home') return 'home'; // TODO create end() in prompt types (e.g. TextPrompt)
-
-	  if (key.name === 'end') return 'end';
-	  if (key.name === 'up') return 'up';
-	  if (key.name === 'down') return 'down';
-	  if (key.name === 'right') return 'right';
-	  if (key.name === 'left') return 'left';
-	  return false;
-	};
-	return action$1;
-}
-
-var strip$1;
-var hasRequiredStrip$1;
-
-function requireStrip$1 () {
-	if (hasRequiredStrip$1) return strip$1;
-	hasRequiredStrip$1 = 1;
-
-	strip$1 = str => {
-	  const pattern = ['[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)', '(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PRZcf-ntqry=><~]))'].join('|');
-	  const RGX = new RegExp(pattern, 'g');
-	  return typeof str === 'string' ? str.replace(RGX, '') : str;
-	};
-	return strip$1;
-}
-
-var src;
-var hasRequiredSrc;
-
-function requireSrc () {
-	if (hasRequiredSrc) return src;
-	hasRequiredSrc = 1;
-
-	const ESC = '\x1B';
-	const CSI = `${ESC}[`;
-	const beep = '\u0007';
-
-	const cursor = {
-	  to(x, y) {
-	    if (!y) return `${CSI}${x + 1}G`;
-	    return `${CSI}${y + 1};${x + 1}H`;
-	  },
-	  move(x, y) {
-	    let ret = '';
-
-	    if (x < 0) ret += `${CSI}${-x}D`;
-	    else if (x > 0) ret += `${CSI}${x}C`;
-
-	    if (y < 0) ret += `${CSI}${-y}A`;
-	    else if (y > 0) ret += `${CSI}${y}B`;
-
-	    return ret;
-	  },
-	  up: (count = 1) => `${CSI}${count}A`,
-	  down: (count = 1) => `${CSI}${count}B`,
-	  forward: (count = 1) => `${CSI}${count}C`,
-	  backward: (count = 1) => `${CSI}${count}D`,
-	  nextLine: (count = 1) => `${CSI}E`.repeat(count),
-	  prevLine: (count = 1) => `${CSI}F`.repeat(count),
-	  left: `${CSI}G`,
-	  hide: `${CSI}?25l`,
-	  show: `${CSI}?25h`,
-	  save: `${ESC}7`,
-	  restore: `${ESC}8`
-	};
-
-	const scroll = {
-	  up: (count = 1) => `${CSI}S`.repeat(count),
-	  down: (count = 1) => `${CSI}T`.repeat(count)
-	};
-
-	const erase = {
-	  screen: `${CSI}2J`,
-	  up: (count = 1) => `${CSI}1J`.repeat(count),
-	  down: (count = 1) => `${CSI}J`.repeat(count),
-	  line: `${CSI}2K`,
-	  lineEnd: `${CSI}K`,
-	  lineStart: `${CSI}1K`,
-	  lines(count) {
-	    let clear = '';
-	    for (let i = 0; i < count; i++)
-	      clear += this.line + (i < count - 1 ? cursor.up() : '');
-	    if (count)
-	      clear += cursor.left;
-	    return clear;
-	  }
-	};
-
-	src = { cursor, scroll, erase, beep };
-	return src;
-}
-
-var clear$1;
-var hasRequiredClear$1;
-
-function requireClear$1 () {
-	if (hasRequiredClear$1) return clear$1;
-	hasRequiredClear$1 = 1;
-
-	function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike  ) { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-
-	function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-	function _arrayLikeToArray(arr, len) { len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-
-	const strip = requireStrip$1();
-
-	const _require = requireSrc(),
-	      erase = _require.erase,
-	      cursor = _require.cursor;
-
-	const width = str => [...strip(str)].length;
-	/**
-	 * @param {string} prompt
-	 * @param {number} perLine
-	 */
-
-
-	clear$1 = function (prompt, perLine) {
-	  if (!perLine) return erase.line + cursor.to(0);
-	  let rows = 0;
-	  const lines = prompt.split(/\r?\n/);
-
-	  var _iterator = _createForOfIteratorHelper(lines),
-	      _step;
-
-	  try {
-	    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-	      let line = _step.value;
-	      rows += 1 + Math.floor(Math.max(width(line) - 1, 0) / perLine);
-	    }
-	  } catch (err) {
-	    _iterator.e(err);
-	  } finally {
-	    _iterator.f();
-	  }
-
-	  return erase.lines(rows);
-	};
-	return clear$1;
-}
-
-var figures_1$1;
-var hasRequiredFigures$1;
-
-function requireFigures$1 () {
-	if (hasRequiredFigures$1) return figures_1$1;
-	hasRequiredFigures$1 = 1;
-
-	const main = {
-	  arrowUp: '↑',
-	  arrowDown: '↓',
-	  arrowLeft: '←',
-	  arrowRight: '→',
-	  radioOn: '◉',
-	  radioOff: '◯',
-	  tick: '✔',
-	  cross: '✖',
-	  ellipsis: '…',
-	  pointerSmall: '›',
-	  line: '─',
-	  pointer: '❯'
-	};
-	const win = {
-	  arrowUp: main.arrowUp,
-	  arrowDown: main.arrowDown,
-	  arrowLeft: main.arrowLeft,
-	  arrowRight: main.arrowRight,
-	  radioOn: '(*)',
-	  radioOff: '( )',
-	  tick: '√',
-	  cross: '×',
-	  ellipsis: '...',
-	  pointerSmall: '»',
-	  line: '─',
-	  pointer: '>'
-	};
-	const figures = process.platform === 'win32' ? win : main;
-	figures_1$1 = figures;
-	return figures_1$1;
-}
-
-var style$1;
-var hasRequiredStyle$1;
-
-function requireStyle$1 () {
-	if (hasRequiredStyle$1) return style$1;
-	hasRequiredStyle$1 = 1;
-
-	const c = requireKleur();
-
-	const figures = requireFigures$1(); // rendering user input.
-
-
-	const styles = Object.freeze({
-	  password: {
-	    scale: 1,
-	    render: input => '*'.repeat(input.length)
-	  },
-	  emoji: {
-	    scale: 2,
-	    render: input => '😃'.repeat(input.length)
-	  },
-	  invisible: {
-	    scale: 0,
-	    render: input => ''
-	  },
-	  default: {
-	    scale: 1,
-	    render: input => `${input}`
-	  }
-	});
-
-	const render = type => styles[type] || styles.default; // icon to signalize a prompt.
-
-
-	const symbols = Object.freeze({
-	  aborted: c.red(figures.cross),
-	  done: c.green(figures.tick),
-	  exited: c.yellow(figures.cross),
-	  default: c.cyan('?')
-	});
-
-	const symbol = (done, aborted, exited) => aborted ? symbols.aborted : exited ? symbols.exited : done ? symbols.done : symbols.default; // between the question and the user's input.
-
-
-	const delimiter = completing => c.gray(completing ? figures.ellipsis : figures.pointerSmall);
-
-	const item = (expandable, expanded) => c.gray(expandable ? expanded ? figures.pointerSmall : '+' : figures.line);
-
-	style$1 = {
-	  styles,
-	  render,
-	  symbols,
-	  symbol,
-	  delimiter,
-	  item
-	};
-	return style$1;
-}
-
-var lines$1;
-var hasRequiredLines$1;
-
-function requireLines$1 () {
-	if (hasRequiredLines$1) return lines$1;
-	hasRequiredLines$1 = 1;
-
-	const strip = requireStrip$1();
-	/**
-	 * @param {string} msg
-	 * @param {number} perLine
-	 */
-
-
-	lines$1 = function (msg, perLine) {
-	  let lines = String(strip(msg) || '').split(/\r?\n/);
-	  if (!perLine) return lines.length;
-	  return lines.map(l => Math.ceil(l.length / perLine)).reduce((a, b) => a + b);
-	};
-	return lines$1;
-}
-
-var wrap$1;
-var hasRequiredWrap$1;
-
-function requireWrap$1 () {
-	if (hasRequiredWrap$1) return wrap$1;
-	hasRequiredWrap$1 = 1;
-	/**
-	 * @param {string} msg The message to wrap
-	 * @param {object} opts
-	 * @param {number|string} [opts.margin] Left margin
-	 * @param {number} opts.width Maximum characters per line including the margin
-	 */
-
-	wrap$1 = (msg, opts = {}) => {
-	  const tab = Number.isSafeInteger(parseInt(opts.margin)) ? new Array(parseInt(opts.margin)).fill(' ').join('') : opts.margin || '';
-	  const width = opts.width;
-	  return (msg || '').split(/\r?\n/g).map(line => line.split(/\s+/g).reduce((arr, w) => {
-	    if (w.length + tab.length >= width || arr[arr.length - 1].length + w.length + 1 < width) arr[arr.length - 1] += ` ${w}`;else arr.push(`${tab}${w}`);
-	    return arr;
-	  }, [tab]).join('\n')).join('\n');
-	};
-	return wrap$1;
-}
-
-var entriesToDisplay$1;
-var hasRequiredEntriesToDisplay$1;
-
-function requireEntriesToDisplay$1 () {
-	if (hasRequiredEntriesToDisplay$1) return entriesToDisplay$1;
-	hasRequiredEntriesToDisplay$1 = 1;
-	/**
-	 * Determine what entries should be displayed on the screen, based on the
-	 * currently selected index and the maximum visible. Used in list-based
-	 * prompts like `select` and `multiselect`.
-	 *
-	 * @param {number} cursor the currently selected entry
-	 * @param {number} total the total entries available to display
-	 * @param {number} [maxVisible] the number of entries that can be displayed
-	 */
-
-	entriesToDisplay$1 = (cursor, total, maxVisible) => {
-	  maxVisible = maxVisible || total;
-	  let startIndex = Math.min(total - maxVisible, cursor - Math.floor(maxVisible / 2));
-	  if (startIndex < 0) startIndex = 0;
-	  let endIndex = Math.min(startIndex + maxVisible, total);
-	  return {
-	    startIndex,
-	    endIndex
-	  };
-	};
-	return entriesToDisplay$1;
-}
-
-var util$1;
-var hasRequiredUtil$1;
-
-function requireUtil$1 () {
-	if (hasRequiredUtil$1) return util$1;
-	hasRequiredUtil$1 = 1;
-
-	util$1 = {
-	  action: requireAction$1(),
-	  clear: requireClear$1(),
-	  style: requireStyle$1(),
-	  strip: requireStrip$1(),
-	  figures: requireFigures$1(),
-	  lines: requireLines$1(),
-	  wrap: requireWrap$1(),
-	  entriesToDisplay: requireEntriesToDisplay$1()
-	};
-	return util$1;
-}
-
-var prompt$1;
-var hasRequiredPrompt$1;
-
-function requirePrompt$1 () {
-	if (hasRequiredPrompt$1) return prompt$1;
-	hasRequiredPrompt$1 = 1;
-
-	const readline = require$$0$3;
-
-	const _require = requireUtil$1(),
-	      action = _require.action;
-
-	const EventEmitter = require$$2;
-
-	const _require2 = requireSrc(),
-	      beep = _require2.beep,
-	      cursor = _require2.cursor;
-
-	const color = requireKleur();
-	/**
-	 * Base prompt skeleton
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 */
-
-
-	class Prompt extends EventEmitter {
-	  constructor(opts = {}) {
-	    super();
-	    this.firstRender = true;
-	    this.in = opts.stdin || process.stdin;
-	    this.out = opts.stdout || process.stdout;
-
-	    this.onRender = (opts.onRender || (() => void 0)).bind(this);
-
-	    const rl = readline.createInterface({
-	      input: this.in,
-	      escapeCodeTimeout: 50
-	    });
-	    readline.emitKeypressEvents(this.in, rl);
-	    if (this.in.isTTY) this.in.setRawMode(true);
-	    const isSelect = ['SelectPrompt', 'MultiselectPrompt'].indexOf(this.constructor.name) > -1;
-
-	    const keypress = (str, key) => {
-	      let a = action(key, isSelect);
-
-	      if (a === false) {
-	        this._ && this._(str, key);
-	      } else if (typeof this[a] === 'function') {
-	        this[a](key);
-	      } else {
-	        this.bell();
-	      }
-	    };
-
-	    this.close = () => {
-	      this.out.write(cursor.show);
-	      this.in.removeListener('keypress', keypress);
-	      if (this.in.isTTY) this.in.setRawMode(false);
-	      rl.close();
-	      this.emit(this.aborted ? 'abort' : this.exited ? 'exit' : 'submit', this.value);
-	      this.closed = true;
-	    };
-
-	    this.in.on('keypress', keypress);
-	  }
-
-	  fire() {
-	    this.emit('state', {
-	      value: this.value,
-	      aborted: !!this.aborted,
-	      exited: !!this.exited
-	    });
-	  }
-
-	  bell() {
-	    this.out.write(beep);
-	  }
-
-	  render() {
-	    this.onRender(color);
-	    if (this.firstRender) this.firstRender = false;
-	  }
-
-	}
-
-	prompt$1 = Prompt;
-	return prompt$1;
-}
-
-var text$1;
-var hasRequiredText$1;
-
-function requireText$1 () {
-	if (hasRequiredText$1) return text$1;
-	hasRequiredText$1 = 1;
-
-	function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-	function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-	const color = requireKleur();
-
-	const Prompt = requirePrompt$1();
-
-	const _require = requireSrc(),
-	      erase = _require.erase,
-	      cursor = _require.cursor;
-
-	const _require2 = requireUtil$1(),
-	      style = _require2.style,
-	      clear = _require2.clear,
-	      lines = _require2.lines,
-	      figures = _require2.figures;
-	/**
-	 * TextPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {String} [opts.style='default'] Render style
-	 * @param {String} [opts.initial] Default value
-	 * @param {Function} [opts.validate] Validate function
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 * @param {String} [opts.error] The invalid error label
-	 */
-
-
-	class TextPrompt extends Prompt {
-	  constructor(opts = {}) {
-	    super(opts);
-	    this.transform = style.render(opts.style);
-	    this.scale = this.transform.scale;
-	    this.msg = opts.message;
-	    this.initial = opts.initial || ``;
-
-	    this.validator = opts.validate || (() => true);
-
-	    this.value = ``;
-	    this.errorMsg = opts.error || `Please Enter A Valid Value`;
-	    this.cursor = Number(!!this.initial);
-	    this.cursorOffset = 0;
-	    this.clear = clear(``, this.out.columns);
-	    this.render();
-	  }
-
-	  set value(v) {
-	    if (!v && this.initial) {
-	      this.placeholder = true;
-	      this.rendered = color.gray(this.transform.render(this.initial));
-	    } else {
-	      this.placeholder = false;
-	      this.rendered = this.transform.render(v);
-	    }
-
-	    this._value = v;
-	    this.fire();
-	  }
-
-	  get value() {
-	    return this._value;
-	  }
-
-	  reset() {
-	    this.value = ``;
-	    this.cursor = Number(!!this.initial);
-	    this.cursorOffset = 0;
-	    this.fire();
-	    this.render();
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    this.value = this.value || this.initial;
-	    this.done = this.aborted = true;
-	    this.error = false;
-	    this.red = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  validate() {
-	    var _this = this;
-
-	    return _asyncToGenerator(function* () {
-	      let valid = yield _this.validator(_this.value);
-
-	      if (typeof valid === `string`) {
-	        _this.errorMsg = valid;
-	        valid = false;
-	      }
-
-	      _this.error = !valid;
-	    })();
-	  }
-
-	  submit() {
-	    var _this2 = this;
-
-	    return _asyncToGenerator(function* () {
-	      _this2.value = _this2.value || _this2.initial;
-	      _this2.cursorOffset = 0;
-	      _this2.cursor = _this2.rendered.length;
-	      yield _this2.validate();
-
-	      if (_this2.error) {
-	        _this2.red = true;
-
-	        _this2.fire();
-
-	        _this2.render();
-
-	        return;
-	      }
-
-	      _this2.done = true;
-	      _this2.aborted = false;
-
-	      _this2.fire();
-
-	      _this2.render();
-
-	      _this2.out.write('\n');
-
-	      _this2.close();
-	    })();
-	  }
-
-	  next() {
-	    if (!this.placeholder) return this.bell();
-	    this.value = this.initial;
-	    this.cursor = this.rendered.length;
-	    this.fire();
-	    this.render();
-	  }
-
-	  moveCursor(n) {
-	    if (this.placeholder) return;
-	    this.cursor = this.cursor + n;
-	    this.cursorOffset += n;
-	  }
-
-	  _(c, key) {
-	    let s1 = this.value.slice(0, this.cursor);
-	    let s2 = this.value.slice(this.cursor);
-	    this.value = `${s1}${c}${s2}`;
-	    this.red = false;
-	    this.cursor = this.placeholder ? 0 : s1.length + 1;
-	    this.render();
-	  }
-
-	  delete() {
-	    if (this.isCursorAtStart()) return this.bell();
-	    let s1 = this.value.slice(0, this.cursor - 1);
-	    let s2 = this.value.slice(this.cursor);
-	    this.value = `${s1}${s2}`;
-	    this.red = false;
-
-	    if (this.isCursorAtStart()) {
-	      this.cursorOffset = 0;
-	    } else {
-	      this.cursorOffset++;
-	      this.moveCursor(-1);
-	    }
-
-	    this.render();
-	  }
-
-	  deleteForward() {
-	    if (this.cursor * this.scale >= this.rendered.length || this.placeholder) return this.bell();
-	    let s1 = this.value.slice(0, this.cursor);
-	    let s2 = this.value.slice(this.cursor + 1);
-	    this.value = `${s1}${s2}`;
-	    this.red = false;
-
-	    if (this.isCursorAtEnd()) {
-	      this.cursorOffset = 0;
-	    } else {
-	      this.cursorOffset++;
-	    }
-
-	    this.render();
-	  }
-
-	  first() {
-	    this.cursor = 0;
-	    this.render();
-	  }
-
-	  last() {
-	    this.cursor = this.value.length;
-	    this.render();
-	  }
-
-	  left() {
-	    if (this.cursor <= 0 || this.placeholder) return this.bell();
-	    this.moveCursor(-1);
-	    this.render();
-	  }
-
-	  right() {
-	    if (this.cursor * this.scale >= this.rendered.length || this.placeholder) return this.bell();
-	    this.moveCursor(1);
-	    this.render();
-	  }
-
-	  isCursorAtStart() {
-	    return this.cursor === 0 || this.placeholder && this.cursor === 1;
-	  }
-
-	  isCursorAtEnd() {
-	    return this.cursor === this.rendered.length || this.placeholder && this.cursor === this.rendered.length + 1;
-	  }
-
-	  render() {
-	    if (this.closed) return;
-
-	    if (!this.firstRender) {
-	      if (this.outputError) this.out.write(cursor.down(lines(this.outputError, this.out.columns) - 1) + clear(this.outputError, this.out.columns));
-	      this.out.write(clear(this.outputText, this.out.columns));
-	    }
-
-	    super.render();
-	    this.outputError = '';
-	    this.outputText = [style.symbol(this.done, this.aborted), color.bold(this.msg), style.delimiter(this.done), this.red ? color.red(this.rendered) : this.rendered].join(` `);
-
-	    if (this.error) {
-	      this.outputError += this.errorMsg.split(`\n`).reduce((a, l, i) => a + `\n${i ? ' ' : figures.pointerSmall} ${color.red().italic(l)}`, ``);
-	    }
-
-	    this.out.write(erase.line + cursor.to(0) + this.outputText + cursor.save + this.outputError + cursor.restore + cursor.move(this.cursorOffset, 0));
-	  }
-
-	}
-
-	text$1 = TextPrompt;
-	return text$1;
-}
-
-var select$1;
-var hasRequiredSelect$1;
-
-function requireSelect$1 () {
-	if (hasRequiredSelect$1) return select$1;
-	hasRequiredSelect$1 = 1;
-
-	const color = requireKleur();
-
-	const Prompt = requirePrompt$1();
-
-	const _require = requireUtil$1(),
-	      style = _require.style,
-	      clear = _require.clear,
-	      figures = _require.figures,
-	      wrap = _require.wrap,
-	      entriesToDisplay = _require.entriesToDisplay;
-
-	const _require2 = requireSrc(),
-	      cursor = _require2.cursor;
-	/**
-	 * SelectPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Array} opts.choices Array of choice objects
-	 * @param {String} [opts.hint] Hint to display
-	 * @param {Number} [opts.initial] Index of default value
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 * @param {Number} [opts.optionsPerPage=10] Max options to display at once
-	 */
-
-
-	class SelectPrompt extends Prompt {
-	  constructor(opts = {}) {
-	    super(opts);
-	    this.msg = opts.message;
-	    this.hint = opts.hint || '- Use arrow-keys. Return to submit.';
-	    this.warn = opts.warn || '- This option is disabled';
-	    this.cursor = opts.initial || 0;
-	    this.choices = opts.choices.map((ch, idx) => {
-	      if (typeof ch === 'string') ch = {
-	        title: ch,
-	        value: idx
-	      };
-	      return {
-	        title: ch && (ch.title || ch.value || ch),
-	        value: ch && (ch.value === undefined ? idx : ch.value),
-	        description: ch && ch.description,
-	        selected: ch && ch.selected,
-	        disabled: ch && ch.disabled
-	      };
-	    });
-	    this.optionsPerPage = opts.optionsPerPage || 10;
-	    this.value = (this.choices[this.cursor] || {}).value;
-	    this.clear = clear('', this.out.columns);
-	    this.render();
-	  }
-
-	  moveCursor(n) {
-	    this.cursor = n;
-	    this.value = this.choices[n].value;
-	    this.fire();
-	  }
-
-	  reset() {
-	    this.moveCursor(0);
-	    this.fire();
-	    this.render();
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    this.done = this.aborted = true;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  submit() {
-	    if (!this.selection.disabled) {
-	      this.done = true;
-	      this.aborted = false;
-	      this.fire();
-	      this.render();
-	      this.out.write('\n');
-	      this.close();
-	    } else this.bell();
-	  }
-
-	  first() {
-	    this.moveCursor(0);
-	    this.render();
-	  }
-
-	  last() {
-	    this.moveCursor(this.choices.length - 1);
-	    this.render();
-	  }
-
-	  up() {
-	    if (this.cursor === 0) {
-	      this.moveCursor(this.choices.length - 1);
-	    } else {
-	      this.moveCursor(this.cursor - 1);
-	    }
-
-	    this.render();
-	  }
-
-	  down() {
-	    if (this.cursor === this.choices.length - 1) {
-	      this.moveCursor(0);
-	    } else {
-	      this.moveCursor(this.cursor + 1);
-	    }
-
-	    this.render();
-	  }
-
-	  next() {
-	    this.moveCursor((this.cursor + 1) % this.choices.length);
-	    this.render();
-	  }
-
-	  _(c, key) {
-	    if (c === ' ') return this.submit();
-	  }
-
-	  get selection() {
-	    return this.choices[this.cursor];
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);else this.out.write(clear(this.outputText, this.out.columns));
-	    super.render();
-
-	    let _entriesToDisplay = entriesToDisplay(this.cursor, this.choices.length, this.optionsPerPage),
-	        startIndex = _entriesToDisplay.startIndex,
-	        endIndex = _entriesToDisplay.endIndex; // Print prompt
-
-
-	    this.outputText = [style.symbol(this.done, this.aborted), color.bold(this.msg), style.delimiter(false), this.done ? this.selection.title : this.selection.disabled ? color.yellow(this.warn) : color.gray(this.hint)].join(' '); // Print choices
-
-	    if (!this.done) {
-	      this.outputText += '\n';
-
-	      for (let i = startIndex; i < endIndex; i++) {
-	        let title,
-	            prefix,
-	            desc = '',
-	            v = this.choices[i]; // Determine whether to display "more choices" indicators
-
-	        if (i === startIndex && startIndex > 0) {
-	          prefix = figures.arrowUp;
-	        } else if (i === endIndex - 1 && endIndex < this.choices.length) {
-	          prefix = figures.arrowDown;
-	        } else {
-	          prefix = ' ';
-	        }
-
-	        if (v.disabled) {
-	          title = this.cursor === i ? color.gray().underline(v.title) : color.strikethrough().gray(v.title);
-	          prefix = (this.cursor === i ? color.bold().gray(figures.pointer) + ' ' : '  ') + prefix;
-	        } else {
-	          title = this.cursor === i ? color.cyan().underline(v.title) : v.title;
-	          prefix = (this.cursor === i ? color.cyan(figures.pointer) + ' ' : '  ') + prefix;
-
-	          if (v.description && this.cursor === i) {
-	            desc = ` - ${v.description}`;
-
-	            if (prefix.length + title.length + desc.length >= this.out.columns || v.description.split(/\r?\n/).length > 1) {
-	              desc = '\n' + wrap(v.description, {
-	                margin: 3,
-	                width: this.out.columns
-	              });
-	            }
-	          }
-	        }
-
-	        this.outputText += `${prefix} ${title}${color.gray(desc)}\n`;
-	      }
-	    }
-
-	    this.out.write(this.outputText);
-	  }
-
-	}
-
-	select$1 = SelectPrompt;
-	return select$1;
-}
-
-var toggle$1;
-var hasRequiredToggle$1;
-
-function requireToggle$1 () {
-	if (hasRequiredToggle$1) return toggle$1;
-	hasRequiredToggle$1 = 1;
-
-	const color = requireKleur();
-
-	const Prompt = requirePrompt$1();
-
-	const _require = requireUtil$1(),
-	      style = _require.style,
-	      clear = _require.clear;
-
-	const _require2 = requireSrc(),
-	      cursor = _require2.cursor,
-	      erase = _require2.erase;
-	/**
-	 * TogglePrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Boolean} [opts.initial=false] Default value
-	 * @param {String} [opts.active='no'] Active label
-	 * @param {String} [opts.inactive='off'] Inactive label
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 */
-
-
-	class TogglePrompt extends Prompt {
-	  constructor(opts = {}) {
-	    super(opts);
-	    this.msg = opts.message;
-	    this.value = !!opts.initial;
-	    this.active = opts.active || 'on';
-	    this.inactive = opts.inactive || 'off';
-	    this.initialValue = this.value;
-	    this.render();
-	  }
-
-	  reset() {
-	    this.value = this.initialValue;
-	    this.fire();
-	    this.render();
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    this.done = this.aborted = true;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  submit() {
-	    this.done = true;
-	    this.aborted = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  deactivate() {
-	    if (this.value === false) return this.bell();
-	    this.value = false;
-	    this.render();
-	  }
-
-	  activate() {
-	    if (this.value === true) return this.bell();
-	    this.value = true;
-	    this.render();
-	  }
-
-	  delete() {
-	    this.deactivate();
-	  }
-
-	  left() {
-	    this.deactivate();
-	  }
-
-	  right() {
-	    this.activate();
-	  }
-
-	  down() {
-	    this.deactivate();
-	  }
-
-	  up() {
-	    this.activate();
-	  }
-
-	  next() {
-	    this.value = !this.value;
-	    this.fire();
-	    this.render();
-	  }
-
-	  _(c, key) {
-	    if (c === ' ') {
-	      this.value = !this.value;
-	    } else if (c === '1') {
-	      this.value = true;
-	    } else if (c === '0') {
-	      this.value = false;
-	    } else return this.bell();
-
-	    this.render();
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);else this.out.write(clear(this.outputText, this.out.columns));
-	    super.render();
-	    this.outputText = [style.symbol(this.done, this.aborted), color.bold(this.msg), style.delimiter(this.done), this.value ? this.inactive : color.cyan().underline(this.inactive), color.gray('/'), this.value ? color.cyan().underline(this.active) : this.active].join(' ');
-	    this.out.write(erase.line + cursor.to(0) + this.outputText);
-	  }
-
-	}
-
-	toggle$1 = TogglePrompt;
-	return toggle$1;
-}
-
-var datepart$1;
-var hasRequiredDatepart$1;
-
-function requireDatepart$1 () {
-	if (hasRequiredDatepart$1) return datepart$1;
-	hasRequiredDatepart$1 = 1;
-
-	class DatePart {
-	  constructor({
-	    token,
-	    date,
-	    parts,
-	    locales
-	  }) {
-	    this.token = token;
-	    this.date = date || new Date();
-	    this.parts = parts || [this];
-	    this.locales = locales || {};
-	  }
-
-	  up() {}
-
-	  down() {}
-
-	  next() {
-	    const currentIdx = this.parts.indexOf(this);
-	    return this.parts.find((part, idx) => idx > currentIdx && part instanceof DatePart);
-	  }
-
-	  setTo(val) {}
-
-	  prev() {
-	    let parts = [].concat(this.parts).reverse();
-	    const currentIdx = parts.indexOf(this);
-	    return parts.find((part, idx) => idx > currentIdx && part instanceof DatePart);
-	  }
-
-	  toString() {
-	    return String(this.date);
-	  }
-
-	}
-
-	datepart$1 = DatePart;
-	return datepart$1;
-}
-
-var meridiem$1;
-var hasRequiredMeridiem$1;
-
-function requireMeridiem$1 () {
-	if (hasRequiredMeridiem$1) return meridiem$1;
-	hasRequiredMeridiem$1 = 1;
-
-	const DatePart = requireDatepart$1();
-
-	class Meridiem extends DatePart {
-	  constructor(opts = {}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setHours((this.date.getHours() + 12) % 24);
-	  }
-
-	  down() {
-	    this.up();
-	  }
-
-	  toString() {
-	    let meridiem = this.date.getHours() > 12 ? 'pm' : 'am';
-	    return /\A/.test(this.token) ? meridiem.toUpperCase() : meridiem;
-	  }
-
-	}
-
-	meridiem$1 = Meridiem;
-	return meridiem$1;
-}
-
-var day$1;
-var hasRequiredDay$1;
-
-function requireDay$1 () {
-	if (hasRequiredDay$1) return day$1;
-	hasRequiredDay$1 = 1;
-
-	const DatePart = requireDatepart$1();
-
-	const pos = n => {
-	  n = n % 10;
-	  return n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th';
-	};
-
-	class Day extends DatePart {
-	  constructor(opts = {}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setDate(this.date.getDate() + 1);
-	  }
-
-	  down() {
-	    this.date.setDate(this.date.getDate() - 1);
-	  }
-
-	  setTo(val) {
-	    this.date.setDate(parseInt(val.substr(-2)));
-	  }
-
-	  toString() {
-	    let date = this.date.getDate();
-	    let day = this.date.getDay();
-	    return this.token === 'DD' ? String(date).padStart(2, '0') : this.token === 'Do' ? date + pos(date) : this.token === 'd' ? day + 1 : this.token === 'ddd' ? this.locales.weekdaysShort[day] : this.token === 'dddd' ? this.locales.weekdays[day] : date;
-	  }
-
-	}
-
-	day$1 = Day;
-	return day$1;
-}
-
-var hours$1;
-var hasRequiredHours$1;
-
-function requireHours$1 () {
-	if (hasRequiredHours$1) return hours$1;
-	hasRequiredHours$1 = 1;
-
-	const DatePart = requireDatepart$1();
-
-	class Hours extends DatePart {
-	  constructor(opts = {}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setHours(this.date.getHours() + 1);
-	  }
-
-	  down() {
-	    this.date.setHours(this.date.getHours() - 1);
-	  }
-
-	  setTo(val) {
-	    this.date.setHours(parseInt(val.substr(-2)));
-	  }
-
-	  toString() {
-	    let hours = this.date.getHours();
-	    if (/h/.test(this.token)) hours = hours % 12 || 12;
-	    return this.token.length > 1 ? String(hours).padStart(2, '0') : hours;
-	  }
-
-	}
-
-	hours$1 = Hours;
-	return hours$1;
-}
-
-var milliseconds$1;
-var hasRequiredMilliseconds$1;
-
-function requireMilliseconds$1 () {
-	if (hasRequiredMilliseconds$1) return milliseconds$1;
-	hasRequiredMilliseconds$1 = 1;
-
-	const DatePart = requireDatepart$1();
-
-	class Milliseconds extends DatePart {
-	  constructor(opts = {}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setMilliseconds(this.date.getMilliseconds() + 1);
-	  }
-
-	  down() {
-	    this.date.setMilliseconds(this.date.getMilliseconds() - 1);
-	  }
-
-	  setTo(val) {
-	    this.date.setMilliseconds(parseInt(val.substr(-this.token.length)));
-	  }
-
-	  toString() {
-	    return String(this.date.getMilliseconds()).padStart(4, '0').substr(0, this.token.length);
-	  }
-
-	}
-
-	milliseconds$1 = Milliseconds;
-	return milliseconds$1;
-}
-
-var minutes$1;
-var hasRequiredMinutes$1;
-
-function requireMinutes$1 () {
-	if (hasRequiredMinutes$1) return minutes$1;
-	hasRequiredMinutes$1 = 1;
-
-	const DatePart = requireDatepart$1();
-
-	class Minutes extends DatePart {
-	  constructor(opts = {}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setMinutes(this.date.getMinutes() + 1);
-	  }
-
-	  down() {
-	    this.date.setMinutes(this.date.getMinutes() - 1);
-	  }
-
-	  setTo(val) {
-	    this.date.setMinutes(parseInt(val.substr(-2)));
-	  }
-
-	  toString() {
-	    let m = this.date.getMinutes();
-	    return this.token.length > 1 ? String(m).padStart(2, '0') : m;
-	  }
-
-	}
-
-	minutes$1 = Minutes;
-	return minutes$1;
-}
-
-var month$1;
-var hasRequiredMonth$1;
-
-function requireMonth$1 () {
-	if (hasRequiredMonth$1) return month$1;
-	hasRequiredMonth$1 = 1;
-
-	const DatePart = requireDatepart$1();
-
-	class Month extends DatePart {
-	  constructor(opts = {}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setMonth(this.date.getMonth() + 1);
-	  }
-
-	  down() {
-	    this.date.setMonth(this.date.getMonth() - 1);
-	  }
-
-	  setTo(val) {
-	    val = parseInt(val.substr(-2)) - 1;
-	    this.date.setMonth(val < 0 ? 0 : val);
-	  }
-
-	  toString() {
-	    let month = this.date.getMonth();
-	    let tl = this.token.length;
-	    return tl === 2 ? String(month + 1).padStart(2, '0') : tl === 3 ? this.locales.monthsShort[month] : tl === 4 ? this.locales.months[month] : String(month + 1);
-	  }
-
-	}
-
-	month$1 = Month;
-	return month$1;
-}
-
-var seconds$1;
-var hasRequiredSeconds$1;
-
-function requireSeconds$1 () {
-	if (hasRequiredSeconds$1) return seconds$1;
-	hasRequiredSeconds$1 = 1;
-
-	const DatePart = requireDatepart$1();
-
-	class Seconds extends DatePart {
-	  constructor(opts = {}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setSeconds(this.date.getSeconds() + 1);
-	  }
-
-	  down() {
-	    this.date.setSeconds(this.date.getSeconds() - 1);
-	  }
-
-	  setTo(val) {
-	    this.date.setSeconds(parseInt(val.substr(-2)));
-	  }
-
-	  toString() {
-	    let s = this.date.getSeconds();
-	    return this.token.length > 1 ? String(s).padStart(2, '0') : s;
-	  }
-
-	}
-
-	seconds$1 = Seconds;
-	return seconds$1;
-}
-
-var year$1;
-var hasRequiredYear$1;
-
-function requireYear$1 () {
-	if (hasRequiredYear$1) return year$1;
-	hasRequiredYear$1 = 1;
-
-	const DatePart = requireDatepart$1();
-
-	class Year extends DatePart {
-	  constructor(opts = {}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setFullYear(this.date.getFullYear() + 1);
-	  }
-
-	  down() {
-	    this.date.setFullYear(this.date.getFullYear() - 1);
-	  }
-
-	  setTo(val) {
-	    this.date.setFullYear(val.substr(-4));
-	  }
-
-	  toString() {
-	    let year = String(this.date.getFullYear()).padStart(4, '0');
-	    return this.token.length === 2 ? year.substr(-2) : year;
-	  }
-
-	}
-
-	year$1 = Year;
-	return year$1;
-}
-
-var dateparts$1;
-var hasRequiredDateparts$1;
-
-function requireDateparts$1 () {
-	if (hasRequiredDateparts$1) return dateparts$1;
-	hasRequiredDateparts$1 = 1;
-
-	dateparts$1 = {
-	  DatePart: requireDatepart$1(),
-	  Meridiem: requireMeridiem$1(),
-	  Day: requireDay$1(),
-	  Hours: requireHours$1(),
-	  Milliseconds: requireMilliseconds$1(),
-	  Minutes: requireMinutes$1(),
-	  Month: requireMonth$1(),
-	  Seconds: requireSeconds$1(),
-	  Year: requireYear$1()
-	};
-	return dateparts$1;
-}
-
-var date$1;
-var hasRequiredDate$1;
-
-function requireDate$1 () {
-	if (hasRequiredDate$1) return date$1;
-	hasRequiredDate$1 = 1;
-
-	function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-	function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-	const color = requireKleur();
-
-	const Prompt = requirePrompt$1();
-
-	const _require = requireUtil$1(),
-	      style = _require.style,
-	      clear = _require.clear,
-	      figures = _require.figures;
-
-	const _require2 = requireSrc(),
-	      erase = _require2.erase,
-	      cursor = _require2.cursor;
-
-	const _require3 = requireDateparts$1(),
-	      DatePart = _require3.DatePart,
-	      Meridiem = _require3.Meridiem,
-	      Day = _require3.Day,
-	      Hours = _require3.Hours,
-	      Milliseconds = _require3.Milliseconds,
-	      Minutes = _require3.Minutes,
-	      Month = _require3.Month,
-	      Seconds = _require3.Seconds,
-	      Year = _require3.Year;
-
-	const regex = /\\(.)|"((?:\\["\\]|[^"])+)"|(D[Do]?|d{3,4}|d)|(M{1,4})|(YY(?:YY)?)|([aA])|([Hh]{1,2})|(m{1,2})|(s{1,2})|(S{1,4})|./g;
-	const regexGroups = {
-	  1: ({
-	    token
-	  }) => token.replace(/\\(.)/g, '$1'),
-	  2: opts => new Day(opts),
-	  // Day // TODO
-	  3: opts => new Month(opts),
-	  // Month
-	  4: opts => new Year(opts),
-	  // Year
-	  5: opts => new Meridiem(opts),
-	  // AM/PM // TODO (special)
-	  6: opts => new Hours(opts),
-	  // Hours
-	  7: opts => new Minutes(opts),
-	  // Minutes
-	  8: opts => new Seconds(opts),
-	  // Seconds
-	  9: opts => new Milliseconds(opts) // Fractional seconds
-
-	};
-	const dfltLocales = {
-	  months: 'January,February,March,April,May,June,July,August,September,October,November,December'.split(','),
-	  monthsShort: 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(','),
-	  weekdays: 'Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday'.split(','),
-	  weekdaysShort: 'Sun,Mon,Tue,Wed,Thu,Fri,Sat'.split(',')
-	};
-	/**
-	 * DatePrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Number} [opts.initial] Index of default value
-	 * @param {String} [opts.mask] The format mask
-	 * @param {object} [opts.locales] The date locales
-	 * @param {String} [opts.error] The error message shown on invalid value
-	 * @param {Function} [opts.validate] Function to validate the submitted value
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 */
-
-	class DatePrompt extends Prompt {
-	  constructor(opts = {}) {
-	    super(opts);
-	    this.msg = opts.message;
-	    this.cursor = 0;
-	    this.typed = '';
-	    this.locales = Object.assign(dfltLocales, opts.locales);
-	    this._date = opts.initial || new Date();
-	    this.errorMsg = opts.error || 'Please Enter A Valid Value';
-
-	    this.validator = opts.validate || (() => true);
-
-	    this.mask = opts.mask || 'YYYY-MM-DD HH:mm:ss';
-	    this.clear = clear('', this.out.columns);
-	    this.render();
-	  }
-
-	  get value() {
-	    return this.date;
-	  }
-
-	  get date() {
-	    return this._date;
-	  }
-
-	  set date(date) {
-	    if (date) this._date.setTime(date.getTime());
-	  }
-
-	  set mask(mask) {
-	    let result;
-	    this.parts = [];
-
-	    while (result = regex.exec(mask)) {
-	      let match = result.shift();
-	      let idx = result.findIndex(gr => gr != null);
-	      this.parts.push(idx in regexGroups ? regexGroups[idx]({
-	        token: result[idx] || match,
-	        date: this.date,
-	        parts: this.parts,
-	        locales: this.locales
-	      }) : result[idx] || match);
-	    }
-
-	    let parts = this.parts.reduce((arr, i) => {
-	      if (typeof i === 'string' && typeof arr[arr.length - 1] === 'string') arr[arr.length - 1] += i;else arr.push(i);
-	      return arr;
-	    }, []);
-	    this.parts.splice(0);
-	    this.parts.push(...parts);
-	    this.reset();
-	  }
-
-	  moveCursor(n) {
-	    this.typed = '';
-	    this.cursor = n;
-	    this.fire();
-	  }
-
-	  reset() {
-	    this.moveCursor(this.parts.findIndex(p => p instanceof DatePart));
-	    this.fire();
-	    this.render();
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    this.done = this.aborted = true;
-	    this.error = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  validate() {
-	    var _this = this;
-
-	    return _asyncToGenerator(function* () {
-	      let valid = yield _this.validator(_this.value);
-
-	      if (typeof valid === 'string') {
-	        _this.errorMsg = valid;
-	        valid = false;
-	      }
-
-	      _this.error = !valid;
-	    })();
-	  }
-
-	  submit() {
-	    var _this2 = this;
-
-	    return _asyncToGenerator(function* () {
-	      yield _this2.validate();
-
-	      if (_this2.error) {
-	        _this2.color = 'red';
-
-	        _this2.fire();
-
-	        _this2.render();
-
-	        return;
-	      }
-
-	      _this2.done = true;
-	      _this2.aborted = false;
-
-	      _this2.fire();
-
-	      _this2.render();
-
-	      _this2.out.write('\n');
-
-	      _this2.close();
-	    })();
-	  }
-
-	  up() {
-	    this.typed = '';
-	    this.parts[this.cursor].up();
-	    this.render();
-	  }
-
-	  down() {
-	    this.typed = '';
-	    this.parts[this.cursor].down();
-	    this.render();
-	  }
-
-	  left() {
-	    let prev = this.parts[this.cursor].prev();
-	    if (prev == null) return this.bell();
-	    this.moveCursor(this.parts.indexOf(prev));
-	    this.render();
-	  }
-
-	  right() {
-	    let next = this.parts[this.cursor].next();
-	    if (next == null) return this.bell();
-	    this.moveCursor(this.parts.indexOf(next));
-	    this.render();
-	  }
-
-	  next() {
-	    let next = this.parts[this.cursor].next();
-	    this.moveCursor(next ? this.parts.indexOf(next) : this.parts.findIndex(part => part instanceof DatePart));
-	    this.render();
-	  }
-
-	  _(c) {
-	    if (/\d/.test(c)) {
-	      this.typed += c;
-	      this.parts[this.cursor].setTo(this.typed);
-	      this.render();
-	    }
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);else this.out.write(clear(this.outputText, this.out.columns));
-	    super.render(); // Print prompt
-
-	    this.outputText = [style.symbol(this.done, this.aborted), color.bold(this.msg), style.delimiter(false), this.parts.reduce((arr, p, idx) => arr.concat(idx === this.cursor && !this.done ? color.cyan().underline(p.toString()) : p), []).join('')].join(' '); // Print error
-
-	    if (this.error) {
-	      this.outputText += this.errorMsg.split('\n').reduce((a, l, i) => a + `\n${i ? ` ` : figures.pointerSmall} ${color.red().italic(l)}`, ``);
-	    }
-
-	    this.out.write(erase.line + cursor.to(0) + this.outputText);
-	  }
-
-	}
-
-	date$1 = DatePrompt;
-	return date$1;
-}
-
-var number$1;
-var hasRequiredNumber$1;
-
-function requireNumber$1 () {
-	if (hasRequiredNumber$1) return number$1;
-	hasRequiredNumber$1 = 1;
-
-	function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-	function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-	const color = requireKleur();
-
-	const Prompt = requirePrompt$1();
-
-	const _require = requireSrc(),
-	      cursor = _require.cursor,
-	      erase = _require.erase;
-
-	const _require2 = requireUtil$1(),
-	      style = _require2.style,
-	      figures = _require2.figures,
-	      clear = _require2.clear,
-	      lines = _require2.lines;
-
-	const isNumber = /[0-9]/;
-
-	const isDef = any => any !== undefined;
-
-	const round = (number, precision) => {
-	  let factor = Math.pow(10, precision);
-	  return Math.round(number * factor) / factor;
-	};
-	/**
-	 * NumberPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {String} [opts.style='default'] Render style
-	 * @param {Number} [opts.initial] Default value
-	 * @param {Number} [opts.max=+Infinity] Max value
-	 * @param {Number} [opts.min=-Infinity] Min value
-	 * @param {Boolean} [opts.float=false] Parse input as floats
-	 * @param {Number} [opts.round=2] Round floats to x decimals
-	 * @param {Number} [opts.increment=1] Number to increment by when using arrow-keys
-	 * @param {Function} [opts.validate] Validate function
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 * @param {String} [opts.error] The invalid error label
-	 */
-
-
-	class NumberPrompt extends Prompt {
-	  constructor(opts = {}) {
-	    super(opts);
-	    this.transform = style.render(opts.style);
-	    this.msg = opts.message;
-	    this.initial = isDef(opts.initial) ? opts.initial : '';
-	    this.float = !!opts.float;
-	    this.round = opts.round || 2;
-	    this.inc = opts.increment || 1;
-	    this.min = isDef(opts.min) ? opts.min : -Infinity;
-	    this.max = isDef(opts.max) ? opts.max : Infinity;
-	    this.errorMsg = opts.error || `Please Enter A Valid Value`;
-
-	    this.validator = opts.validate || (() => true);
-
-	    this.color = `cyan`;
-	    this.value = ``;
-	    this.typed = ``;
-	    this.lastHit = 0;
-	    this.render();
-	  }
-
-	  set value(v) {
-	    if (!v && v !== 0) {
-	      this.placeholder = true;
-	      this.rendered = color.gray(this.transform.render(`${this.initial}`));
-	      this._value = ``;
-	    } else {
-	      this.placeholder = false;
-	      this.rendered = this.transform.render(`${round(v, this.round)}`);
-	      this._value = round(v, this.round);
-	    }
-
-	    this.fire();
-	  }
-
-	  get value() {
-	    return this._value;
-	  }
-
-	  parse(x) {
-	    return this.float ? parseFloat(x) : parseInt(x);
-	  }
-
-	  valid(c) {
-	    return c === `-` || c === `.` && this.float || isNumber.test(c);
-	  }
-
-	  reset() {
-	    this.typed = ``;
-	    this.value = ``;
-	    this.fire();
-	    this.render();
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    let x = this.value;
-	    this.value = x !== `` ? x : this.initial;
-	    this.done = this.aborted = true;
-	    this.error = false;
-	    this.fire();
-	    this.render();
-	    this.out.write(`\n`);
-	    this.close();
-	  }
-
-	  validate() {
-	    var _this = this;
-
-	    return _asyncToGenerator(function* () {
-	      let valid = yield _this.validator(_this.value);
-
-	      if (typeof valid === `string`) {
-	        _this.errorMsg = valid;
-	        valid = false;
-	      }
-
-	      _this.error = !valid;
-	    })();
-	  }
-
-	  submit() {
-	    var _this2 = this;
-
-	    return _asyncToGenerator(function* () {
-	      yield _this2.validate();
-
-	      if (_this2.error) {
-	        _this2.color = `red`;
-
-	        _this2.fire();
-
-	        _this2.render();
-
-	        return;
-	      }
-
-	      let x = _this2.value;
-	      _this2.value = x !== `` ? x : _this2.initial;
-	      _this2.done = true;
-	      _this2.aborted = false;
-	      _this2.error = false;
-
-	      _this2.fire();
-
-	      _this2.render();
-
-	      _this2.out.write(`\n`);
-
-	      _this2.close();
-	    })();
-	  }
-
-	  up() {
-	    this.typed = ``;
-
-	    if (this.value === '') {
-	      this.value = this.min - this.inc;
-	    }
-
-	    if (this.value >= this.max) return this.bell();
-	    this.value += this.inc;
-	    this.color = `cyan`;
-	    this.fire();
-	    this.render();
-	  }
-
-	  down() {
-	    this.typed = ``;
-
-	    if (this.value === '') {
-	      this.value = this.min + this.inc;
-	    }
-
-	    if (this.value <= this.min) return this.bell();
-	    this.value -= this.inc;
-	    this.color = `cyan`;
-	    this.fire();
-	    this.render();
-	  }
-
-	  delete() {
-	    let val = this.value.toString();
-	    if (val.length === 0) return this.bell();
-	    this.value = this.parse(val = val.slice(0, -1)) || ``;
-
-	    if (this.value !== '' && this.value < this.min) {
-	      this.value = this.min;
-	    }
-
-	    this.color = `cyan`;
-	    this.fire();
-	    this.render();
-	  }
-
-	  next() {
-	    this.value = this.initial;
-	    this.fire();
-	    this.render();
-	  }
-
-	  _(c, key) {
-	    if (!this.valid(c)) return this.bell();
-	    const now = Date.now();
-	    if (now - this.lastHit > 1000) this.typed = ``; // 1s elapsed
-
-	    this.typed += c;
-	    this.lastHit = now;
-	    this.color = `cyan`;
-	    if (c === `.`) return this.fire();
-	    this.value = Math.min(this.parse(this.typed), this.max);
-	    if (this.value > this.max) this.value = this.max;
-	    if (this.value < this.min) this.value = this.min;
-	    this.fire();
-	    this.render();
-	  }
-
-	  render() {
-	    if (this.closed) return;
-
-	    if (!this.firstRender) {
-	      if (this.outputError) this.out.write(cursor.down(lines(this.outputError, this.out.columns) - 1) + clear(this.outputError, this.out.columns));
-	      this.out.write(clear(this.outputText, this.out.columns));
-	    }
-
-	    super.render();
-	    this.outputError = ''; // Print prompt
-
-	    this.outputText = [style.symbol(this.done, this.aborted), color.bold(this.msg), style.delimiter(this.done), !this.done || !this.done && !this.placeholder ? color[this.color]().underline(this.rendered) : this.rendered].join(` `); // Print error
-
-	    if (this.error) {
-	      this.outputError += this.errorMsg.split(`\n`).reduce((a, l, i) => a + `\n${i ? ` ` : figures.pointerSmall} ${color.red().italic(l)}`, ``);
-	    }
-
-	    this.out.write(erase.line + cursor.to(0) + this.outputText + cursor.save + this.outputError + cursor.restore);
-	  }
-
-	}
-
-	number$1 = NumberPrompt;
-	return number$1;
-}
-
-var multiselect$1;
-var hasRequiredMultiselect$1;
-
-function requireMultiselect$1 () {
-	if (hasRequiredMultiselect$1) return multiselect$1;
-	hasRequiredMultiselect$1 = 1;
-
-	const color = requireKleur();
-
-	const _require = requireSrc(),
-	      cursor = _require.cursor;
-
-	const Prompt = requirePrompt$1();
-
-	const _require2 = requireUtil$1(),
-	      clear = _require2.clear,
-	      figures = _require2.figures,
-	      style = _require2.style,
-	      wrap = _require2.wrap,
-	      entriesToDisplay = _require2.entriesToDisplay;
-	/**
-	 * MultiselectPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Array} opts.choices Array of choice objects
-	 * @param {String} [opts.hint] Hint to display
-	 * @param {String} [opts.warn] Hint shown for disabled choices
-	 * @param {Number} [opts.max] Max choices
-	 * @param {Number} [opts.cursor=0] Cursor start position
-	 * @param {Number} [opts.optionsPerPage=10] Max options to display at once
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 */
-
-
-	class MultiselectPrompt extends Prompt {
-	  constructor(opts = {}) {
-	    super(opts);
-	    this.msg = opts.message;
-	    this.cursor = opts.cursor || 0;
-	    this.scrollIndex = opts.cursor || 0;
-	    this.hint = opts.hint || '';
-	    this.warn = opts.warn || '- This option is disabled -';
-	    this.minSelected = opts.min;
-	    this.showMinError = false;
-	    this.maxChoices = opts.max;
-	    this.instructions = opts.instructions;
-	    this.optionsPerPage = opts.optionsPerPage || 10;
-	    this.value = opts.choices.map((ch, idx) => {
-	      if (typeof ch === 'string') ch = {
-	        title: ch,
-	        value: idx
-	      };
-	      return {
-	        title: ch && (ch.title || ch.value || ch),
-	        description: ch && ch.description,
-	        value: ch && (ch.value === undefined ? idx : ch.value),
-	        selected: ch && ch.selected,
-	        disabled: ch && ch.disabled
-	      };
-	    });
-	    this.clear = clear('', this.out.columns);
-
-	    if (!opts.overrideRender) {
-	      this.render();
-	    }
-	  }
-
-	  reset() {
-	    this.value.map(v => !v.selected);
-	    this.cursor = 0;
-	    this.fire();
-	    this.render();
-	  }
-
-	  selected() {
-	    return this.value.filter(v => v.selected);
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    this.done = this.aborted = true;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  submit() {
-	    const selected = this.value.filter(e => e.selected);
-
-	    if (this.minSelected && selected.length < this.minSelected) {
-	      this.showMinError = true;
-	      this.render();
-	    } else {
-	      this.done = true;
-	      this.aborted = false;
-	      this.fire();
-	      this.render();
-	      this.out.write('\n');
-	      this.close();
-	    }
-	  }
-
-	  first() {
-	    this.cursor = 0;
-	    this.render();
-	  }
-
-	  last() {
-	    this.cursor = this.value.length - 1;
-	    this.render();
-	  }
-
-	  next() {
-	    this.cursor = (this.cursor + 1) % this.value.length;
-	    this.render();
-	  }
-
-	  up() {
-	    if (this.cursor === 0) {
-	      this.cursor = this.value.length - 1;
-	    } else {
-	      this.cursor--;
-	    }
-
-	    this.render();
-	  }
-
-	  down() {
-	    if (this.cursor === this.value.length - 1) {
-	      this.cursor = 0;
-	    } else {
-	      this.cursor++;
-	    }
-
-	    this.render();
-	  }
-
-	  left() {
-	    this.value[this.cursor].selected = false;
-	    this.render();
-	  }
-
-	  right() {
-	    if (this.value.filter(e => e.selected).length >= this.maxChoices) return this.bell();
-	    this.value[this.cursor].selected = true;
-	    this.render();
-	  }
-
-	  handleSpaceToggle() {
-	    const v = this.value[this.cursor];
-
-	    if (v.selected) {
-	      v.selected = false;
-	      this.render();
-	    } else if (v.disabled || this.value.filter(e => e.selected).length >= this.maxChoices) {
-	      return this.bell();
-	    } else {
-	      v.selected = true;
-	      this.render();
-	    }
-	  }
-
-	  toggleAll() {
-	    if (this.maxChoices !== undefined || this.value[this.cursor].disabled) {
-	      return this.bell();
-	    }
-
-	    const newSelected = !this.value[this.cursor].selected;
-	    this.value.filter(v => !v.disabled).forEach(v => v.selected = newSelected);
-	    this.render();
-	  }
-
-	  _(c, key) {
-	    if (c === ' ') {
-	      this.handleSpaceToggle();
-	    } else if (c === 'a') {
-	      this.toggleAll();
-	    } else {
-	      return this.bell();
-	    }
-	  }
-
-	  renderInstructions() {
-	    if (this.instructions === undefined || this.instructions) {
-	      if (typeof this.instructions === 'string') {
-	        return this.instructions;
-	      }
-
-	      return '\nInstructions:\n' + `    ${figures.arrowUp}/${figures.arrowDown}: Highlight option\n` + `    ${figures.arrowLeft}/${figures.arrowRight}/[space]: Toggle selection\n` + (this.maxChoices === undefined ? `    a: Toggle all\n` : '') + `    enter/return: Complete answer`;
-	    }
-
-	    return '';
-	  }
-
-	  renderOption(cursor, v, i, arrowIndicator) {
-	    const prefix = (v.selected ? color.green(figures.radioOn) : figures.radioOff) + ' ' + arrowIndicator + ' ';
-	    let title, desc;
-
-	    if (v.disabled) {
-	      title = cursor === i ? color.gray().underline(v.title) : color.strikethrough().gray(v.title);
-	    } else {
-	      title = cursor === i ? color.cyan().underline(v.title) : v.title;
-
-	      if (cursor === i && v.description) {
-	        desc = ` - ${v.description}`;
-
-	        if (prefix.length + title.length + desc.length >= this.out.columns || v.description.split(/\r?\n/).length > 1) {
-	          desc = '\n' + wrap(v.description, {
-	            margin: prefix.length,
-	            width: this.out.columns
-	          });
-	        }
-	      }
-	    }
-
-	    return prefix + title + color.gray(desc || '');
-	  } // shared with autocompleteMultiselect
-
-
-	  paginateOptions(options) {
-	    if (options.length === 0) {
-	      return color.red('No matches for this query.');
-	    }
-
-	    let _entriesToDisplay = entriesToDisplay(this.cursor, options.length, this.optionsPerPage),
-	        startIndex = _entriesToDisplay.startIndex,
-	        endIndex = _entriesToDisplay.endIndex;
-
-	    let prefix,
-	        styledOptions = [];
-
-	    for (let i = startIndex; i < endIndex; i++) {
-	      if (i === startIndex && startIndex > 0) {
-	        prefix = figures.arrowUp;
-	      } else if (i === endIndex - 1 && endIndex < options.length) {
-	        prefix = figures.arrowDown;
-	      } else {
-	        prefix = ' ';
-	      }
-
-	      styledOptions.push(this.renderOption(this.cursor, options[i], i, prefix));
-	    }
-
-	    return '\n' + styledOptions.join('\n');
-	  } // shared with autocomleteMultiselect
-
-
-	  renderOptions(options) {
-	    if (!this.done) {
-	      return this.paginateOptions(options);
-	    }
-
-	    return '';
-	  }
-
-	  renderDoneOrInstructions() {
-	    if (this.done) {
-	      return this.value.filter(e => e.selected).map(v => v.title).join(', ');
-	    }
-
-	    const output = [color.gray(this.hint), this.renderInstructions()];
-
-	    if (this.value[this.cursor].disabled) {
-	      output.push(color.yellow(this.warn));
-	    }
-
-	    return output.join(' ');
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);
-	    super.render(); // print prompt
-
-	    let prompt = [style.symbol(this.done, this.aborted), color.bold(this.msg), style.delimiter(false), this.renderDoneOrInstructions()].join(' ');
-
-	    if (this.showMinError) {
-	      prompt += color.red(`You must select a minimum of ${this.minSelected} choices.`);
-	      this.showMinError = false;
-	    }
-
-	    prompt += this.renderOptions(this.value);
-	    this.out.write(this.clear + prompt);
-	    this.clear = clear(prompt, this.out.columns);
-	  }
-
-	}
-
-	multiselect$1 = MultiselectPrompt;
-	return multiselect$1;
-}
-
-var autocomplete$1;
-var hasRequiredAutocomplete$1;
-
-function requireAutocomplete$1 () {
-	if (hasRequiredAutocomplete$1) return autocomplete$1;
-	hasRequiredAutocomplete$1 = 1;
-
-	function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-	function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-	const color = requireKleur();
-
-	const Prompt = requirePrompt$1();
-
-	const _require = requireSrc(),
-	      erase = _require.erase,
-	      cursor = _require.cursor;
-
-	const _require2 = requireUtil$1(),
-	      style = _require2.style,
-	      clear = _require2.clear,
-	      figures = _require2.figures,
-	      wrap = _require2.wrap,
-	      entriesToDisplay = _require2.entriesToDisplay;
-
-	const getVal = (arr, i) => arr[i] && (arr[i].value || arr[i].title || arr[i]);
-
-	const getTitle = (arr, i) => arr[i] && (arr[i].title || arr[i].value || arr[i]);
-
-	const getIndex = (arr, valOrTitle) => {
-	  const index = arr.findIndex(el => el.value === valOrTitle || el.title === valOrTitle);
-	  return index > -1 ? index : undefined;
-	};
-	/**
-	 * TextPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Array} opts.choices Array of auto-complete choices objects
-	 * @param {Function} [opts.suggest] Filter function. Defaults to sort by title
-	 * @param {Number} [opts.limit=10] Max number of results to show
-	 * @param {Number} [opts.cursor=0] Cursor start position
-	 * @param {String} [opts.style='default'] Render style
-	 * @param {String} [opts.fallback] Fallback message - initial to default value
-	 * @param {String} [opts.initial] Index of the default value
-	 * @param {Boolean} [opts.clearFirst] The first ESCAPE keypress will clear the input
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 * @param {String} [opts.noMatches] The no matches found label
-	 */
-
-
-	class AutocompletePrompt extends Prompt {
-	  constructor(opts = {}) {
-	    super(opts);
-	    this.msg = opts.message;
-	    this.suggest = opts.suggest;
-	    this.choices = opts.choices;
-	    this.initial = typeof opts.initial === 'number' ? opts.initial : getIndex(opts.choices, opts.initial);
-	    this.select = this.initial || opts.cursor || 0;
-	    this.i18n = {
-	      noMatches: opts.noMatches || 'no matches found'
-	    };
-	    this.fallback = opts.fallback || this.initial;
-	    this.clearFirst = opts.clearFirst || false;
-	    this.suggestions = [];
-	    this.input = '';
-	    this.limit = opts.limit || 10;
-	    this.cursor = 0;
-	    this.transform = style.render(opts.style);
-	    this.scale = this.transform.scale;
-	    this.render = this.render.bind(this);
-	    this.complete = this.complete.bind(this);
-	    this.clear = clear('', this.out.columns);
-	    this.complete(this.render);
-	    this.render();
-	  }
-
-	  set fallback(fb) {
-	    this._fb = Number.isSafeInteger(parseInt(fb)) ? parseInt(fb) : fb;
-	  }
-
-	  get fallback() {
-	    let choice;
-	    if (typeof this._fb === 'number') choice = this.choices[this._fb];else if (typeof this._fb === 'string') choice = {
-	      title: this._fb
-	    };
-	    return choice || this._fb || {
-	      title: this.i18n.noMatches
-	    };
-	  }
-
-	  moveSelect(i) {
-	    this.select = i;
-	    if (this.suggestions.length > 0) this.value = getVal(this.suggestions, i);else this.value = this.fallback.value;
-	    this.fire();
-	  }
-
-	  complete(cb) {
-	    var _this = this;
-
-	    return _asyncToGenerator(function* () {
-	      const p = _this.completing = _this.suggest(_this.input, _this.choices);
-
-	      const suggestions = yield p;
-	      if (_this.completing !== p) return;
-	      _this.suggestions = suggestions.map((s, i, arr) => ({
-	        title: getTitle(arr, i),
-	        value: getVal(arr, i),
-	        description: s.description
-	      }));
-	      _this.completing = false;
-	      const l = Math.max(suggestions.length - 1, 0);
-
-	      _this.moveSelect(Math.min(l, _this.select));
-
-	      cb && cb();
-	    })();
-	  }
-
-	  reset() {
-	    this.input = '';
-	    this.complete(() => {
-	      this.moveSelect(this.initial !== void 0 ? this.initial : 0);
-	      this.render();
-	    });
-	    this.render();
-	  }
-
-	  exit() {
-	    if (this.clearFirst && this.input.length > 0) {
-	      this.reset();
-	    } else {
-	      this.done = this.exited = true;
-	      this.aborted = false;
-	      this.fire();
-	      this.render();
-	      this.out.write('\n');
-	      this.close();
-	    }
-	  }
-
-	  abort() {
-	    this.done = this.aborted = true;
-	    this.exited = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  submit() {
-	    this.done = true;
-	    this.aborted = this.exited = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  _(c, key) {
-	    let s1 = this.input.slice(0, this.cursor);
-	    let s2 = this.input.slice(this.cursor);
-	    this.input = `${s1}${c}${s2}`;
-	    this.cursor = s1.length + 1;
-	    this.complete(this.render);
-	    this.render();
-	  }
-
-	  delete() {
-	    if (this.cursor === 0) return this.bell();
-	    let s1 = this.input.slice(0, this.cursor - 1);
-	    let s2 = this.input.slice(this.cursor);
-	    this.input = `${s1}${s2}`;
-	    this.complete(this.render);
-	    this.cursor = this.cursor - 1;
-	    this.render();
-	  }
-
-	  deleteForward() {
-	    if (this.cursor * this.scale >= this.rendered.length) return this.bell();
-	    let s1 = this.input.slice(0, this.cursor);
-	    let s2 = this.input.slice(this.cursor + 1);
-	    this.input = `${s1}${s2}`;
-	    this.complete(this.render);
-	    this.render();
-	  }
-
-	  first() {
-	    this.moveSelect(0);
-	    this.render();
-	  }
-
-	  last() {
-	    this.moveSelect(this.suggestions.length - 1);
-	    this.render();
-	  }
-
-	  up() {
-	    if (this.select === 0) {
-	      this.moveSelect(this.suggestions.length - 1);
-	    } else {
-	      this.moveSelect(this.select - 1);
-	    }
-
-	    this.render();
-	  }
-
-	  down() {
-	    if (this.select === this.suggestions.length - 1) {
-	      this.moveSelect(0);
-	    } else {
-	      this.moveSelect(this.select + 1);
-	    }
-
-	    this.render();
-	  }
-
-	  next() {
-	    if (this.select === this.suggestions.length - 1) {
-	      this.moveSelect(0);
-	    } else this.moveSelect(this.select + 1);
-
-	    this.render();
-	  }
-
-	  nextPage() {
-	    this.moveSelect(Math.min(this.select + this.limit, this.suggestions.length - 1));
-	    this.render();
-	  }
-
-	  prevPage() {
-	    this.moveSelect(Math.max(this.select - this.limit, 0));
-	    this.render();
-	  }
-
-	  left() {
-	    if (this.cursor <= 0) return this.bell();
-	    this.cursor = this.cursor - 1;
-	    this.render();
-	  }
-
-	  right() {
-	    if (this.cursor * this.scale >= this.rendered.length) return this.bell();
-	    this.cursor = this.cursor + 1;
-	    this.render();
-	  }
-
-	  renderOption(v, hovered, isStart, isEnd) {
-	    let desc;
-	    let prefix = isStart ? figures.arrowUp : isEnd ? figures.arrowDown : ' ';
-	    let title = hovered ? color.cyan().underline(v.title) : v.title;
-	    prefix = (hovered ? color.cyan(figures.pointer) + ' ' : '  ') + prefix;
-
-	    if (v.description) {
-	      desc = ` - ${v.description}`;
-
-	      if (prefix.length + title.length + desc.length >= this.out.columns || v.description.split(/\r?\n/).length > 1) {
-	        desc = '\n' + wrap(v.description, {
-	          margin: 3,
-	          width: this.out.columns
-	        });
-	      }
-	    }
-
-	    return prefix + ' ' + title + color.gray(desc || '');
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);else this.out.write(clear(this.outputText, this.out.columns));
-	    super.render();
-
-	    let _entriesToDisplay = entriesToDisplay(this.select, this.choices.length, this.limit),
-	        startIndex = _entriesToDisplay.startIndex,
-	        endIndex = _entriesToDisplay.endIndex;
-
-	    this.outputText = [style.symbol(this.done, this.aborted, this.exited), color.bold(this.msg), style.delimiter(this.completing), this.done && this.suggestions[this.select] ? this.suggestions[this.select].title : this.rendered = this.transform.render(this.input)].join(' ');
-
-	    if (!this.done) {
-	      const suggestions = this.suggestions.slice(startIndex, endIndex).map((item, i) => this.renderOption(item, this.select === i + startIndex, i === 0 && startIndex > 0, i + startIndex === endIndex - 1 && endIndex < this.choices.length)).join('\n');
-	      this.outputText += `\n` + (suggestions || color.gray(this.fallback.title));
-	    }
-
-	    this.out.write(erase.line + cursor.to(0) + this.outputText);
-	  }
-
-	}
-
-	autocomplete$1 = AutocompletePrompt;
-	return autocomplete$1;
-}
-
-var autocompleteMultiselect$1;
-var hasRequiredAutocompleteMultiselect$1;
-
-function requireAutocompleteMultiselect$1 () {
-	if (hasRequiredAutocompleteMultiselect$1) return autocompleteMultiselect$1;
-	hasRequiredAutocompleteMultiselect$1 = 1;
-
-	const color = requireKleur();
-
-	const _require = requireSrc(),
-	      cursor = _require.cursor;
-
-	const MultiselectPrompt = requireMultiselect$1();
-
-	const _require2 = requireUtil$1(),
-	      clear = _require2.clear,
-	      style = _require2.style,
-	      figures = _require2.figures;
-	/**
-	 * MultiselectPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Array} opts.choices Array of choice objects
-	 * @param {String} [opts.hint] Hint to display
-	 * @param {String} [opts.warn] Hint shown for disabled choices
-	 * @param {Number} [opts.max] Max choices
-	 * @param {Number} [opts.cursor=0] Cursor start position
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 */
-
-
-	class AutocompleteMultiselectPrompt extends MultiselectPrompt {
-	  constructor(opts = {}) {
-	    opts.overrideRender = true;
-	    super(opts);
-	    this.inputValue = '';
-	    this.clear = clear('', this.out.columns);
-	    this.filteredOptions = this.value;
-	    this.render();
-	  }
-
-	  last() {
-	    this.cursor = this.filteredOptions.length - 1;
-	    this.render();
-	  }
-
-	  next() {
-	    this.cursor = (this.cursor + 1) % this.filteredOptions.length;
-	    this.render();
-	  }
-
-	  up() {
-	    if (this.cursor === 0) {
-	      this.cursor = this.filteredOptions.length - 1;
-	    } else {
-	      this.cursor--;
-	    }
-
-	    this.render();
-	  }
-
-	  down() {
-	    if (this.cursor === this.filteredOptions.length - 1) {
-	      this.cursor = 0;
-	    } else {
-	      this.cursor++;
-	    }
-
-	    this.render();
-	  }
-
-	  left() {
-	    this.filteredOptions[this.cursor].selected = false;
-	    this.render();
-	  }
-
-	  right() {
-	    if (this.value.filter(e => e.selected).length >= this.maxChoices) return this.bell();
-	    this.filteredOptions[this.cursor].selected = true;
-	    this.render();
-	  }
-
-	  delete() {
-	    if (this.inputValue.length) {
-	      this.inputValue = this.inputValue.substr(0, this.inputValue.length - 1);
-	      this.updateFilteredOptions();
-	    }
-	  }
-
-	  updateFilteredOptions() {
-	    const currentHighlight = this.filteredOptions[this.cursor];
-	    this.filteredOptions = this.value.filter(v => {
-	      if (this.inputValue) {
-	        if (typeof v.title === 'string') {
-	          if (v.title.toLowerCase().includes(this.inputValue.toLowerCase())) {
-	            return true;
-	          }
-	        }
-
-	        if (typeof v.value === 'string') {
-	          if (v.value.toLowerCase().includes(this.inputValue.toLowerCase())) {
-	            return true;
-	          }
-	        }
-
-	        return false;
-	      }
-
-	      return true;
-	    });
-	    const newHighlightIndex = this.filteredOptions.findIndex(v => v === currentHighlight);
-	    this.cursor = newHighlightIndex < 0 ? 0 : newHighlightIndex;
-	    this.render();
-	  }
-
-	  handleSpaceToggle() {
-	    const v = this.filteredOptions[this.cursor];
-
-	    if (v.selected) {
-	      v.selected = false;
-	      this.render();
-	    } else if (v.disabled || this.value.filter(e => e.selected).length >= this.maxChoices) {
-	      return this.bell();
-	    } else {
-	      v.selected = true;
-	      this.render();
-	    }
-	  }
-
-	  handleInputChange(c) {
-	    this.inputValue = this.inputValue + c;
-	    this.updateFilteredOptions();
-	  }
-
-	  _(c, key) {
-	    if (c === ' ') {
-	      this.handleSpaceToggle();
-	    } else {
-	      this.handleInputChange(c);
-	    }
-	  }
-
-	  renderInstructions() {
-	    if (this.instructions === undefined || this.instructions) {
-	      if (typeof this.instructions === 'string') {
-	        return this.instructions;
-	      }
-
-	      return `
-Instructions:
-    ${figures.arrowUp}/${figures.arrowDown}: Highlight option
-    ${figures.arrowLeft}/${figures.arrowRight}/[space]: Toggle selection
-    [a,b,c]/delete: Filter choices
-    enter/return: Complete answer
-`;
-	    }
-
-	    return '';
-	  }
-
-	  renderCurrentInput() {
-	    return `
-Filtered results for: ${this.inputValue ? this.inputValue : color.gray('Enter something to filter')}\n`;
-	  }
-
-	  renderOption(cursor, v, i) {
-	    let title;
-	    if (v.disabled) title = cursor === i ? color.gray().underline(v.title) : color.strikethrough().gray(v.title);else title = cursor === i ? color.cyan().underline(v.title) : v.title;
-	    return (v.selected ? color.green(figures.radioOn) : figures.radioOff) + '  ' + title;
-	  }
-
-	  renderDoneOrInstructions() {
-	    if (this.done) {
-	      return this.value.filter(e => e.selected).map(v => v.title).join(', ');
-	    }
-
-	    const output = [color.gray(this.hint), this.renderInstructions(), this.renderCurrentInput()];
-
-	    if (this.filteredOptions.length && this.filteredOptions[this.cursor].disabled) {
-	      output.push(color.yellow(this.warn));
-	    }
-
-	    return output.join(' ');
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);
-	    super.render(); // print prompt
-
-	    let prompt = [style.symbol(this.done, this.aborted), color.bold(this.msg), style.delimiter(false), this.renderDoneOrInstructions()].join(' ');
-
-	    if (this.showMinError) {
-	      prompt += color.red(`You must select a minimum of ${this.minSelected} choices.`);
-	      this.showMinError = false;
-	    }
-
-	    prompt += this.renderOptions(this.filteredOptions);
-	    this.out.write(this.clear + prompt);
-	    this.clear = clear(prompt, this.out.columns);
-	  }
-
-	}
-
-	autocompleteMultiselect$1 = AutocompleteMultiselectPrompt;
-	return autocompleteMultiselect$1;
-}
-
-var confirm$1;
-var hasRequiredConfirm$1;
-
-function requireConfirm$1 () {
-	if (hasRequiredConfirm$1) return confirm$1;
-	hasRequiredConfirm$1 = 1;
-
-	const color = requireKleur();
-
-	const Prompt = requirePrompt$1();
-
-	const _require = requireUtil$1(),
-	      style = _require.style,
-	      clear = _require.clear;
-
-	const _require2 = requireSrc(),
-	      erase = _require2.erase,
-	      cursor = _require2.cursor;
-	/**
-	 * ConfirmPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Boolean} [opts.initial] Default value (true/false)
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 * @param {String} [opts.yes] The "Yes" label
-	 * @param {String} [opts.yesOption] The "Yes" option when choosing between yes/no
-	 * @param {String} [opts.no] The "No" label
-	 * @param {String} [opts.noOption] The "No" option when choosing between yes/no
-	 */
-
-
-	class ConfirmPrompt extends Prompt {
-	  constructor(opts = {}) {
-	    super(opts);
-	    this.msg = opts.message;
-	    this.value = opts.initial;
-	    this.initialValue = !!opts.initial;
-	    this.yesMsg = opts.yes || 'yes';
-	    this.yesOption = opts.yesOption || '(Y/n)';
-	    this.noMsg = opts.no || 'no';
-	    this.noOption = opts.noOption || '(y/N)';
-	    this.render();
-	  }
-
-	  reset() {
-	    this.value = this.initialValue;
-	    this.fire();
-	    this.render();
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    this.done = this.aborted = true;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  submit() {
-	    this.value = this.value || false;
-	    this.done = true;
-	    this.aborted = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  _(c, key) {
-	    if (c.toLowerCase() === 'y') {
-	      this.value = true;
-	      return this.submit();
-	    }
-
-	    if (c.toLowerCase() === 'n') {
-	      this.value = false;
-	      return this.submit();
-	    }
-
-	    return this.bell();
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);else this.out.write(clear(this.outputText, this.out.columns));
-	    super.render();
-	    this.outputText = [style.symbol(this.done, this.aborted), color.bold(this.msg), style.delimiter(this.done), this.done ? this.value ? this.yesMsg : this.noMsg : color.gray(this.initialValue ? this.yesOption : this.noOption)].join(' ');
-	    this.out.write(erase.line + cursor.to(0) + this.outputText);
-	  }
-
-	}
-
-	confirm$1 = ConfirmPrompt;
-	return confirm$1;
-}
-
-var elements$1;
-var hasRequiredElements$1;
-
-function requireElements$1 () {
-	if (hasRequiredElements$1) return elements$1;
-	hasRequiredElements$1 = 1;
-
-	elements$1 = {
-	  TextPrompt: requireText$1(),
-	  SelectPrompt: requireSelect$1(),
-	  TogglePrompt: requireToggle$1(),
-	  DatePrompt: requireDate$1(),
-	  NumberPrompt: requireNumber$1(),
-	  MultiselectPrompt: requireMultiselect$1(),
-	  AutocompletePrompt: requireAutocomplete$1(),
-	  AutocompleteMultiselectPrompt: requireAutocompleteMultiselect$1(),
-	  ConfirmPrompt: requireConfirm$1()
-	};
-	return elements$1;
-}
-
-var hasRequiredPrompts$1;
-
-function requirePrompts$1 () {
-	if (hasRequiredPrompts$1) return prompts$3;
-	hasRequiredPrompts$1 = 1;
-	(function (exports) {
-
-		const $ = exports;
-
-		const el = requireElements$1();
-
-		const noop = v => v;
-
-		function toPrompt(type, args, opts = {}) {
-		  return new Promise((res, rej) => {
-		    const p = new el[type](args);
-		    const onAbort = opts.onAbort || noop;
-		    const onSubmit = opts.onSubmit || noop;
-		    const onExit = opts.onExit || noop;
-		    p.on('state', args.onState || noop);
-		    p.on('submit', x => res(onSubmit(x)));
-		    p.on('exit', x => res(onExit(x)));
-		    p.on('abort', x => rej(onAbort(x)));
-		  });
-		}
-		/**
-		 * Text prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {string} [args.initial] Default string value
-		 * @param {string} [args.style="default"] Render style ('default', 'password', 'invisible')
-		 * @param {function} [args.onState] On state change callback
-		 * @param {function} [args.validate] Function to validate user input
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-
-
-		$.text = args => toPrompt('TextPrompt', args);
-		/**
-		 * Password prompt with masked input
-		 * @param {string} args.message Prompt message to display
-		 * @param {string} [args.initial] Default string value
-		 * @param {function} [args.onState] On state change callback
-		 * @param {function} [args.validate] Function to validate user input
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-
-
-		$.password = args => {
-		  args.style = 'password';
-		  return $.text(args);
-		};
-		/**
-		 * Prompt where input is invisible, like sudo
-		 * @param {string} args.message Prompt message to display
-		 * @param {string} [args.initial] Default string value
-		 * @param {function} [args.onState] On state change callback
-		 * @param {function} [args.validate] Function to validate user input
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-
-
-		$.invisible = args => {
-		  args.style = 'invisible';
-		  return $.text(args);
-		};
-		/**
-		 * Number prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {number} args.initial Default number value
-		 * @param {function} [args.onState] On state change callback
-		 * @param {number} [args.max] Max value
-		 * @param {number} [args.min] Min value
-		 * @param {string} [args.style="default"] Render style ('default', 'password', 'invisible')
-		 * @param {Boolean} [opts.float=false] Parse input as floats
-		 * @param {Number} [opts.round=2] Round floats to x decimals
-		 * @param {Number} [opts.increment=1] Number to increment by when using arrow-keys
-		 * @param {function} [args.validate] Function to validate user input
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-
-
-		$.number = args => toPrompt('NumberPrompt', args);
-		/**
-		 * Date prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {number} args.initial Default number value
-		 * @param {function} [args.onState] On state change callback
-		 * @param {number} [args.max] Max value
-		 * @param {number} [args.min] Min value
-		 * @param {string} [args.style="default"] Render style ('default', 'password', 'invisible')
-		 * @param {Boolean} [opts.float=false] Parse input as floats
-		 * @param {Number} [opts.round=2] Round floats to x decimals
-		 * @param {Number} [opts.increment=1] Number to increment by when using arrow-keys
-		 * @param {function} [args.validate] Function to validate user input
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-
-
-		$.date = args => toPrompt('DatePrompt', args);
-		/**
-		 * Classic yes/no prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {boolean} [args.initial=false] Default value
-		 * @param {function} [args.onState] On state change callback
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-
-
-		$.confirm = args => toPrompt('ConfirmPrompt', args);
-		/**
-		 * List prompt, split intput string by `seperator`
-		 * @param {string} args.message Prompt message to display
-		 * @param {string} [args.initial] Default string value
-		 * @param {string} [args.style="default"] Render style ('default', 'password', 'invisible')
-		 * @param {string} [args.separator] String separator
-		 * @param {function} [args.onState] On state change callback
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input, in form of an `Array`
-		 */
-
-
-		$.list = args => {
-		  const sep = args.separator || ',';
-		  return toPrompt('TextPrompt', args, {
-		    onSubmit: str => str.split(sep).map(s => s.trim())
-		  });
-		};
-		/**
-		 * Toggle/switch prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {boolean} [args.initial=false] Default value
-		 * @param {string} [args.active="on"] Text for `active` state
-		 * @param {string} [args.inactive="off"] Text for `inactive` state
-		 * @param {function} [args.onState] On state change callback
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-
-
-		$.toggle = args => toPrompt('TogglePrompt', args);
-		/**
-		 * Interactive select prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {Array} args.choices Array of choices objects `[{ title, value }, ...]`
-		 * @param {number} [args.initial] Index of default value
-		 * @param {String} [args.hint] Hint to display
-		 * @param {function} [args.onState] On state change callback
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-
-
-		$.select = args => toPrompt('SelectPrompt', args);
-		/**
-		 * Interactive multi-select / autocompleteMultiselect prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {Array} args.choices Array of choices objects `[{ title, value, [selected] }, ...]`
-		 * @param {number} [args.max] Max select
-		 * @param {string} [args.hint] Hint to display user
-		 * @param {Number} [args.cursor=0] Cursor start position
-		 * @param {function} [args.onState] On state change callback
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-
-
-		$.multiselect = args => {
-		  args.choices = [].concat(args.choices || []);
-
-		  const toSelected = items => items.filter(item => item.selected).map(item => item.value);
-
-		  return toPrompt('MultiselectPrompt', args, {
-		    onAbort: toSelected,
-		    onSubmit: toSelected
-		  });
-		};
-
-		$.autocompleteMultiselect = args => {
-		  args.choices = [].concat(args.choices || []);
-
-		  const toSelected = items => items.filter(item => item.selected).map(item => item.value);
-
-		  return toPrompt('AutocompleteMultiselectPrompt', args, {
-		    onAbort: toSelected,
-		    onSubmit: toSelected
-		  });
-		};
-
-		const byTitle = (input, choices) => Promise.resolve(choices.filter(item => item.title.slice(0, input.length).toLowerCase() === input.toLowerCase()));
-		/**
-		 * Interactive auto-complete prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {Array} args.choices Array of auto-complete choices objects `[{ title, value }, ...]`
-		 * @param {Function} [args.suggest] Function to filter results based on user input. Defaults to sort by `title`
-		 * @param {number} [args.limit=10] Max number of results to show
-		 * @param {string} [args.style="default"] Render style ('default', 'password', 'invisible')
-		 * @param {String} [args.initial] Index of the default value
-		 * @param {boolean} [opts.clearFirst] The first ESCAPE keypress will clear the input
-		 * @param {String} [args.fallback] Fallback message - defaults to initial value
-		 * @param {function} [args.onState] On state change callback
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-
-
-		$.autocomplete = args => {
-		  args.suggest = args.suggest || byTitle;
-		  args.choices = [].concat(args.choices || []);
-		  return toPrompt('AutocompletePrompt', args);
-		}; 
-	} (prompts$3));
-	return prompts$3;
-}
-
-var dist;
-var hasRequiredDist;
-
-function requireDist () {
-	if (hasRequiredDist) return dist;
-	hasRequiredDist = 1;
-
-	function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-	function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike  ) { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-
-	function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-	function _arrayLikeToArray(arr, len) { len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-
-	function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-	function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-	const prompts = requirePrompts$1();
-
-	const passOn = ['suggest', 'format', 'onState', 'validate', 'onRender', 'type'];
-
-	const noop = () => {};
-	/**
-	 * Prompt for a series of questions
-	 * @param {Array|Object} questions Single question object or Array of question objects
-	 * @param {Function} [onSubmit] Callback function called on prompt submit
-	 * @param {Function} [onCancel] Callback function called on cancel/abort
-	 * @returns {Object} Object with values from user input
-	 */
-
-
-	function prompt() {
-	  return _prompt.apply(this, arguments);
-	}
-
-	function _prompt() {
-	  _prompt = _asyncToGenerator(function* (questions = [], {
-	    onSubmit = noop,
-	    onCancel = noop
-	  } = {}) {
-	    const answers = {};
-	    const override = prompt._override || {};
-	    questions = [].concat(questions);
-	    let answer, question, quit, name, type, lastPrompt;
-
-	    const getFormattedAnswer = /*#__PURE__*/function () {
-	      var _ref = _asyncToGenerator(function* (question, answer, skipValidation = false) {
-	        if (!skipValidation && question.validate && question.validate(answer) !== true) {
-	          return;
-	        }
-
-	        return question.format ? yield question.format(answer, answers) : answer;
-	      });
-
-	      return function getFormattedAnswer(_x, _x2) {
-	        return _ref.apply(this, arguments);
-	      };
-	    }();
-
-	    var _iterator = _createForOfIteratorHelper(questions),
-	        _step;
-
-	    try {
-	      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-	        question = _step.value;
-	        var _question = question;
-	        name = _question.name;
-	        type = _question.type;
-
-	        // evaluate type first and skip if type is a falsy value
-	        if (typeof type === 'function') {
-	          type = yield type(answer, _objectSpread({}, answers), question);
-	          question['type'] = type;
-	        }
-
-	        if (!type) continue; // if property is a function, invoke it unless it's a special function
-
-	        for (let key in question) {
-	          if (passOn.includes(key)) continue;
-	          let value = question[key];
-	          question[key] = typeof value === 'function' ? yield value(answer, _objectSpread({}, answers), lastPrompt) : value;
-	        }
-
-	        lastPrompt = question;
-
-	        if (typeof question.message !== 'string') {
-	          throw new Error('prompt message is required');
-	        } // update vars in case they changed
-
-
-	        var _question2 = question;
-	        name = _question2.name;
-	        type = _question2.type;
-
-	        if (prompts[type] === void 0) {
-	          throw new Error(`prompt type (${type}) is not defined`);
-	        }
-
-	        if (override[question.name] !== undefined) {
-	          answer = yield getFormattedAnswer(question, override[question.name]);
-
-	          if (answer !== undefined) {
-	            answers[name] = answer;
-	            continue;
-	          }
-	        }
-
-	        try {
-	          // Get the injected answer if there is one or prompt the user
-	          answer = prompt._injected ? getInjectedAnswer(prompt._injected, question.initial) : yield prompts[type](question);
-	          answers[name] = answer = yield getFormattedAnswer(question, answer, true);
-	          quit = yield onSubmit(question, answer, answers);
-	        } catch (err) {
-	          quit = !(yield onCancel(question, answers));
-	        }
-
-	        if (quit) return answers;
-	      }
-	    } catch (err) {
-	      _iterator.e(err);
-	    } finally {
-	      _iterator.f();
-	    }
-
-	    return answers;
-	  });
-	  return _prompt.apply(this, arguments);
-	}
-
-	function getInjectedAnswer(injected, deafultValue) {
-	  const answer = injected.shift();
-
-	  if (answer instanceof Error) {
-	    throw answer;
-	  }
-
-	  return answer === undefined ? deafultValue : answer;
-	}
-
-	function inject(answers) {
-	  prompt._injected = (prompt._injected || []).concat(answers);
-	}
-
-	function override(answers) {
-	  prompt._override = Object.assign({}, answers);
-	}
-
-	dist = Object.assign(prompt, {
-	  prompt,
-	  prompts,
-	  inject,
-	  override
-	});
-	return dist;
-}
-
-var prompts$2 = {};
-
-var action;
-var hasRequiredAction;
-
-function requireAction () {
-	if (hasRequiredAction) return action;
-	hasRequiredAction = 1;
-
-	action = (key, isSelect) => {
-	  if (key.meta && key.name !== 'escape') return;
-	  
-	  if (key.ctrl) {
-	    if (key.name === 'a') return 'first';
-	    if (key.name === 'c') return 'abort';
-	    if (key.name === 'd') return 'abort';
-	    if (key.name === 'e') return 'last';
-	    if (key.name === 'g') return 'reset';
-	  }
-	  
-	  if (isSelect) {
-	    if (key.name === 'j') return 'down';
-	    if (key.name === 'k') return 'up';
-	  }
-
-	  if (key.name === 'return') return 'submit';
-	  if (key.name === 'enter') return 'submit'; // ctrl + J
-	  if (key.name === 'backspace') return 'delete';
-	  if (key.name === 'delete') return 'deleteForward';
-	  if (key.name === 'abort') return 'abort';
-	  if (key.name === 'escape') return 'exit';
-	  if (key.name === 'tab') return 'next';
-	  if (key.name === 'pagedown') return 'nextPage';
-	  if (key.name === 'pageup') return 'prevPage';
-	  // TODO create home() in prompt types (e.g. TextPrompt)
-	  if (key.name === 'home') return 'home';
-	  // TODO create end() in prompt types (e.g. TextPrompt)
-	  if (key.name === 'end') return 'end';
-
-	  if (key.name === 'up') return 'up';
-	  if (key.name === 'down') return 'down';
-	  if (key.name === 'right') return 'right';
-	  if (key.name === 'left') return 'left';
-
-	  return false;
-	};
-	return action;
-}
-
-var strip;
-var hasRequiredStrip;
-
-function requireStrip () {
-	if (hasRequiredStrip) return strip;
-	hasRequiredStrip = 1;
-
-	strip = str => {
-	  const pattern = [
-	    '[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)',
-	    '(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PRZcf-ntqry=><~]))'
-	  ].join('|');
-
-	  const RGX = new RegExp(pattern, 'g');
-	  return typeof str === 'string' ? str.replace(RGX, '') : str;
-	};
-	return strip;
-}
-
-var clear;
-var hasRequiredClear;
-
-function requireClear () {
-	if (hasRequiredClear) return clear;
-	hasRequiredClear = 1;
-
-	const strip = requireStrip();
-	const { erase, cursor } = requireSrc();
-
-	const width = str => [...strip(str)].length;
-
-	/**
-	 * @param {string} prompt
-	 * @param {number} perLine
-	 */
-	clear = function(prompt, perLine) {
-	  if (!perLine) return erase.line + cursor.to(0);
-
-	  let rows = 0;
-	  const lines = prompt.split(/\r?\n/);
-	  for (let line of lines) {
-	    rows += 1 + Math.floor(Math.max(width(line) - 1, 0) / perLine);
-	  }
-
-	  return erase.lines(rows);
-	};
-	return clear;
-}
-
-var figures_1;
-var hasRequiredFigures;
-
-function requireFigures () {
-	if (hasRequiredFigures) return figures_1;
-	hasRequiredFigures = 1;
-
-	 const main = {
-	  arrowUp: '↑',
-	  arrowDown: '↓',
-	  arrowLeft: '←',
-	  arrowRight: '→',
-	  radioOn: '◉',
-	  radioOff: '◯',
-	  tick: '✔',	
-	  cross: '✖',	
-	  ellipsis: '…',	
-	  pointerSmall: '›',	
-	  line: '─',	
-	  pointer: '❯'	
-	};	
-	const win = {
-	  arrowUp: main.arrowUp,
-	  arrowDown: main.arrowDown,
-	  arrowLeft: main.arrowLeft,
-	  arrowRight: main.arrowRight,
-	  radioOn: '(*)',
-	  radioOff: '( )',	
-	  tick: '√',	
-	  cross: '×',	
-	  ellipsis: '...',	
-	  pointerSmall: '»',	
-	  line: '─',	
-	  pointer: '>'	
-	};	
-	const figures = process.platform === 'win32' ? win : main;	
-
-	 figures_1 = figures;
-	return figures_1;
-}
-
-var style;
-var hasRequiredStyle;
-
-function requireStyle () {
-	if (hasRequiredStyle) return style;
-	hasRequiredStyle = 1;
-
-	const c = requireKleur();
-	const figures = requireFigures();
-
-	// rendering user input.
-	const styles = Object.freeze({
-	  password: { scale: 1, render: input => '*'.repeat(input.length) },
-	  emoji: { scale: 2, render: input => '😃'.repeat(input.length) },
-	  invisible: { scale: 0, render: input => '' },
-	  default: { scale: 1, render: input => `${input}` }
-	});
-	const render = type => styles[type] || styles.default;
-
-	// icon to signalize a prompt.
-	const symbols = Object.freeze({
-	  aborted: c.red(figures.cross),
-	  done: c.green(figures.tick),
-	  exited: c.yellow(figures.cross),
-	  default: c.cyan('?')
-	});
-
-	const symbol = (done, aborted, exited) =>
-	  aborted ? symbols.aborted : exited ? symbols.exited : done ? symbols.done : symbols.default;
-
-	// between the question and the user's input.
-	const delimiter = completing =>
-	  c.gray(completing ? figures.ellipsis : figures.pointerSmall);
-
-	const item = (expandable, expanded) =>
-	  c.gray(expandable ? (expanded ? figures.pointerSmall : '+') : figures.line);
-
-	style = {
-	  styles,
-	  render,
-	  symbols,
-	  symbol,
-	  delimiter,
-	  item
-	};
-	return style;
-}
-
-var lines;
-var hasRequiredLines;
-
-function requireLines () {
-	if (hasRequiredLines) return lines;
-	hasRequiredLines = 1;
-
-	const strip = requireStrip();
-
-	/**
-	 * @param {string} msg
-	 * @param {number} perLine
-	 */
-	lines = function (msg, perLine) {
-	  let lines = String(strip(msg) || '').split(/\r?\n/);
-
-	  if (!perLine) return lines.length;
-	  return lines.map(l => Math.ceil(l.length / perLine))
-	      .reduce((a, b) => a + b);
-	};
-	return lines;
-}
-
-var wrap;
-var hasRequiredWrap;
-
-function requireWrap () {
-	if (hasRequiredWrap) return wrap;
-	hasRequiredWrap = 1;
-
-	/**
-	 * @param {string} msg The message to wrap
-	 * @param {object} opts
-	 * @param {number|string} [opts.margin] Left margin
-	 * @param {number} opts.width Maximum characters per line including the margin
-	 */
-	wrap = (msg, opts = {}) => {
-	  const tab = Number.isSafeInteger(parseInt(opts.margin))
-	    ? new Array(parseInt(opts.margin)).fill(' ').join('')
-	    : (opts.margin || '');
-
-	  const width = opts.width;
-
-	  return (msg || '').split(/\r?\n/g)
-	    .map(line => line
-	      .split(/\s+/g)
-	      .reduce((arr, w) => {
-	        if (w.length + tab.length >= width || arr[arr.length - 1].length + w.length + 1 < width)
-	          arr[arr.length - 1] += ` ${w}`;
-	        else arr.push(`${tab}${w}`);
-	        return arr;
-	      }, [ tab ])
-	      .join('\n'))
-	    .join('\n');
-	};
-	return wrap;
-}
-
-var entriesToDisplay;
-var hasRequiredEntriesToDisplay;
-
-function requireEntriesToDisplay () {
-	if (hasRequiredEntriesToDisplay) return entriesToDisplay;
-	hasRequiredEntriesToDisplay = 1;
-
-	/**
-	 * Determine what entries should be displayed on the screen, based on the
-	 * currently selected index and the maximum visible. Used in list-based
-	 * prompts like `select` and `multiselect`.
-	 *
-	 * @param {number} cursor the currently selected entry
-	 * @param {number} total the total entries available to display
-	 * @param {number} [maxVisible] the number of entries that can be displayed
-	 */
-	entriesToDisplay = (cursor, total, maxVisible)  => {
-	  maxVisible = maxVisible || total;
-
-	  let startIndex = Math.min(total- maxVisible, cursor - Math.floor(maxVisible / 2));
-	  if (startIndex < 0) startIndex = 0;
-
-	  let endIndex = Math.min(startIndex + maxVisible, total);
-
-	  return { startIndex, endIndex };
-	};
-	return entriesToDisplay;
-}
-
-var util;
-var hasRequiredUtil;
-
-function requireUtil () {
-	if (hasRequiredUtil) return util;
-	hasRequiredUtil = 1;
-
-	util = {
-	  action: requireAction(),
-	  clear: requireClear(),
-	  style: requireStyle(),
-	  strip: requireStrip(),
-	  figures: requireFigures(),
-	  lines: requireLines(),
-	  wrap: requireWrap(),
-	  entriesToDisplay: requireEntriesToDisplay()
-	};
-	return util;
-}
-
-var prompt;
-var hasRequiredPrompt;
-
-function requirePrompt () {
-	if (hasRequiredPrompt) return prompt;
-	hasRequiredPrompt = 1;
-
-	const readline = require$$0$3;
-	const { action } = requireUtil();
-	const EventEmitter = require$$2;
-	const { beep, cursor } = requireSrc();
-	const color = requireKleur();
-
-	/**
-	 * Base prompt skeleton
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 */
-	class Prompt extends EventEmitter {
-	  constructor(opts={}) {
-	    super();
-
-	    this.firstRender = true;
-	    this.in = opts.stdin || process.stdin;
-	    this.out = opts.stdout || process.stdout;
-	    this.onRender = (opts.onRender || (() => void 0)).bind(this);
-	    const rl = readline.createInterface({ input:this.in, escapeCodeTimeout:50 });
-	    readline.emitKeypressEvents(this.in, rl);
-
-	    if (this.in.isTTY) this.in.setRawMode(true);
-	    const isSelect = [ 'SelectPrompt', 'MultiselectPrompt' ].indexOf(this.constructor.name) > -1;
-	    const keypress = (str, key) => {
-	      let a = action(key, isSelect);
-	      if (a === false) {
-	        this._ && this._(str, key);
-	      } else if (typeof this[a] === 'function') {
-	        this[a](key);
-	      } else {
-	        this.bell();
-	      }
-	    };
-
-	    this.close = () => {
-	      this.out.write(cursor.show);
-	      this.in.removeListener('keypress', keypress);
-	      if (this.in.isTTY) this.in.setRawMode(false);
-	      rl.close();
-	      this.emit(this.aborted ? 'abort' : this.exited ? 'exit' : 'submit', this.value);
-	      this.closed = true;
-	    };
-
-	    this.in.on('keypress', keypress);
-	  }
-
-	  fire() {
-	    this.emit('state', {
-	      value: this.value,
-	      aborted: !!this.aborted,
-	      exited: !!this.exited
-	    });
-	  }
-
-	  bell() {
-	    this.out.write(beep);
-	  }
-
-	  render() {
-	    this.onRender(color);
-	    if (this.firstRender) this.firstRender = false;
-	  }
-	}
-
-	prompt = Prompt;
-	return prompt;
-}
-
-var text;
-var hasRequiredText;
-
-function requireText () {
-	if (hasRequiredText) return text;
-	hasRequiredText = 1;
-	const color = requireKleur();
-	const Prompt = requirePrompt();
-	const { erase, cursor } = requireSrc();
-	const { style, clear, lines, figures } = requireUtil();
-
-	/**
-	 * TextPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {String} [opts.style='default'] Render style
-	 * @param {String} [opts.initial] Default value
-	 * @param {Function} [opts.validate] Validate function
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 * @param {String} [opts.error] The invalid error label
-	 */
-	class TextPrompt extends Prompt {
-	  constructor(opts={}) {
-	    super(opts);
-	    this.transform = style.render(opts.style);
-	    this.scale = this.transform.scale;
-	    this.msg = opts.message;
-	    this.initial = opts.initial || ``;
-	    this.validator = opts.validate || (() => true);
-	    this.value = ``;
-	    this.errorMsg = opts.error || `Please Enter A Valid Value`;
-	    this.cursor = Number(!!this.initial);
-	    this.cursorOffset = 0;
-	    this.clear = clear(``, this.out.columns);
-	    this.render();
-	  }
-
-	  set value(v) {
-	    if (!v && this.initial) {
-	      this.placeholder = true;
-	      this.rendered = color.gray(this.transform.render(this.initial));
-	    } else {
-	      this.placeholder = false;
-	      this.rendered = this.transform.render(v);
-	    }
-	    this._value = v;
-	    this.fire();
-	  }
-
-	  get value() {
-	    return this._value;
-	  }
-
-	  reset() {
-	    this.value = ``;
-	    this.cursor = Number(!!this.initial);
-	    this.cursorOffset = 0;
-	    this.fire();
-	    this.render();
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    this.value = this.value || this.initial;
-	    this.done = this.aborted = true;
-	    this.error = false;
-	    this.red = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  async validate() {
-	    let valid = await this.validator(this.value);
-	    if (typeof valid === `string`) {
-	      this.errorMsg = valid;
-	      valid = false;
-	    }
-	    this.error = !valid;
-	  }
-
-	  async submit() {
-	    this.value = this.value || this.initial;
-	    this.cursorOffset = 0;
-	    this.cursor = this.rendered.length;
-	    await this.validate();
-	    if (this.error) {
-	      this.red = true;
-	      this.fire();
-	      this.render();
-	      return;
-	    }
-	    this.done = true;
-	    this.aborted = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  next() {
-	    if (!this.placeholder) return this.bell();
-	    this.value = this.initial;
-	    this.cursor = this.rendered.length;
-	    this.fire();
-	    this.render();
-	  }
-
-	  moveCursor(n) {
-	    if (this.placeholder) return;
-	    this.cursor = this.cursor+n;
-	    this.cursorOffset += n;
-	  }
-
-	  _(c, key) {
-	    let s1 = this.value.slice(0, this.cursor);
-	    let s2 = this.value.slice(this.cursor);
-	    this.value = `${s1}${c}${s2}`;
-	    this.red = false;
-	    this.cursor = this.placeholder ? 0 : s1.length+1;
-	    this.render();
-	  }
-
-	  delete() {
-	    if (this.isCursorAtStart()) return this.bell();
-	    let s1 = this.value.slice(0, this.cursor-1);
-	    let s2 = this.value.slice(this.cursor);
-	    this.value = `${s1}${s2}`;
-	    this.red = false;
-	    if (this.isCursorAtStart()) {
-	      this.cursorOffset = 0;
-	    } else {
-	      this.cursorOffset++;
-	      this.moveCursor(-1);
-	    }
-	    this.render();
-	  }
-
-	  deleteForward() {
-	    if(this.cursor*this.scale >= this.rendered.length || this.placeholder) return this.bell();
-	    let s1 = this.value.slice(0, this.cursor);
-	    let s2 = this.value.slice(this.cursor+1);
-	    this.value = `${s1}${s2}`;
-	    this.red = false;
-	    if (this.isCursorAtEnd()) {
-	      this.cursorOffset = 0;
-	    } else {
-	      this.cursorOffset++;
-	    }
-	    this.render();
-	  }
-
-	  first() {
-	    this.cursor = 0;
-	    this.render();
-	  }
-
-	  last() {
-	    this.cursor = this.value.length;
-	    this.render();
-	  }
-
-	  left() {
-	    if (this.cursor <= 0 || this.placeholder) return this.bell();
-	    this.moveCursor(-1);
-	    this.render();
-	  }
-
-	  right() {
-	    if (this.cursor*this.scale >= this.rendered.length || this.placeholder) return this.bell();
-	    this.moveCursor(1);
-	    this.render();
-	  }
-
-	  isCursorAtStart() {
-	    return this.cursor === 0 || (this.placeholder && this.cursor === 1);
-	  }
-
-	  isCursorAtEnd() {
-	    return this.cursor === this.rendered.length || (this.placeholder && this.cursor === this.rendered.length + 1)
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (!this.firstRender) {
-	      if (this.outputError)
-	        this.out.write(cursor.down(lines(this.outputError, this.out.columns) - 1) + clear(this.outputError, this.out.columns));
-	      this.out.write(clear(this.outputText, this.out.columns));
-	    }
-	    super.render();
-	    this.outputError = '';
-
-	    this.outputText = [
-	      style.symbol(this.done, this.aborted),
-	      color.bold(this.msg),
-	      style.delimiter(this.done),
-	      this.red ? color.red(this.rendered) : this.rendered
-	    ].join(` `);
-
-	    if (this.error) {
-	      this.outputError += this.errorMsg.split(`\n`)
-	          .reduce((a, l, i) => a + `\n${i ? ' ' : figures.pointerSmall} ${color.red().italic(l)}`, ``);
-	    }
-
-	    this.out.write(erase.line + cursor.to(0) + this.outputText + cursor.save + this.outputError + cursor.restore + cursor.move(this.cursorOffset, 0));
-	  }
-	}
-
-	text = TextPrompt;
-	return text;
-}
-
-var select;
-var hasRequiredSelect;
-
-function requireSelect () {
-	if (hasRequiredSelect) return select;
-	hasRequiredSelect = 1;
-
-	const color = requireKleur();
-	const Prompt = requirePrompt();
-	const { style, clear, figures, wrap, entriesToDisplay } = requireUtil();
-	const { cursor } = requireSrc();
-
-	/**
-	 * SelectPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Array} opts.choices Array of choice objects
-	 * @param {String} [opts.hint] Hint to display
-	 * @param {Number} [opts.initial] Index of default value
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 * @param {Number} [opts.optionsPerPage=10] Max options to display at once
-	 */
-	class SelectPrompt extends Prompt {
-	  constructor(opts={}) {
-	    super(opts);
-	    this.msg = opts.message;
-	    this.hint = opts.hint || '- Use arrow-keys. Return to submit.';
-	    this.warn = opts.warn || '- This option is disabled';
-	    this.cursor = opts.initial || 0;
-	    this.choices = opts.choices.map((ch, idx) => {
-	      if (typeof ch === 'string')
-	        ch = {title: ch, value: idx};
-	      return {
-	        title: ch && (ch.title || ch.value || ch),
-	        value: ch && (ch.value === undefined ? idx : ch.value),
-	        description: ch && ch.description,
-	        selected: ch && ch.selected,
-	        disabled: ch && ch.disabled
-	      };
-	    });
-	    this.optionsPerPage = opts.optionsPerPage || 10;
-	    this.value = (this.choices[this.cursor] || {}).value;
-	    this.clear = clear('', this.out.columns);
-	    this.render();
-	  }
-
-	  moveCursor(n) {
-	    this.cursor = n;
-	    this.value = this.choices[n].value;
-	    this.fire();
-	  }
-
-	  reset() {
-	    this.moveCursor(0);
-	    this.fire();
-	    this.render();
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    this.done = this.aborted = true;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  submit() {
-	    if (!this.selection.disabled) {
-	      this.done = true;
-	      this.aborted = false;
-	      this.fire();
-	      this.render();
-	      this.out.write('\n');
-	      this.close();
-	    } else
-	      this.bell();
-	  }
-
-	  first() {
-	    this.moveCursor(0);
-	    this.render();
-	  }
-
-	  last() {
-	    this.moveCursor(this.choices.length - 1);
-	    this.render();
-	  }
-
-	  up() {
-	    if (this.cursor === 0) {
-	      this.moveCursor(this.choices.length - 1);
-	    } else {
-	      this.moveCursor(this.cursor - 1);
-	    }
-	    this.render();
-	  }
-
-	  down() {
-	    if (this.cursor === this.choices.length - 1) {
-	      this.moveCursor(0);
-	    } else {
-	      this.moveCursor(this.cursor + 1);
-	    }
-	    this.render();
-	  }
-
-	  next() {
-	    this.moveCursor((this.cursor + 1) % this.choices.length);
-	    this.render();
-	  }
-
-	  _(c, key) {
-	    if (c === ' ') return this.submit();
-	  }
-
-	  get selection() {
-	    return this.choices[this.cursor];
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);
-	    else this.out.write(clear(this.outputText, this.out.columns));
-	    super.render();
-
-	    let { startIndex, endIndex } = entriesToDisplay(this.cursor, this.choices.length, this.optionsPerPage);
-
-	    // Print prompt
-	    this.outputText = [
-	      style.symbol(this.done, this.aborted),
-	      color.bold(this.msg),
-	      style.delimiter(false),
-	      this.done ? this.selection.title : this.selection.disabled
-	          ? color.yellow(this.warn) : color.gray(this.hint)
-	    ].join(' ');
-
-	    // Print choices
-	    if (!this.done) {
-	      this.outputText += '\n';
-	      for (let i = startIndex; i < endIndex; i++) {
-	        let title, prefix, desc = '', v = this.choices[i];
-
-	        // Determine whether to display "more choices" indicators
-	        if (i === startIndex && startIndex > 0) {
-	          prefix = figures.arrowUp;
-	        } else if (i === endIndex - 1 && endIndex < this.choices.length) {
-	          prefix = figures.arrowDown;
-	        } else {
-	          prefix = ' ';
-	        }
-
-	        if (v.disabled) {
-	          title = this.cursor === i ? color.gray().underline(v.title) : color.strikethrough().gray(v.title);
-	          prefix = (this.cursor === i ? color.bold().gray(figures.pointer) + ' ' : '  ') + prefix;
-	        } else {
-	          title = this.cursor === i ? color.cyan().underline(v.title) : v.title;
-	          prefix = (this.cursor === i ? color.cyan(figures.pointer) + ' ' : '  ') + prefix;
-	          if (v.description && this.cursor === i) {
-	            desc = ` - ${v.description}`;
-	            if (prefix.length + title.length + desc.length >= this.out.columns
-	                || v.description.split(/\r?\n/).length > 1) {
-	              desc = '\n' + wrap(v.description, { margin: 3, width: this.out.columns });
-	            }
-	          }
-	        }
-
-	        this.outputText += `${prefix} ${title}${color.gray(desc)}\n`;
-	      }
-	    }
-
-	    this.out.write(this.outputText);
-	  }
-	}
-
-	select = SelectPrompt;
-	return select;
-}
-
-var toggle;
-var hasRequiredToggle;
-
-function requireToggle () {
-	if (hasRequiredToggle) return toggle;
-	hasRequiredToggle = 1;
-	const color = requireKleur();
-	const Prompt = requirePrompt();
-	const { style, clear } = requireUtil();
-	const { cursor, erase } = requireSrc();
-
-	/**
-	 * TogglePrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Boolean} [opts.initial=false] Default value
-	 * @param {String} [opts.active='no'] Active label
-	 * @param {String} [opts.inactive='off'] Inactive label
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 */
-	class TogglePrompt extends Prompt {
-	  constructor(opts={}) {
-	    super(opts);
-	    this.msg = opts.message;
-	    this.value = !!opts.initial;
-	    this.active = opts.active || 'on';
-	    this.inactive = opts.inactive || 'off';
-	    this.initialValue = this.value;
-	    this.render();
-	  }
-
-	  reset() {
-	    this.value = this.initialValue;
-	    this.fire();
-	    this.render();
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    this.done = this.aborted = true;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  submit() {
-	    this.done = true;
-	    this.aborted = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  deactivate() {
-	    if (this.value === false) return this.bell();
-	    this.value = false;
-	    this.render();
-	  }
-
-	  activate() {
-	    if (this.value === true) return this.bell();
-	    this.value = true;
-	    this.render();
-	  }
-
-	  delete() {
-	    this.deactivate();
-	  }
-	  left() {
-	    this.deactivate();
-	  }
-	  right() {
-	    this.activate();
-	  }
-	  down() {
-	    this.deactivate();
-	  }
-	  up() {
-	    this.activate();
-	  }
-
-	  next() {
-	    this.value = !this.value;
-	    this.fire();
-	    this.render();
-	  }
-
-	  _(c, key) {
-	    if (c === ' ') {
-	      this.value = !this.value;
-	    } else if (c === '1') {
-	      this.value = true;
-	    } else if (c === '0') {
-	      this.value = false;
-	    } else return this.bell();
-	    this.render();
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);
-	    else this.out.write(clear(this.outputText, this.out.columns));
-	    super.render();
-
-	    this.outputText = [
-	      style.symbol(this.done, this.aborted),
-	      color.bold(this.msg),
-	      style.delimiter(this.done),
-	      this.value ? this.inactive : color.cyan().underline(this.inactive),
-	      color.gray('/'),
-	      this.value ? color.cyan().underline(this.active) : this.active
-	    ].join(' ');
-
-	    this.out.write(erase.line + cursor.to(0) + this.outputText);
-	  }
-	}
-
-	toggle = TogglePrompt;
-	return toggle;
-}
-
-var datepart;
-var hasRequiredDatepart;
-
-function requireDatepart () {
-	if (hasRequiredDatepart) return datepart;
-	hasRequiredDatepart = 1;
-
-	class DatePart {
-	  constructor({token, date, parts, locales}) {
-	    this.token = token;
-	    this.date = date || new Date();
-	    this.parts = parts || [this];
-	    this.locales = locales || {};
-	  }
-
-	  up() {}
-
-	  down() {}
-
-	  next() {
-	    const currentIdx = this.parts.indexOf(this);
-	    return this.parts.find((part, idx) => idx > currentIdx && part instanceof DatePart);
-	  }
-
-	  setTo(val) {}
-
-	  prev() {
-	    let parts = [].concat(this.parts).reverse();
-	    const currentIdx = parts.indexOf(this);
-	    return parts.find((part, idx) => idx > currentIdx && part instanceof DatePart);
-	  }
-
-	  toString() {
-	    return String(this.date);
-	  }
-	}
-
-	datepart = DatePart;
-	return datepart;
-}
-
-var meridiem;
-var hasRequiredMeridiem;
-
-function requireMeridiem () {
-	if (hasRequiredMeridiem) return meridiem;
-	hasRequiredMeridiem = 1;
-
-	const DatePart = requireDatepart();
-
-	class Meridiem extends DatePart {
-	  constructor(opts={}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setHours((this.date.getHours() + 12) % 24);
-	  }
-
-	  down() {
-	    this.up();
-	  }
-
-	  toString() {
-	    let meridiem = this.date.getHours() > 12 ? 'pm' : 'am';
-	    return /\A/.test(this.token) ? meridiem.toUpperCase() : meridiem;
-	  }
-	}
-
-	meridiem = Meridiem;
-	return meridiem;
-}
-
-var day;
-var hasRequiredDay;
-
-function requireDay () {
-	if (hasRequiredDay) return day;
-	hasRequiredDay = 1;
-
-	const DatePart = requireDatepart();
-
-	const pos = n => {
-	  n = n % 10;
-	  return n === 1 ? 'st'
-	       : n === 2 ? 'nd'
-	       : n === 3 ? 'rd'
-	       : 'th';
-	};
-
-	class Day extends DatePart {
-	  constructor(opts={}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setDate(this.date.getDate() + 1);
-	  }
-
-	  down() {
-	    this.date.setDate(this.date.getDate() - 1);
-	  }
-
-	  setTo(val) {
-	    this.date.setDate(parseInt(val.substr(-2)));
-	  }
-
-	  toString() {
-	    let date = this.date.getDate();
-	    let day = this.date.getDay();
-	    return this.token === 'DD' ? String(date).padStart(2, '0')
-	         : this.token === 'Do' ? date + pos(date)
-	         : this.token === 'd' ? day + 1
-	         : this.token === 'ddd' ? this.locales.weekdaysShort[day]
-	         : this.token === 'dddd' ? this.locales.weekdays[day]
-	         : date;
-	  }
-	}
-
-	day = Day;
-	return day;
-}
-
-var hours;
-var hasRequiredHours;
-
-function requireHours () {
-	if (hasRequiredHours) return hours;
-	hasRequiredHours = 1;
-
-	const DatePart = requireDatepart();
-
-	class Hours extends DatePart {
-	  constructor(opts={}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setHours(this.date.getHours() + 1);
-	  }
-
-	  down() {
-	    this.date.setHours(this.date.getHours() - 1);
-	  }
-
-	  setTo(val) {
-	    this.date.setHours(parseInt(val.substr(-2)));
-	  }
-
-	  toString() {
-	    let hours = this.date.getHours();
-	    if (/h/.test(this.token))
-	      hours = (hours % 12) || 12;
-	    return this.token.length > 1 ? String(hours).padStart(2, '0') : hours;
-	  }
-	}
-
-	hours = Hours;
-	return hours;
-}
-
-var milliseconds;
-var hasRequiredMilliseconds;
-
-function requireMilliseconds () {
-	if (hasRequiredMilliseconds) return milliseconds;
-	hasRequiredMilliseconds = 1;
-
-	const DatePart = requireDatepart();
-
-	class Milliseconds extends DatePart {
-	  constructor(opts={}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setMilliseconds(this.date.getMilliseconds() + 1);
-	  }
-
-	  down() {
-	    this.date.setMilliseconds(this.date.getMilliseconds() - 1);
-	  }
-
-	  setTo(val) {
-	    this.date.setMilliseconds(parseInt(val.substr(-(this.token.length))));
-	  }
-
-	  toString() {
-	    return String(this.date.getMilliseconds()).padStart(4, '0')
-	                                              .substr(0, this.token.length);
-	  }
-	}
-
-	milliseconds = Milliseconds;
-	return milliseconds;
-}
-
-var minutes;
-var hasRequiredMinutes;
-
-function requireMinutes () {
-	if (hasRequiredMinutes) return minutes;
-	hasRequiredMinutes = 1;
-
-	const DatePart = requireDatepart();
-
-	class Minutes extends DatePart {
-	  constructor(opts={}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setMinutes(this.date.getMinutes() + 1);
-	  }
-
-	  down() {
-	    this.date.setMinutes(this.date.getMinutes() - 1);
-	  }
-
-	  setTo(val) {
-	    this.date.setMinutes(parseInt(val.substr(-2)));
-	  }
-
-	  toString() {
-	    let m = this.date.getMinutes();
-	    return this.token.length > 1 ? String(m).padStart(2, '0') : m;
-	  }
-	}
-
-	minutes = Minutes;
-	return minutes;
-}
-
-var month;
-var hasRequiredMonth;
-
-function requireMonth () {
-	if (hasRequiredMonth) return month;
-	hasRequiredMonth = 1;
-
-	const DatePart = requireDatepart();
-
-	class Month extends DatePart {
-	  constructor(opts={}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setMonth(this.date.getMonth() + 1);
-	  }
-
-	  down() {
-	    this.date.setMonth(this.date.getMonth() - 1);
-	  }
-
-	  setTo(val) {
-	    val = parseInt(val.substr(-2)) - 1;
-	    this.date.setMonth(val < 0 ? 0 : val);
-	  }
-
-	  toString() {
-	    let month = this.date.getMonth();
-	    let tl = this.token.length;
-	    return tl === 2 ? String(month + 1).padStart(2, '0')
-	           : tl === 3 ? this.locales.monthsShort[month]
-	             : tl === 4 ? this.locales.months[month]
-	               : String(month + 1);
-	  }
-	}
-
-	month = Month;
-	return month;
-}
-
-var seconds;
-var hasRequiredSeconds;
-
-function requireSeconds () {
-	if (hasRequiredSeconds) return seconds;
-	hasRequiredSeconds = 1;
-
-	const DatePart = requireDatepart();
-
-	class Seconds extends DatePart {
-	  constructor(opts={}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setSeconds(this.date.getSeconds() + 1);
-	  }
-
-	  down() {
-	    this.date.setSeconds(this.date.getSeconds() - 1);
-	  }
-
-	  setTo(val) {
-	    this.date.setSeconds(parseInt(val.substr(-2)));
-	  }
-
-	  toString() {
-	    let s = this.date.getSeconds();
-	    return this.token.length > 1 ? String(s).padStart(2, '0') : s;
-	  }
-	}
-
-	seconds = Seconds;
-	return seconds;
-}
-
-var year;
-var hasRequiredYear;
-
-function requireYear () {
-	if (hasRequiredYear) return year;
-	hasRequiredYear = 1;
-
-	const DatePart = requireDatepart();
-
-	class Year extends DatePart {
-	  constructor(opts={}) {
-	    super(opts);
-	  }
-
-	  up() {
-	    this.date.setFullYear(this.date.getFullYear() + 1);
-	  }
-
-	  down() {
-	    this.date.setFullYear(this.date.getFullYear() - 1);
-	  }
-
-	  setTo(val) {
-	    this.date.setFullYear(val.substr(-4));
-	  }
-
-	  toString() {
-	    let year = String(this.date.getFullYear()).padStart(4, '0');
-	    return this.token.length === 2 ? year.substr(-2) : year;
-	  }
-	}
-
-	year = Year;
-	return year;
-}
-
-var dateparts;
-var hasRequiredDateparts;
-
-function requireDateparts () {
-	if (hasRequiredDateparts) return dateparts;
-	hasRequiredDateparts = 1;
-
-	dateparts = {
-	  DatePart: requireDatepart(),
-	  Meridiem: requireMeridiem(),
-	  Day: requireDay(),
-	  Hours: requireHours(),
-	  Milliseconds: requireMilliseconds(),
-	  Minutes: requireMinutes(),
-	  Month: requireMonth(),
-	  Seconds: requireSeconds(),
-	  Year: requireYear(),
-	};
-	return dateparts;
-}
-
-var date;
-var hasRequiredDate;
-
-function requireDate () {
-	if (hasRequiredDate) return date;
-	hasRequiredDate = 1;
-
-	const color = requireKleur();
-	const Prompt = requirePrompt();
-	const { style, clear, figures } = requireUtil();
-	const { erase, cursor } = requireSrc();
-	const { DatePart, Meridiem, Day, Hours, Milliseconds, Minutes, Month, Seconds, Year } = requireDateparts();
-
-	const regex = /\\(.)|"((?:\\["\\]|[^"])+)"|(D[Do]?|d{3,4}|d)|(M{1,4})|(YY(?:YY)?)|([aA])|([Hh]{1,2})|(m{1,2})|(s{1,2})|(S{1,4})|./g;
-	const regexGroups = {
-	  1: ({token}) => token.replace(/\\(.)/g, '$1'),
-	  2: (opts) => new Day(opts), // Day // TODO
-	  3: (opts) => new Month(opts), // Month
-	  4: (opts) => new Year(opts), // Year
-	  5: (opts) => new Meridiem(opts), // AM/PM // TODO (special)
-	  6: (opts) => new Hours(opts), // Hours
-	  7: (opts) => new Minutes(opts), // Minutes
-	  8: (opts) => new Seconds(opts), // Seconds
-	  9: (opts) => new Milliseconds(opts), // Fractional seconds
-	};
-
-	const dfltLocales = {
-	  months: 'January,February,March,April,May,June,July,August,September,October,November,December'.split(','),
-	  monthsShort: 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(','),
-	  weekdays: 'Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday'.split(','),
-	  weekdaysShort: 'Sun,Mon,Tue,Wed,Thu,Fri,Sat'.split(',')
-	};
-
-
-	/**
-	 * DatePrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Number} [opts.initial] Index of default value
-	 * @param {String} [opts.mask] The format mask
-	 * @param {object} [opts.locales] The date locales
-	 * @param {String} [opts.error] The error message shown on invalid value
-	 * @param {Function} [opts.validate] Function to validate the submitted value
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 */
-	class DatePrompt extends Prompt {
-	  constructor(opts={}) {
-	    super(opts);
-	    this.msg = opts.message;
-	    this.cursor = 0;
-	    this.typed = '';
-	    this.locales = Object.assign(dfltLocales, opts.locales);
-	    this._date = opts.initial || new Date();
-	    this.errorMsg = opts.error || 'Please Enter A Valid Value';
-	    this.validator = opts.validate || (() => true);
-	    this.mask = opts.mask || 'YYYY-MM-DD HH:mm:ss';
-	    this.clear = clear('', this.out.columns);
-	    this.render();
-	  }
-
-	  get value() {
-	    return this.date
-	  }
-
-	  get date() {
-	    return this._date;
-	  }
-
-	  set date(date) {
-	    if (date) this._date.setTime(date.getTime());
-	  }
-
-	  set mask(mask) {
-	    let result;
-	    this.parts = [];
-	    while(result = regex.exec(mask)) {
-	      let match = result.shift();
-	      let idx = result.findIndex(gr => gr != null);
-	      this.parts.push(idx in regexGroups
-	        ? regexGroups[idx]({ token: result[idx] || match, date: this.date, parts: this.parts, locales: this.locales })
-	        : result[idx] || match);
-	    }
-
-	    let parts = this.parts.reduce((arr, i) => {
-	      if (typeof i === 'string' && typeof arr[arr.length - 1] === 'string')
-	        arr[arr.length - 1] += i;
-	      else arr.push(i);
-	      return arr;
-	    }, []);
-
-	    this.parts.splice(0);
-	    this.parts.push(...parts);
-	    this.reset();
-	  }
-
-	  moveCursor(n) {
-	    this.typed = '';
-	    this.cursor = n;
-	    this.fire();
-	  }
-
-	  reset() {
-	    this.moveCursor(this.parts.findIndex(p => p instanceof DatePart));
-	    this.fire();
-	    this.render();
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    this.done = this.aborted = true;
-	    this.error = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  async validate() {
-	    let valid = await this.validator(this.value);
-	    if (typeof valid === 'string') {
-	      this.errorMsg = valid;
-	      valid = false;
-	    }
-	    this.error = !valid;
-	  }
-
-	  async submit() {
-	    await this.validate();
-	    if (this.error) {
-	      this.color = 'red';
-	      this.fire();
-	      this.render();
-	      return;
-	    }
-	    this.done = true;
-	    this.aborted = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  up() {
-	    this.typed = '';
-	    this.parts[this.cursor].up();
-	    this.render();
-	  }
-
-	  down() {
-	    this.typed = '';
-	    this.parts[this.cursor].down();
-	    this.render();
-	  }
-
-	  left() {
-	    let prev = this.parts[this.cursor].prev();
-	    if (prev == null) return this.bell();
-	    this.moveCursor(this.parts.indexOf(prev));
-	    this.render();
-	  }
-
-	  right() {
-	    let next = this.parts[this.cursor].next();
-	    if (next == null) return this.bell();
-	    this.moveCursor(this.parts.indexOf(next));
-	    this.render();
-	  }
-
-	  next() {
-	    let next = this.parts[this.cursor].next();
-	    this.moveCursor(next
-	      ? this.parts.indexOf(next)
-	      : this.parts.findIndex((part) => part instanceof DatePart));
-	    this.render();
-	  }
-
-	  _(c) {
-	    if (/\d/.test(c)) {
-	      this.typed += c;
-	      this.parts[this.cursor].setTo(this.typed);
-	      this.render();
-	    }
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);
-	    else this.out.write(clear(this.outputText, this.out.columns));
-	    super.render();
-
-	    // Print prompt
-	    this.outputText = [
-	      style.symbol(this.done, this.aborted),
-	      color.bold(this.msg),
-	      style.delimiter(false),
-	      this.parts.reduce((arr, p, idx) => arr.concat(idx === this.cursor && !this.done ? color.cyan().underline(p.toString()) : p), [])
-	          .join('')
-	    ].join(' ');
-
-	    // Print error
-	    if (this.error) {
-	      this.outputText += this.errorMsg.split('\n').reduce(
-	          (a, l, i) => a + `\n${i ? ` ` : figures.pointerSmall} ${color.red().italic(l)}`, ``);
-	    }
-
-	    this.out.write(erase.line + cursor.to(0) + this.outputText);
-	  }
-	}
-
-	date = DatePrompt;
-	return date;
-}
-
-var number;
-var hasRequiredNumber;
-
-function requireNumber () {
-	if (hasRequiredNumber) return number;
-	hasRequiredNumber = 1;
-	const color = requireKleur();
-	const Prompt = requirePrompt();
-	const { cursor, erase } = requireSrc();
-	const { style, figures, clear, lines } = requireUtil();
-
-	const isNumber = /[0-9]/;
-	const isDef = any => any !== undefined;
-	const round = (number, precision) => {
-	  let factor = Math.pow(10, precision);
-	  return Math.round(number * factor) / factor;
-	};
-
-	/**
-	 * NumberPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {String} [opts.style='default'] Render style
-	 * @param {Number} [opts.initial] Default value
-	 * @param {Number} [opts.max=+Infinity] Max value
-	 * @param {Number} [opts.min=-Infinity] Min value
-	 * @param {Boolean} [opts.float=false] Parse input as floats
-	 * @param {Number} [opts.round=2] Round floats to x decimals
-	 * @param {Number} [opts.increment=1] Number to increment by when using arrow-keys
-	 * @param {Function} [opts.validate] Validate function
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 * @param {String} [opts.error] The invalid error label
-	 */
-	class NumberPrompt extends Prompt {
-	  constructor(opts={}) {
-	    super(opts);
-	    this.transform = style.render(opts.style);
-	    this.msg = opts.message;
-	    this.initial = isDef(opts.initial) ? opts.initial : '';
-	    this.float = !!opts.float;
-	    this.round = opts.round || 2;
-	    this.inc = opts.increment || 1;
-	    this.min = isDef(opts.min) ? opts.min : -Infinity;
-	    this.max = isDef(opts.max) ? opts.max : Infinity;
-	    this.errorMsg = opts.error || `Please Enter A Valid Value`;
-	    this.validator = opts.validate || (() => true);
-	    this.color = `cyan`;
-	    this.value = ``;
-	    this.typed = ``;
-	    this.lastHit = 0;
-	    this.render();
-	  }
-
-	  set value(v) {
-	    if (!v && v !== 0) {
-	      this.placeholder = true;
-	      this.rendered = color.gray(this.transform.render(`${this.initial}`));
-	      this._value = ``;
-	    } else {
-	      this.placeholder = false;
-	      this.rendered = this.transform.render(`${round(v, this.round)}`);
-	      this._value = round(v, this.round);
-	    }
-	    this.fire();
-	  }
-
-	  get value() {
-	    return this._value;
-	  }
-
-	  parse(x) {
-	    return this.float ? parseFloat(x) : parseInt(x);
-	  }
-
-	  valid(c) {
-	    return c === `-` || c === `.` && this.float || isNumber.test(c)
-	  }
-
-	  reset() {
-	    this.typed = ``;
-	    this.value = ``;
-	    this.fire();
-	    this.render();
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    let x = this.value;
-	    this.value = x !== `` ? x : this.initial;
-	    this.done = this.aborted = true;
-	    this.error = false;
-	    this.fire();
-	    this.render();
-	    this.out.write(`\n`);
-	    this.close();
-	  }
-
-	  async validate() {
-	    let valid = await this.validator(this.value);
-	    if (typeof valid === `string`) {
-	      this.errorMsg = valid;
-	      valid = false;
-	    }
-	    this.error = !valid;
-	  }
-
-	  async submit() {
-	    await this.validate();
-	    if (this.error) {
-	      this.color = `red`;
-	      this.fire();
-	      this.render();
-	      return;
-	    }
-	    let x = this.value;
-	    this.value = x !== `` ? x : this.initial;
-	    this.done = true;
-	    this.aborted = false;
-	    this.error = false;
-	    this.fire();
-	    this.render();
-	    this.out.write(`\n`);
-	    this.close();
-	  }
-
-	  up() {
-	    this.typed = ``;
-	    if(this.value === '') {
-	      this.value = this.min - this.inc;
-	    }
-	    if (this.value >= this.max) return this.bell();
-	    this.value += this.inc;
-	    this.color = `cyan`;
-	    this.fire();
-	    this.render();
-	  }
-
-	  down() {
-	    this.typed = ``;
-	    if(this.value === '') {
-	      this.value = this.min + this.inc;
-	    }
-	    if (this.value <= this.min) return this.bell();
-	    this.value -= this.inc;
-	    this.color = `cyan`;
-	    this.fire();
-	    this.render();
-	  }
-
-	  delete() {
-	    let val = this.value.toString();
-	    if (val.length === 0) return this.bell();
-	    this.value = this.parse((val = val.slice(0, -1))) || ``;
-	    if (this.value !== '' && this.value < this.min) {
-	      this.value = this.min;
-	    }
-	    this.color = `cyan`;
-	    this.fire();
-	    this.render();
-	  }
-
-	  next() {
-	    this.value = this.initial;
-	    this.fire();
-	    this.render();
-	  }
-
-	  _(c, key) {
-	    if (!this.valid(c)) return this.bell();
-
-	    const now = Date.now();
-	    if (now - this.lastHit > 1000) this.typed = ``; // 1s elapsed
-	    this.typed += c;
-	    this.lastHit = now;
-	    this.color = `cyan`;
-
-	    if (c === `.`) return this.fire();
-
-	    this.value = Math.min(this.parse(this.typed), this.max);
-	    if (this.value > this.max) this.value = this.max;
-	    if (this.value < this.min) this.value = this.min;
-	    this.fire();
-	    this.render();
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (!this.firstRender) {
-	      if (this.outputError)
-	        this.out.write(cursor.down(lines(this.outputError, this.out.columns) - 1) + clear(this.outputError, this.out.columns));
-	      this.out.write(clear(this.outputText, this.out.columns));
-	    }
-	    super.render();
-	    this.outputError = '';
-
-	    // Print prompt
-	    this.outputText = [
-	      style.symbol(this.done, this.aborted),
-	      color.bold(this.msg),
-	      style.delimiter(this.done),
-	      !this.done || (!this.done && !this.placeholder)
-	          ? color[this.color]().underline(this.rendered) : this.rendered
-	    ].join(` `);
-
-	    // Print error
-	    if (this.error) {
-	      this.outputError += this.errorMsg.split(`\n`)
-	          .reduce((a, l, i) => a + `\n${i ? ` ` : figures.pointerSmall} ${color.red().italic(l)}`, ``);
-	    }
-
-	    this.out.write(erase.line + cursor.to(0) + this.outputText + cursor.save + this.outputError + cursor.restore);
-	  }
-	}
-
-	number = NumberPrompt;
-	return number;
-}
-
-var multiselect;
-var hasRequiredMultiselect;
-
-function requireMultiselect () {
-	if (hasRequiredMultiselect) return multiselect;
-	hasRequiredMultiselect = 1;
-
-	const color = requireKleur();
-	const { cursor } = requireSrc();
-	const Prompt = requirePrompt();
-	const { clear, figures, style, wrap, entriesToDisplay } = requireUtil();
-
-	/**
-	 * MultiselectPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Array} opts.choices Array of choice objects
-	 * @param {String} [opts.hint] Hint to display
-	 * @param {String} [opts.warn] Hint shown for disabled choices
-	 * @param {Number} [opts.max] Max choices
-	 * @param {Number} [opts.cursor=0] Cursor start position
-	 * @param {Number} [opts.optionsPerPage=10] Max options to display at once
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 */
-	class MultiselectPrompt extends Prompt {
-	  constructor(opts={}) {
-	    super(opts);
-	    this.msg = opts.message;
-	    this.cursor = opts.cursor || 0;
-	    this.scrollIndex = opts.cursor || 0;
-	    this.hint = opts.hint || '';
-	    this.warn = opts.warn || '- This option is disabled -';
-	    this.minSelected = opts.min;
-	    this.showMinError = false;
-	    this.maxChoices = opts.max;
-	    this.instructions = opts.instructions;
-	    this.optionsPerPage = opts.optionsPerPage || 10;
-	    this.value = opts.choices.map((ch, idx) => {
-	      if (typeof ch === 'string')
-	        ch = {title: ch, value: idx};
-	      return {
-	        title: ch && (ch.title || ch.value || ch),
-	        description: ch && ch.description,
-	        value: ch && (ch.value === undefined ? idx : ch.value),
-	        selected: ch && ch.selected,
-	        disabled: ch && ch.disabled
-	      };
-	    });
-	    this.clear = clear('', this.out.columns);
-	    if (!opts.overrideRender) {
-	      this.render();
-	    }
-	  }
-
-	  reset() {
-	    this.value.map(v => !v.selected);
-	    this.cursor = 0;
-	    this.fire();
-	    this.render();
-	  }
-
-	  selected() {
-	    return this.value.filter(v => v.selected);
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    this.done = this.aborted = true;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  submit() {
-	    const selected = this.value
-	      .filter(e => e.selected);
-	    if (this.minSelected && selected.length < this.minSelected) {
-	      this.showMinError = true;
-	      this.render();
-	    } else {
-	      this.done = true;
-	      this.aborted = false;
-	      this.fire();
-	      this.render();
-	      this.out.write('\n');
-	      this.close();
-	    }
-	  }
-
-	  first() {
-	    this.cursor = 0;
-	    this.render();
-	  }
-
-	  last() {
-	    this.cursor = this.value.length - 1;
-	    this.render();
-	  }
-	  next() {
-	    this.cursor = (this.cursor + 1) % this.value.length;
-	    this.render();
-	  }
-
-	  up() {
-	    if (this.cursor === 0) {
-	      this.cursor = this.value.length - 1;
-	    } else {
-	      this.cursor--;
-	    }
-	    this.render();
-	  }
-
-	  down() {
-	    if (this.cursor === this.value.length - 1) {
-	      this.cursor = 0;
-	    } else {
-	      this.cursor++;
-	    }
-	    this.render();
-	  }
-
-	  left() {
-	    this.value[this.cursor].selected = false;
-	    this.render();
-	  }
-
-	  right() {
-	    if (this.value.filter(e => e.selected).length >= this.maxChoices) return this.bell();
-	    this.value[this.cursor].selected = true;
-	    this.render();
-	  }
-
-	  handleSpaceToggle() {
-	    const v = this.value[this.cursor];
-
-	    if (v.selected) {
-	      v.selected = false;
-	      this.render();
-	    } else if (v.disabled || this.value.filter(e => e.selected).length >= this.maxChoices) {
-	      return this.bell();
-	    } else {
-	      v.selected = true;
-	      this.render();
-	    }
-	  }
-
-	  toggleAll() {
-	    if (this.maxChoices !== undefined || this.value[this.cursor].disabled) {
-	      return this.bell();
-	    }
-
-	    const newSelected = !this.value[this.cursor].selected;
-	    this.value.filter(v => !v.disabled).forEach(v => v.selected = newSelected);
-	    this.render();
-	  }
-
-	  _(c, key) {
-	    if (c === ' ') {
-	      this.handleSpaceToggle();
-	    } else if (c === 'a') {
-	      this.toggleAll();
-	    } else {
-	      return this.bell();
-	    }
-	  }
-
-	  renderInstructions() {
-	    if (this.instructions === undefined || this.instructions) {
-	      if (typeof this.instructions === 'string') {
-	        return this.instructions;
-	      }
-	      return '\nInstructions:\n'
-	        + `    ${figures.arrowUp}/${figures.arrowDown}: Highlight option\n`
-	        + `    ${figures.arrowLeft}/${figures.arrowRight}/[space]: Toggle selection\n`
-	        + (this.maxChoices === undefined ? `    a: Toggle all\n` : '')
-	        + `    enter/return: Complete answer`;
-	    }
-	    return '';
-	  }
-
-	  renderOption(cursor, v, i, arrowIndicator) {
-	    const prefix = (v.selected ? color.green(figures.radioOn) : figures.radioOff) + ' ' + arrowIndicator + ' ';
-	    let title, desc;
-
-	    if (v.disabled) {
-	      title = cursor === i ? color.gray().underline(v.title) : color.strikethrough().gray(v.title);
-	    } else {
-	      title = cursor === i ? color.cyan().underline(v.title) : v.title;
-	      if (cursor === i && v.description) {
-	        desc = ` - ${v.description}`;
-	        if (prefix.length + title.length + desc.length >= this.out.columns
-	          || v.description.split(/\r?\n/).length > 1) {
-	          desc = '\n' + wrap(v.description, { margin: prefix.length, width: this.out.columns });
-	        }
-	      }
-	    }
-
-	    return prefix + title + color.gray(desc || '');
-	  }
-
-	  // shared with autocompleteMultiselect
-	  paginateOptions(options) {
-	    if (options.length === 0) {
-	      return color.red('No matches for this query.');
-	    }
-
-	    let { startIndex, endIndex } = entriesToDisplay(this.cursor, options.length, this.optionsPerPage);
-	    let prefix, styledOptions = [];
-
-	    for (let i = startIndex; i < endIndex; i++) {
-	      if (i === startIndex && startIndex > 0) {
-	        prefix = figures.arrowUp;
-	      } else if (i === endIndex - 1 && endIndex < options.length) {
-	        prefix = figures.arrowDown;
-	      } else {
-	        prefix = ' ';
-	      }
-	      styledOptions.push(this.renderOption(this.cursor, options[i], i, prefix));
-	    }
-
-	    return '\n' + styledOptions.join('\n');
-	  }
-
-	  // shared with autocomleteMultiselect
-	  renderOptions(options) {
-	    if (!this.done) {
-	      return this.paginateOptions(options);
-	    }
-	    return '';
-	  }
-
-	  renderDoneOrInstructions() {
-	    if (this.done) {
-	      return this.value
-	        .filter(e => e.selected)
-	        .map(v => v.title)
-	        .join(', ');
-	    }
-
-	    const output = [color.gray(this.hint), this.renderInstructions()];
-
-	    if (this.value[this.cursor].disabled) {
-	      output.push(color.yellow(this.warn));
-	    }
-	    return output.join(' ');
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);
-	    super.render();
-
-	    // print prompt
-	    let prompt = [
-	      style.symbol(this.done, this.aborted),
-	      color.bold(this.msg),
-	      style.delimiter(false),
-	      this.renderDoneOrInstructions()
-	    ].join(' ');
-	    if (this.showMinError) {
-	      prompt += color.red(`You must select a minimum of ${this.minSelected} choices.`);
-	      this.showMinError = false;
-	    }
-	    prompt += this.renderOptions(this.value);
-
-	    this.out.write(this.clear + prompt);
-	    this.clear = clear(prompt, this.out.columns);
-	  }
-	}
-
-	multiselect = MultiselectPrompt;
-	return multiselect;
-}
-
-var autocomplete;
-var hasRequiredAutocomplete;
-
-function requireAutocomplete () {
-	if (hasRequiredAutocomplete) return autocomplete;
-	hasRequiredAutocomplete = 1;
-
-	const color = requireKleur();
-	const Prompt = requirePrompt();
-	const { erase, cursor } = requireSrc();
-	const { style, clear, figures, wrap, entriesToDisplay } = requireUtil();
-
-	const getVal = (arr, i) => arr[i] && (arr[i].value || arr[i].title || arr[i]);
-	const getTitle = (arr, i) => arr[i] && (arr[i].title || arr[i].value || arr[i]);
-	const getIndex = (arr, valOrTitle) => {
-	  const index = arr.findIndex(el => el.value === valOrTitle || el.title === valOrTitle);
-	  return index > -1 ? index : undefined;
-	};
-
-	/**
-	 * TextPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Array} opts.choices Array of auto-complete choices objects
-	 * @param {Function} [opts.suggest] Filter function. Defaults to sort by title
-	 * @param {Number} [opts.limit=10] Max number of results to show
-	 * @param {Number} [opts.cursor=0] Cursor start position
-	 * @param {String} [opts.style='default'] Render style
-	 * @param {String} [opts.fallback] Fallback message - initial to default value
-	 * @param {String} [opts.initial] Index of the default value
-	 * @param {Boolean} [opts.clearFirst] The first ESCAPE keypress will clear the input
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 * @param {String} [opts.noMatches] The no matches found label
-	 */
-	class AutocompletePrompt extends Prompt {
-	  constructor(opts={}) {
-	    super(opts);
-	    this.msg = opts.message;
-	    this.suggest = opts.suggest;
-	    this.choices = opts.choices;
-	    this.initial = typeof opts.initial === 'number'
-	      ? opts.initial
-	      : getIndex(opts.choices, opts.initial);
-	    this.select = this.initial || opts.cursor || 0;
-	    this.i18n = { noMatches: opts.noMatches || 'no matches found' };
-	    this.fallback = opts.fallback || this.initial;
-	    this.clearFirst = opts.clearFirst || false;
-	    this.suggestions = [];
-	    this.input = '';
-	    this.limit = opts.limit || 10;
-	    this.cursor = 0;
-	    this.transform = style.render(opts.style);
-	    this.scale = this.transform.scale;
-	    this.render = this.render.bind(this);
-	    this.complete = this.complete.bind(this);
-	    this.clear = clear('', this.out.columns);
-	    this.complete(this.render);
-	    this.render();
-	  }
-
-	  set fallback(fb) {
-	    this._fb = Number.isSafeInteger(parseInt(fb)) ? parseInt(fb) : fb;
-	  }
-
-	  get fallback() {
-	    let choice;
-	    if (typeof this._fb === 'number')
-	      choice = this.choices[this._fb];
-	    else if (typeof this._fb === 'string')
-	      choice = { title: this._fb };
-	    return choice || this._fb || { title: this.i18n.noMatches };
-	  }
-
-	  moveSelect(i) {
-	    this.select = i;
-	    if (this.suggestions.length > 0)
-	      this.value = getVal(this.suggestions, i);
-	    else this.value = this.fallback.value;
-	    this.fire();
-	  }
-
-	  async complete(cb) {
-	    const p = (this.completing = this.suggest(this.input, this.choices));
-	    const suggestions = await p;
-
-	    if (this.completing !== p) return;
-	    this.suggestions = suggestions
-	      .map((s, i, arr) => ({ title: getTitle(arr, i), value: getVal(arr, i), description: s.description }));
-	    this.completing = false;
-	    const l = Math.max(suggestions.length - 1, 0);
-	    this.moveSelect(Math.min(l, this.select));
-
-	    cb && cb();
-	  }
-
-	  reset() {
-	    this.input = '';
-	    this.complete(() => {
-	      this.moveSelect(this.initial !== void 0 ? this.initial : 0);
-	      this.render();
-	    });
-	    this.render();
-	  }
-
-	  exit() {
-	    if (this.clearFirst && this.input.length > 0) {
-	      this.reset();
-	    } else {
-	      this.done = this.exited = true; 
-	      this.aborted = false;
-	      this.fire();
-	      this.render();
-	      this.out.write('\n');
-	      this.close();
-	    }
-	  }
-
-	  abort() {
-	    this.done = this.aborted = true;
-	    this.exited = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  submit() {
-	    this.done = true;
-	    this.aborted = this.exited = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  _(c, key) {
-	    let s1 = this.input.slice(0, this.cursor);
-	    let s2 = this.input.slice(this.cursor);
-	    this.input = `${s1}${c}${s2}`;
-	    this.cursor = s1.length+1;
-	    this.complete(this.render);
-	    this.render();
-	  }
-
-	  delete() {
-	    if (this.cursor === 0) return this.bell();
-	    let s1 = this.input.slice(0, this.cursor-1);
-	    let s2 = this.input.slice(this.cursor);
-	    this.input = `${s1}${s2}`;
-	    this.complete(this.render);
-	    this.cursor = this.cursor-1;
-	    this.render();
-	  }
-
-	  deleteForward() {
-	    if(this.cursor*this.scale >= this.rendered.length) return this.bell();
-	    let s1 = this.input.slice(0, this.cursor);
-	    let s2 = this.input.slice(this.cursor+1);
-	    this.input = `${s1}${s2}`;
-	    this.complete(this.render);
-	    this.render();
-	  }
-
-	  first() {
-	    this.moveSelect(0);
-	    this.render();
-	  }
-
-	  last() {
-	    this.moveSelect(this.suggestions.length - 1);
-	    this.render();
-	  }
-
-	  up() {
-	    if (this.select === 0) {
-	      this.moveSelect(this.suggestions.length - 1);
-	    } else {
-	      this.moveSelect(this.select - 1);
-	    }
-	    this.render();
-	  }
-
-	  down() {
-	    if (this.select === this.suggestions.length - 1) {
-	      this.moveSelect(0);
-	    } else {
-	      this.moveSelect(this.select + 1);
-	    }
-	    this.render();
-	  }
-
-	  next() {
-	    if (this.select === this.suggestions.length - 1) {
-	      this.moveSelect(0);
-	    } else this.moveSelect(this.select + 1);
-	    this.render();
-	  }
-
-	  nextPage() {
-	    this.moveSelect(Math.min(this.select + this.limit, this.suggestions.length - 1));
-	    this.render();
-	  }
-
-	  prevPage() {
-	    this.moveSelect(Math.max(this.select - this.limit, 0));
-	    this.render();
-	  }
-
-	  left() {
-	    if (this.cursor <= 0) return this.bell();
-	    this.cursor = this.cursor-1;
-	    this.render();
-	  }
-
-	  right() {
-	    if (this.cursor*this.scale >= this.rendered.length) return this.bell();
-	    this.cursor = this.cursor+1;
-	    this.render();
-	  }
-
-	  renderOption(v, hovered, isStart, isEnd) {
-	    let desc;
-	    let prefix = isStart ? figures.arrowUp : isEnd ? figures.arrowDown : ' ';
-	    let title = hovered ? color.cyan().underline(v.title) : v.title;
-	    prefix = (hovered ? color.cyan(figures.pointer) + ' ' : '  ') + prefix;
-	    if (v.description) {
-	      desc = ` - ${v.description}`;
-	      if (prefix.length + title.length + desc.length >= this.out.columns
-	        || v.description.split(/\r?\n/).length > 1) {
-	        desc = '\n' + wrap(v.description, { margin: 3, width: this.out.columns });
-	      }
-	    }
-	    return prefix + ' ' + title + color.gray(desc || '');
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);
-	    else this.out.write(clear(this.outputText, this.out.columns));
-	    super.render();
-
-	    let { startIndex, endIndex } = entriesToDisplay(this.select, this.choices.length, this.limit);
-
-	    this.outputText = [
-	      style.symbol(this.done, this.aborted, this.exited),
-	      color.bold(this.msg),
-	      style.delimiter(this.completing),
-	      this.done && this.suggestions[this.select]
-	        ? this.suggestions[this.select].title
-	        : this.rendered = this.transform.render(this.input)
-	    ].join(' ');
-
-	    if (!this.done) {
-	      const suggestions = this.suggestions
-	        .slice(startIndex, endIndex)
-	        .map((item, i) =>  this.renderOption(item,
-	          this.select === i + startIndex,
-	          i === 0 && startIndex > 0,
-	          i + startIndex === endIndex - 1 && endIndex < this.choices.length))
-	        .join('\n');
-	      this.outputText += `\n` + (suggestions || color.gray(this.fallback.title));
-	    }
-
-	    this.out.write(erase.line + cursor.to(0) + this.outputText);
-	  }
-	}
-
-	autocomplete = AutocompletePrompt;
-	return autocomplete;
-}
-
-var autocompleteMultiselect;
-var hasRequiredAutocompleteMultiselect;
-
-function requireAutocompleteMultiselect () {
-	if (hasRequiredAutocompleteMultiselect) return autocompleteMultiselect;
-	hasRequiredAutocompleteMultiselect = 1;
-
-	const color = requireKleur();
-	const { cursor } = requireSrc();
-	const MultiselectPrompt = requireMultiselect();
-	const { clear, style, figures } = requireUtil();
-	/**
-	 * MultiselectPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Array} opts.choices Array of choice objects
-	 * @param {String} [opts.hint] Hint to display
-	 * @param {String} [opts.warn] Hint shown for disabled choices
-	 * @param {Number} [opts.max] Max choices
-	 * @param {Number} [opts.cursor=0] Cursor start position
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 */
-	class AutocompleteMultiselectPrompt extends MultiselectPrompt {
-	  constructor(opts={}) {
-	    opts.overrideRender = true;
-	    super(opts);
-	    this.inputValue = '';
-	    this.clear = clear('', this.out.columns);
-	    this.filteredOptions = this.value;
-	    this.render();
-	  }
-
-	  last() {
-	    this.cursor = this.filteredOptions.length - 1;
-	    this.render();
-	  }
-	  next() {
-	    this.cursor = (this.cursor + 1) % this.filteredOptions.length;
-	    this.render();
-	  }
-
-	  up() {
-	    if (this.cursor === 0) {
-	      this.cursor = this.filteredOptions.length - 1;
-	    } else {
-	      this.cursor--;
-	    }
-	    this.render();
-	  }
-
-	  down() {
-	    if (this.cursor === this.filteredOptions.length - 1) {
-	      this.cursor = 0;
-	    } else {
-	      this.cursor++;
-	    }
-	    this.render();
-	  }
-
-	  left() {
-	    this.filteredOptions[this.cursor].selected = false;
-	    this.render();
-	  }
-
-	  right() {
-	    if (this.value.filter(e => e.selected).length >= this.maxChoices) return this.bell();
-	    this.filteredOptions[this.cursor].selected = true;
-	    this.render();
-	  }
-
-	  delete() {
-	    if (this.inputValue.length) {
-	      this.inputValue = this.inputValue.substr(0, this.inputValue.length - 1);
-	      this.updateFilteredOptions();
-	    }
-	  }
-
-	  updateFilteredOptions() {
-	    const currentHighlight = this.filteredOptions[this.cursor];
-	    this.filteredOptions = this.value
-	      .filter(v => {
-	        if (this.inputValue) {
-	          if (typeof v.title === 'string') {
-	            if (v.title.toLowerCase().includes(this.inputValue.toLowerCase())) {
-	              return true;
-	            }
-	          }
-	          if (typeof v.value === 'string') {
-	            if (v.value.toLowerCase().includes(this.inputValue.toLowerCase())) {
-	              return true;
-	            }
-	          }
-	          return false;
-	        }
-	        return true;
-	      });
-	    const newHighlightIndex = this.filteredOptions.findIndex(v => v === currentHighlight);
-	    this.cursor = newHighlightIndex < 0 ? 0 : newHighlightIndex;
-	    this.render();
-	  }
-
-	  handleSpaceToggle() {
-	    const v = this.filteredOptions[this.cursor];
-
-	    if (v.selected) {
-	      v.selected = false;
-	      this.render();
-	    } else if (v.disabled || this.value.filter(e => e.selected).length >= this.maxChoices) {
-	      return this.bell();
-	    } else {
-	      v.selected = true;
-	      this.render();
-	    }
-	  }
-
-	  handleInputChange(c) {
-	    this.inputValue = this.inputValue + c;
-	    this.updateFilteredOptions();
-	  }
-
-	  _(c, key) {
-	    if (c === ' ') {
-	      this.handleSpaceToggle();
-	    } else {
-	      this.handleInputChange(c);
-	    }
-	  }
-
-	  renderInstructions() {
-	    if (this.instructions === undefined || this.instructions) {
-	      if (typeof this.instructions === 'string') {
-	        return this.instructions;
-	      }
-	      return `
-Instructions:
-    ${figures.arrowUp}/${figures.arrowDown}: Highlight option
-    ${figures.arrowLeft}/${figures.arrowRight}/[space]: Toggle selection
-    [a,b,c]/delete: Filter choices
-    enter/return: Complete answer
-`;
-	    }
-	    return '';
-	  }
-
-	  renderCurrentInput() {
-	    return `
-Filtered results for: ${this.inputValue ? this.inputValue : color.gray('Enter something to filter')}\n`;
-	  }
-
-	  renderOption(cursor, v, i) {
-	    let title;
-	    if (v.disabled) title = cursor === i ? color.gray().underline(v.title) : color.strikethrough().gray(v.title);
-	    else title = cursor === i ? color.cyan().underline(v.title) : v.title;
-	    return (v.selected ? color.green(figures.radioOn) : figures.radioOff) + '  ' + title
-	  }
-
-	  renderDoneOrInstructions() {
-	    if (this.done) {
-	      return this.value
-	        .filter(e => e.selected)
-	        .map(v => v.title)
-	        .join(', ');
-	    }
-
-	    const output = [color.gray(this.hint), this.renderInstructions(), this.renderCurrentInput()];
-
-	    if (this.filteredOptions.length && this.filteredOptions[this.cursor].disabled) {
-	      output.push(color.yellow(this.warn));
-	    }
-	    return output.join(' ');
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);
-	    super.render();
-
-	    // print prompt
-
-	    let prompt = [
-	      style.symbol(this.done, this.aborted),
-	      color.bold(this.msg),
-	      style.delimiter(false),
-	      this.renderDoneOrInstructions()
-	    ].join(' ');
-
-	    if (this.showMinError) {
-	      prompt += color.red(`You must select a minimum of ${this.minSelected} choices.`);
-	      this.showMinError = false;
-	    }
-	    prompt += this.renderOptions(this.filteredOptions);
-
-	    this.out.write(this.clear + prompt);
-	    this.clear = clear(prompt, this.out.columns);
-	  }
-	}
-
-	autocompleteMultiselect = AutocompleteMultiselectPrompt;
-	return autocompleteMultiselect;
-}
-
-var confirm;
-var hasRequiredConfirm;
-
-function requireConfirm () {
-	if (hasRequiredConfirm) return confirm;
-	hasRequiredConfirm = 1;
-	const color = requireKleur();
-	const Prompt = requirePrompt();
-	const { style, clear } = requireUtil();
-	const { erase, cursor } = requireSrc();
-
-	/**
-	 * ConfirmPrompt Base Element
-	 * @param {Object} opts Options
-	 * @param {String} opts.message Message
-	 * @param {Boolean} [opts.initial] Default value (true/false)
-	 * @param {Stream} [opts.stdin] The Readable stream to listen to
-	 * @param {Stream} [opts.stdout] The Writable stream to write readline data to
-	 * @param {String} [opts.yes] The "Yes" label
-	 * @param {String} [opts.yesOption] The "Yes" option when choosing between yes/no
-	 * @param {String} [opts.no] The "No" label
-	 * @param {String} [opts.noOption] The "No" option when choosing between yes/no
-	 */
-	class ConfirmPrompt extends Prompt {
-	  constructor(opts={}) {
-	    super(opts);
-	    this.msg = opts.message;
-	    this.value = opts.initial;
-	    this.initialValue = !!opts.initial;
-	    this.yesMsg = opts.yes || 'yes';
-	    this.yesOption = opts.yesOption || '(Y/n)';
-	    this.noMsg = opts.no || 'no';
-	    this.noOption = opts.noOption || '(y/N)';
-	    this.render();
-	  }
-
-	  reset() {
-	    this.value = this.initialValue;
-	    this.fire();
-	    this.render();
-	  }
-
-	  exit() {
-	    this.abort();
-	  }
-
-	  abort() {
-	    this.done = this.aborted = true;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  submit() {
-	    this.value = this.value || false;
-	    this.done = true;
-	    this.aborted = false;
-	    this.fire();
-	    this.render();
-	    this.out.write('\n');
-	    this.close();
-	  }
-
-	  _(c, key) {
-	    if (c.toLowerCase() === 'y') {
-	      this.value = true;
-	      return this.submit();
-	    }
-	    if (c.toLowerCase() === 'n') {
-	      this.value = false;
-	      return this.submit();
-	    }
-	    return this.bell();
-	  }
-
-	  render() {
-	    if (this.closed) return;
-	    if (this.firstRender) this.out.write(cursor.hide);
-	    else this.out.write(clear(this.outputText, this.out.columns));
-	    super.render();
-
-	    this.outputText = [
-	      style.symbol(this.done, this.aborted),
-	      color.bold(this.msg),
-	      style.delimiter(this.done),
-	      this.done ? (this.value ? this.yesMsg : this.noMsg)
-	          : color.gray(this.initialValue ? this.yesOption : this.noOption)
-	    ].join(' ');
-
-	    this.out.write(erase.line + cursor.to(0) + this.outputText);
-	  }
-	}
-
-	confirm = ConfirmPrompt;
-	return confirm;
-}
-
-var elements;
-var hasRequiredElements;
-
-function requireElements () {
-	if (hasRequiredElements) return elements;
-	hasRequiredElements = 1;
-
-	elements = {
-	  TextPrompt: requireText(),
-	  SelectPrompt: requireSelect(),
-	  TogglePrompt: requireToggle(),
-	  DatePrompt: requireDate(),
-	  NumberPrompt: requireNumber(),
-	  MultiselectPrompt: requireMultiselect(),
-	  AutocompletePrompt: requireAutocomplete(),
-	  AutocompleteMultiselectPrompt: requireAutocompleteMultiselect(),
-	  ConfirmPrompt: requireConfirm()
-	};
-	return elements;
-}
-
-var hasRequiredPrompts;
-
-function requirePrompts () {
-	if (hasRequiredPrompts) return prompts$2;
-	hasRequiredPrompts = 1;
-	(function (exports) {
-		const $ = exports;
-		const el = requireElements();
-		const noop = v => v;
-
-		function toPrompt(type, args, opts={}) {
-		  return new Promise((res, rej) => {
-		    const p = new el[type](args);
-		    const onAbort = opts.onAbort || noop;
-		    const onSubmit = opts.onSubmit || noop;
-		    const onExit = opts.onExit || noop;
-		    p.on('state', args.onState || noop);
-		    p.on('submit', x => res(onSubmit(x)));
-		    p.on('exit', x => res(onExit(x)));
-		    p.on('abort', x => rej(onAbort(x)));
-		  });
-		}
-
-		/**
-		 * Text prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {string} [args.initial] Default string value
-		 * @param {string} [args.style="default"] Render style ('default', 'password', 'invisible')
-		 * @param {function} [args.onState] On state change callback
-		 * @param {function} [args.validate] Function to validate user input
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-		$.text = args => toPrompt('TextPrompt', args);
-
-		/**
-		 * Password prompt with masked input
-		 * @param {string} args.message Prompt message to display
-		 * @param {string} [args.initial] Default string value
-		 * @param {function} [args.onState] On state change callback
-		 * @param {function} [args.validate] Function to validate user input
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-		$.password = args => {
-		  args.style = 'password';
-		  return $.text(args);
-		};
-
-		/**
-		 * Prompt where input is invisible, like sudo
-		 * @param {string} args.message Prompt message to display
-		 * @param {string} [args.initial] Default string value
-		 * @param {function} [args.onState] On state change callback
-		 * @param {function} [args.validate] Function to validate user input
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-		$.invisible = args => {
-		  args.style = 'invisible';
-		  return $.text(args);
-		};
-
-		/**
-		 * Number prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {number} args.initial Default number value
-		 * @param {function} [args.onState] On state change callback
-		 * @param {number} [args.max] Max value
-		 * @param {number} [args.min] Min value
-		 * @param {string} [args.style="default"] Render style ('default', 'password', 'invisible')
-		 * @param {Boolean} [opts.float=false] Parse input as floats
-		 * @param {Number} [opts.round=2] Round floats to x decimals
-		 * @param {Number} [opts.increment=1] Number to increment by when using arrow-keys
-		 * @param {function} [args.validate] Function to validate user input
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-		$.number = args => toPrompt('NumberPrompt', args);
-
-		/**
-		 * Date prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {number} args.initial Default number value
-		 * @param {function} [args.onState] On state change callback
-		 * @param {number} [args.max] Max value
-		 * @param {number} [args.min] Min value
-		 * @param {string} [args.style="default"] Render style ('default', 'password', 'invisible')
-		 * @param {Boolean} [opts.float=false] Parse input as floats
-		 * @param {Number} [opts.round=2] Round floats to x decimals
-		 * @param {Number} [opts.increment=1] Number to increment by when using arrow-keys
-		 * @param {function} [args.validate] Function to validate user input
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-		$.date = args => toPrompt('DatePrompt', args);
-
-		/**
-		 * Classic yes/no prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {boolean} [args.initial=false] Default value
-		 * @param {function} [args.onState] On state change callback
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-		$.confirm = args => toPrompt('ConfirmPrompt', args);
-
-		/**
-		 * List prompt, split intput string by `seperator`
-		 * @param {string} args.message Prompt message to display
-		 * @param {string} [args.initial] Default string value
-		 * @param {string} [args.style="default"] Render style ('default', 'password', 'invisible')
-		 * @param {string} [args.separator] String separator
-		 * @param {function} [args.onState] On state change callback
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input, in form of an `Array`
-		 */
-		$.list = args => {
-		  const sep = args.separator || ',';
-		  return toPrompt('TextPrompt', args, {
-		    onSubmit: str => str.split(sep).map(s => s.trim())
-		  });
-		};
-
-		/**
-		 * Toggle/switch prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {boolean} [args.initial=false] Default value
-		 * @param {string} [args.active="on"] Text for `active` state
-		 * @param {string} [args.inactive="off"] Text for `inactive` state
-		 * @param {function} [args.onState] On state change callback
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-		$.toggle = args => toPrompt('TogglePrompt', args);
-
-		/**
-		 * Interactive select prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {Array} args.choices Array of choices objects `[{ title, value }, ...]`
-		 * @param {number} [args.initial] Index of default value
-		 * @param {String} [args.hint] Hint to display
-		 * @param {function} [args.onState] On state change callback
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-		$.select = args => toPrompt('SelectPrompt', args);
-
-		/**
-		 * Interactive multi-select / autocompleteMultiselect prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {Array} args.choices Array of choices objects `[{ title, value, [selected] }, ...]`
-		 * @param {number} [args.max] Max select
-		 * @param {string} [args.hint] Hint to display user
-		 * @param {Number} [args.cursor=0] Cursor start position
-		 * @param {function} [args.onState] On state change callback
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-		$.multiselect = args => {
-		  args.choices = [].concat(args.choices || []);
-		  const toSelected = items => items.filter(item => item.selected).map(item => item.value);
-		  return toPrompt('MultiselectPrompt', args, {
-		    onAbort: toSelected,
-		    onSubmit: toSelected
-		  });
-		};
-
-		$.autocompleteMultiselect = args => {
-		  args.choices = [].concat(args.choices || []);
-		  const toSelected = items => items.filter(item => item.selected).map(item => item.value);
-		  return toPrompt('AutocompleteMultiselectPrompt', args, {
-		    onAbort: toSelected,
-		    onSubmit: toSelected
-		  });
-		};
-
-		const byTitle = (input, choices) => Promise.resolve(
-		  choices.filter(item => item.title.slice(0, input.length).toLowerCase() === input.toLowerCase())
-		);
-
-		/**
-		 * Interactive auto-complete prompt
-		 * @param {string} args.message Prompt message to display
-		 * @param {Array} args.choices Array of auto-complete choices objects `[{ title, value }, ...]`
-		 * @param {Function} [args.suggest] Function to filter results based on user input. Defaults to sort by `title`
-		 * @param {number} [args.limit=10] Max number of results to show
-		 * @param {string} [args.style="default"] Render style ('default', 'password', 'invisible')
-		 * @param {String} [args.initial] Index of the default value
-		 * @param {boolean} [opts.clearFirst] The first ESCAPE keypress will clear the input
-		 * @param {String} [args.fallback] Fallback message - defaults to initial value
-		 * @param {function} [args.onState] On state change callback
-		 * @param {Stream} [args.stdin] The Readable stream to listen to
-		 * @param {Stream} [args.stdout] The Writable stream to write readline data to
-		 * @returns {Promise} Promise with user input
-		 */
-		$.autocomplete = args => {
-		  args.suggest = args.suggest || byTitle;
-		  args.choices = [].concat(args.choices || []);
-		  return toPrompt('AutocompletePrompt', args);
-		}; 
-	} (prompts$2));
-	return prompts$2;
-}
-
-var lib;
-var hasRequiredLib;
-
-function requireLib () {
-	if (hasRequiredLib) return lib;
-	hasRequiredLib = 1;
-
-	const prompts = requirePrompts();
-
-	const passOn = ['suggest', 'format', 'onState', 'validate', 'onRender', 'type'];
-	const noop = () => {};
-
-	/**
-	 * Prompt for a series of questions
-	 * @param {Array|Object} questions Single question object or Array of question objects
-	 * @param {Function} [onSubmit] Callback function called on prompt submit
-	 * @param {Function} [onCancel] Callback function called on cancel/abort
-	 * @returns {Object} Object with values from user input
-	 */
-	async function prompt(questions=[], { onSubmit=noop, onCancel=noop }={}) {
-	  const answers = {};
-	  const override = prompt._override || {};
-	  questions = [].concat(questions);
-	  let answer, question, quit, name, type, lastPrompt;
-
-	  const getFormattedAnswer = async (question, answer, skipValidation = false) => {
-	    if (!skipValidation && question.validate && question.validate(answer) !== true) {
-	      return;
-	    }
-	    return question.format ? await question.format(answer, answers) : answer
-	  };
-
-	  for (question of questions) {
-	    ({ name, type } = question);
-
-	    // evaluate type first and skip if type is a falsy value
-	    if (typeof type === 'function') {
-	      type = await type(answer, { ...answers }, question);
-	      question['type'] = type;
-	    }
-	    if (!type) continue;
-
-	    // if property is a function, invoke it unless it's a special function
-	    for (let key in question) {
-	      if (passOn.includes(key)) continue;
-	      let value = question[key];
-	      question[key] = typeof value === 'function' ? await value(answer, { ...answers }, lastPrompt) : value;
-	    }
-
-	    lastPrompt = question;
-
-	    if (typeof question.message !== 'string') {
-	      throw new Error('prompt message is required');
-	    }
-
-	    // update vars in case they changed
-	    ({ name, type } = question);
-
-	    if (prompts[type] === void 0) {
-	      throw new Error(`prompt type (${type}) is not defined`);
-	    }
-
-	    if (override[question.name] !== undefined) {
-	      answer = await getFormattedAnswer(question, override[question.name]);
-	      if (answer !== undefined) {
-	        answers[name] = answer;
-	        continue;
-	      }
-	    }
-
-	    try {
-	      // Get the injected answer if there is one or prompt the user
-	      answer = prompt._injected ? getInjectedAnswer(prompt._injected, question.initial) : await prompts[type](question);
-	      answers[name] = answer = await getFormattedAnswer(question, answer, true);
-	      quit = await onSubmit(question, answer, answers);
-	    } catch (err) {
-	      quit = !(await onCancel(question, answers));
-	    }
-
-	    if (quit) return answers;
-	  }
-
-	  return answers;
-	}
-
-	function getInjectedAnswer(injected, deafultValue) {
-	  const answer = injected.shift();
-	    if (answer instanceof Error) {
-	      throw answer;
-	    }
-
-	    return (answer === undefined) ? deafultValue : answer;
-	}
-
-	function inject(answers) {
-	  prompt._injected = (prompt._injected || []).concat(answers);
-	}
-
-	function override(answers) {
-	  prompt._override = Object.assign({}, answers);
-	}
-
-	lib = Object.assign(prompt, { prompt, prompts, inject, override });
-	return lib;
-}
-
-function isNodeLT(tar) {
-  tar = (Array.isArray(tar) ? tar : tar.split('.')).map(Number);
-  let i=0, src=process.versions.node.split('.').map(Number);
-  for (; i < tar.length; i++) {
-    if (src[i] > tar[i]) return false;
-    if (tar[i] > src[i]) return true;
-  }
-  return false;
-}
-
-var prompts =
-  isNodeLT('8.6.0')
-    ? requireDist()
-    : requireLib();
-
-var prompts$1 = /*@__PURE__*/getDefaultExportFromCjs$1(prompts);
-
-var getComponentInfo = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(component) {
-    var data;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
-        case 0:
-          _context.prev = 0;
-          _context.next = 3;
-          return fetch("https://ghdtjgus76.github.io/design-system-cli/packages/registry/".concat(component, ".json"));
-        case 3:
-          data = _context.sent;
-          if (!(data.status === 404)) {
-            _context.next = 6;
-            break;
-          }
-          return _context.abrupt("return", null);
-        case 6:
-          return _context.abrupt("return", data.json());
-        case 9:
-          _context.prev = 9;
-          _context.t0 = _context["catch"](0);
-          console.error("Error reading ".concat(component, " component"), _context.t0);
-          return _context.abrupt("return", null);
-        case 13:
-        case "end":
-          return _context.stop();
-      }
-    }, _callee, null, [[0, 9]]);
-  }));
-  return function getComponentInfo(_x) {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-var writeFileWithContent = function writeFileWithContent(filePath, fileContent) {
-  writeFile(filePath, fileContent, function (error) {
-    if (error) {
-      console.error("Error writing file ".concat(filePath, ":"), error);
-    }
-  });
+  return null;
 };
 
-var getRegistryInfo = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var data;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
-        case 0:
-          _context.prev = 0;
-          _context.next = 3;
-          return fetch("https://ghdtjgus76.github.io/design-system-cli/packages/registry/");
-        case 3:
-          data = _context.sent;
-          if (!(data.status === 404)) {
-            _context.next = 6;
-            break;
-          }
-          return _context.abrupt("return", null);
-        case 6:
-          return _context.abrupt("return", data.json());
-        case 9:
-          _context.prev = 9;
-          _context.t0 = _context["catch"](0);
-          console.error("Error reading registry", _context.t0);
-          return _context.abrupt("return", null);
-        case 13:
-        case "end":
-          return _context.stop();
-      }
-    }, _callee, null, [[0, 9]]);
-  }));
-  return function getRegistryInfo() {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-var isInitialized = function isInitialized(cwd) {
-  var packageJsonPath = getNearestPackageJson(cwd);
-  if (packageJsonPath) {
-    var pandaCssPath = path$5.join(path$5.dirname(packageJsonPath), "node_modules", "@pandacss", "dev", "package.json");
-    var styledSystemPath = path$5.join(path$5.dirname(packageJsonPath), "styled-system");
-    if (!existsSync(pandaCssPath) || !existsSync(styledSystemPath)) {
-      console.error("Configuration is missing. Please run ".concat(chalk.green("init"), " first."));
-      process.exit(1);
-    }
-  } else {
-    console.error("node_modules or package.json not found in the current directory or its parent directories");
-    process.exit(1);
-  }
-};
-
-var addOptionsSchema = z.object({
-  components: z.array(z.string()).optional(),
-  cwd: z.string(),
-  all: z["boolean"](),
-  path: z.string()
-});
-var program = new Command();
-var add = program.name("add").description("add a component to your project").argument("[components...]", "the components to add").option("-c, --cwd <cwd>", "the working directory. defaults to the current directory.", process.cwd()).option("-a, --all", "add all available components", false).option("-p, --path <path>", "the path to add the component to.", process.cwd()).action( /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(components, opts) {
-    var _options$components;
-    var options, cwd, registryInfo, selectedComponents, _yield$prompts, _components, _iterator, _step, _loop;
-    return _regeneratorRuntime().wrap(function _callee$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
-        case 0:
-          options = addOptionsSchema.parse(_objectSpread2({
-            components: components
-          }, opts));
-          cwd = path$5.resolve(options.cwd);
-          if (!existsSync(options.path) || !existsSync(cwd)) {
-            console.error("The path does not exist. Please try again.");
-            process.exit(1);
-          }
-          isInitialized(options.path);
-          _context2.next = 6;
-          return getRegistryInfo();
-        case 6:
-          registryInfo = _context2.sent;
-          selectedComponents = options.all ? registryInfo.map(function (info) {
-            return info.name;
-          }) : options.components;
-          if (!(!((_options$components = options.components) !== null && _options$components !== void 0 && _options$components.length) && !options.all)) {
-            _context2.next = 14;
-            break;
-          }
-          _context2.next = 11;
-          return prompts$1({
-            type: "multiselect",
-            name: "components",
-            message: "Which components would you like to add?",
-            hint: "Space to select. A to toggle all. Enter to submit.",
-            choices: registryInfo.map(function (info) {
-              var _options$components2;
-              return {
-                title: info.name,
-                value: info.name,
-                selected: (_options$components2 = options.components) === null || _options$components2 === void 0 ? void 0 : _options$components2.includes(info.name)
-              };
-            })
-          });
-        case 11:
-          _yield$prompts = _context2.sent;
-          _components = _yield$prompts.components;
-          selectedComponents = _components;
-        case 14:
-          if (!selectedComponents) {
-            console.error("No components selected.");
-            process.exit(1);
-          }
-          _iterator = _createForOfIteratorHelper(selectedComponents);
-          _context2.prev = 16;
-          _loop = /*#__PURE__*/_regeneratorRuntime().mark(function _loop() {
-            var component, componentInfo, spinner, file, dir, fileContent, fileName, filePath, dependencies, packageManager;
-            return _regeneratorRuntime().wrap(function _loop$(_context) {
-              while (1) switch (_context.prev = _context.next) {
-                case 0:
-                  component = _step.value;
-                  _context.next = 3;
-                  return getComponentInfo(component);
-                case 3:
-                  componentInfo = _context.sent;
-                  if (!componentInfo) {
-                    console.error("Error Finding ".concat(component, " component."));
-                    process.exit(1);
-                  }
-                  spinner = ora("Installing... ".concat(component)).start();
-                  file = componentInfo.files[0];
-                  dir = path$5.join(options.path, "components", "designed-ui");
-                  fileContent = file.content, fileName = file.name;
-                  filePath = path$5.join(dir, fileName);
-                  dependencies = componentInfo.dependencies;
-                  _context.next = 13;
-                  return getPackageManager(cwd);
-                case 13:
-                  packageManager = _context.sent;
-                  if (existsSync(dir)) {
-                    _context.next = 29;
-                    break;
-                  }
-                  _context.prev = 15;
-                  _context.next = 18;
-                  return promises$1.mkdir(dir, {
-                    recursive: true
-                  });
-                case 18:
-                  writeFileWithContent(filePath, fileContent);
-                  _context.next = 21;
-                  return installDependencies(packageManager, dependencies, options.path, function () {
-                    spinner.succeed("".concat(component, " installed successfully."));
-                  });
-                case 21:
-                  _context.next = 27;
-                  break;
-                case 23:
-                  _context.prev = 23;
-                  _context.t0 = _context["catch"](15);
-                  console.error("Error creating directory ".concat(dir, ":"), _context.t0);
-                  process.exit(1);
-                case 27:
-                  _context.next = 32;
-                  break;
-                case 29:
-                  writeFileWithContent(filePath, fileContent);
-                  _context.next = 32;
-                  return installDependencies(packageManager, dependencies, options.path, function () {
-                    spinner.succeed("".concat(component, " installed successfully."));
-                  });
-                case 32:
-                case "end":
-                  return _context.stop();
-              }
-            }, _loop, null, [[15, 23]]);
-          });
-          _iterator.s();
-        case 19:
-          if ((_step = _iterator.n()).done) {
-            _context2.next = 23;
-            break;
-          }
-          return _context2.delegateYield(_loop(), "t0", 21);
-        case 21:
-          _context2.next = 19;
-          break;
-        case 23:
-          _context2.next = 28;
-          break;
-        case 25:
-          _context2.prev = 25;
-          _context2.t1 = _context2["catch"](16);
-          _iterator.e(_context2.t1);
-        case 28:
-          _context2.prev = 28;
-          _iterator.f();
-          return _context2.finish(28);
-        case 31:
-        case "end":
-          return _context2.stop();
-      }
-    }, _callee, null, [[16, 25, 28, 31]]);
-  }));
-  return function (_x, _x2) {
-    return _ref.apply(this, arguments);
-  };
-}());
-program.parse();
-
-function main() {
-  return _main.apply(this, arguments);
-}
-function _main() {
-  _main = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var program;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
-        case 0:
-          program = new Command().name("design-system-cli").description("add components and dependencies to your apps");
-          program.addCommand(init).addCommand(add);
-          program.parse();
-        case 3:
-        case "end":
-          return _context.stop();
-      }
-    }, _callee);
-  }));
-  return _main.apply(this, arguments);
-}
-main();
+export { Command as C, _unsupportedIterableToArray as _, _typeof as a, _asyncToGenerator as b, _regeneratorRuntime as c, getNearestPackageJson as d, chalk as e, getPackageManager as f, getDefaultExportFromCjs$1 as g, execa as h, installDependencies as i, ora as o, z };

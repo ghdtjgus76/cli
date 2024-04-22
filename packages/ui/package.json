@@ -29,6 +29,7 @@
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
     "@radix-ui/react-avatar": "^1.0.4",
+    "design-system-cli": "workspace:^",
     "embla-carousel-react": "^8.0.2"
   }
 }
