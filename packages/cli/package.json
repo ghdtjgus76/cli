@@ -44,8 +44,5 @@
     "rollup-plugin-terser": "^7.0.2",
     "typescript": "^5.4.2",
     "zod": "^3.22.4"
-  },
-  "dependencies": {
-    "@changesets/cli": "^2.27.1"
   }
 }

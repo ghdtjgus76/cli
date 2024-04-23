@@ -37,7 +37,6 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: pnpm release
-          cwd: ${{ env.working-directory }}
           packages: "design-system-cli"
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
