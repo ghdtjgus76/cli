@@ -5,9 +5,8 @@ import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
 
-const extensions = [".js", ".jsx", ".ts", ".tsx"]; // 어떤 확장자를 처리 할 지 정함
+const extensions = [".js", ".jsx", ".ts", ".tsx"];
 
-// babel-preset-react-app를 사용한다면 BABEL_ENV를 필수로 설정해야함.
 process.env.BABEL_ENV = "production";
 
 export default {
@@ -18,10 +17,10 @@ export default {
     entryFileNames: "[name].js",
   },
   plugins: [
-    peerDepsExternal(), // peerDependencies로 설치한 라이브러리들을 external 모듈로 설정
-    resolve({ extensions, preferBuiltins: true }), // node_modules 에서 모듈을 불러올 수 있게 해줌. ts/tsx 파일도 불러올 수 있게 해줌
-    commonjs(), // CommonJS 형태로 만들어진 모듈도 불러와서 사용 할 수 있게 해줌. 현재 프로젝트 상황에서는 없어도 무방함
-    babel({ extensions, include: ["src/**/*"], runtimeHelpers: true }), // Babel을 사용 할 수 있게 해줌
+    peerDepsExternal(),
+    resolve({ extensions, preferBuiltins: true }),
+    commonjs(),
+    babel({ extensions, include: ["src/**/*"], runtimeHelpers: true }),
     json(),
     terser(),
   ],
