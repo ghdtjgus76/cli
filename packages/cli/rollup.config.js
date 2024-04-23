@@ -3,6 +3,7 @@ import babel from "rollup-plugin-babel";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
+import { terser } from "rollup-plugin-terser";
 
 const extensions = [".js", ".jsx", ".ts", ".tsx"]; // 어떤 확장자를 처리 할 지 정함
 
@@ -14,7 +15,7 @@ export default {
   output: {
     dir: "./dist",
     format: "esm",
-    entryFileNames: "[name].js"
+    entryFileNames: "[name].js",
   },
   plugins: [
     peerDepsExternal(), // peerDependencies로 설치한 라이브러리들을 external 모듈로 설정
@@ -22,5 +23,6 @@ export default {
     commonjs(), // CommonJS 형태로 만들어진 모듈도 불러와서 사용 할 수 있게 해줌. 현재 프로젝트 상황에서는 없어도 무방함
     babel({ extensions, include: ["src/**/*"], runtimeHelpers: true }), // Babel을 사용 할 수 있게 해줌
     json(),
+    terser(),
   ],
 };
