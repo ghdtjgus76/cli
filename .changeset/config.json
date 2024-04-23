@@ -1,6 +1,9 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "design-system-cli" }],
+  "changelog": [
+    "@changesets/changelog-github",
+    { "repo": "ghdtjgus76/design-system-cli" }
+  ],
   "commit": false,
   "fixed": [],
   "linked": [],
