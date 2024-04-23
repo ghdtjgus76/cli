@@ -1,4 +1,4 @@
-name: "on-push-check-and-publish-package"
+name: "release-action"
 on:
   push:
     branches:
