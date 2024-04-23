@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@changesets/cli':
-        specifier: ^2.27.1
-        version: 2.27.1
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -112,6 +108,10 @@ importers:
         version: 5.3.3
 
   packages/cli:
+    dependencies:
+      '@changesets/cli':
+        specifier: ^2.27.1
+        version: 2.27.1
     devDependencies:
       '@antfu/ni':
         specifier: ^0.21.12
