@@ -17,5 +17,8 @@
   "engines": {
     "node": ">=18"
   },
-  "homepage": "https://ghdtjgus76.github.io/design-system-cli"
+  "homepage": "https://ghdtjgus76.github.io/design-system-cli",
+  "dependencies": {
+    "@changesets/cli": "^2.27.1"
+  }
 }
