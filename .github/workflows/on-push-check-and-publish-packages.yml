@@ -16,7 +16,6 @@ jobs:
         id: publish
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          registry: "https://www.npmjs.com"
           package: "./packages/cli/package.json"
       - if: ${{ steps.publish.outputs.type }}
         run: echo "Version changed to ${{ steps.publish.outputs.version }}"
