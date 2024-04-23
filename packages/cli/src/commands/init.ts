@@ -51,7 +51,7 @@ export const init = program
       );
 
       if (!existsSync(pandaCssPath)) {
-        console.log("You need to install '@pandacss/dev' to use this command");
+        console.log("You need to install '@pandacss/dev' to use this command.");
 
         const installSpinner = ora(`Installing... @pandacss/dev\n`).start();
         installDependencies(
@@ -59,7 +59,7 @@ export const init = program
           ["@pandacss/dev"],
           options.path,
           async () => {
-            installSpinner.succeed(`@pandacss/dev installed successfully.\n`);
+            installSpinner.succeed(`@pandacss/dev installed successfully!\n`);
 
             runInitPandacss(packageJsonPath, packageManager, options.path);
           }
@@ -69,7 +69,7 @@ export const init = program
       }
     } else {
       console.error(
-        "node_modules or package.json not found in the current directory or its parent directories"
+        "node_modules or package.json not found in the current directory or its parent directories."
       );
     }
   });
