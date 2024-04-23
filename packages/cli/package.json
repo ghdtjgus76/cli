@@ -1,6 +1,6 @@
 {
   "name": "design-system-cli",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "Add components to your apps.",
   "publishConfig": {
@@ -43,7 +43,9 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-terser": "^7.0.2",
     "typescript": "^5.4.2",
-    "zod": "^3.22.4",
+    "zod": "^3.22.4"
+  },
+  "dependencies": {
     "@changesets/cli": "^2.27.1"
   }
 }
