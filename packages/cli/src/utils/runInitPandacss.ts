@@ -22,13 +22,13 @@ export const runInitPandacss = async (
     );
     process.exit(1);
   } else {
-    console.log("You need to run 'panda init' to use this command");
+    console.log("You need to run 'panda init' to use this command.");
 
     const initSpinner = ora(`Running panda init...`).start();
     try {
       await execa(packageManager, ["panda", "init"], { cwd });
 
-      initSpinner.succeed(`panda init runned successfully.\n`);
+      initSpinner.succeed(`panda init runned successfully!\n`);
 
       console.log(
         `${chalk.green(
@@ -37,7 +37,7 @@ export const runInitPandacss = async (
       );
       process.exit(1);
     } catch (error) {
-      console.error("Error running panda init", error);
+      console.error("Error running panda init:", error);
     }
   }
 };

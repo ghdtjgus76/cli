@@ -10,7 +10,7 @@ export const getRegistryInfo = async () => {
 
     return data.json();
   } catch (error) {
-    console.error(`Error reading registry`, error);
+    console.error(`Error reading registry:`, error);
     return null;
   }
 };

@@ -10,7 +10,7 @@ export const getComponentInfo = async (component: string) => {
 
     return data.json();
   } catch (error) {
-    console.error(`Error reading ${component} component`, error);
+    console.error(`Error reading ${component} component.`, error);
     return null;
   }
 };

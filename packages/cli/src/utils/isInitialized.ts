@@ -28,7 +28,7 @@ export const isInitialized = (cwd: string) => {
     }
   } else {
     console.error(
-      "node_modules or package.json not found in the current directory or its parent directories"
+      "node_modules or package.json not found in the current directory or its parent directories."
     );
     process.exit(1);
   }
