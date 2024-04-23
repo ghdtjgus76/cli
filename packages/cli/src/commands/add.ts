@@ -106,7 +106,7 @@ export const add = program
             dependencies,
             options.path,
             () => {
-              spinner.succeed(`${component} installed successfully.`);
+              spinner.succeed(`${component} installed successfully!`);
             }
           );
         } catch (error) {
@@ -120,7 +120,7 @@ export const add = program
           dependencies,
           options.path,
           () => {
-            spinner.succeed(`${component} installed successfully.`);
+            spinner.succeed(`${component} installed successfully!`);
           }
         );
       }
