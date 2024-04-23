@@ -1,0 +1,22 @@
+name: "on-push-check-and-publish-package"
+on:
+  push:
+    branches:
+      - main
+jobs:
+  check-and-publish-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check & Publish cli package
+        uses: JS-DevTools/npm-publish@v3
+        id: publish
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          registry: "https://npm.pkg.github.com"
+          package: "./packages/cli/package.json"
+      - if: ${{ steps.publish.outputs.type }}
+        run: echo "Version changed to ${{ steps.publish.outputs.version }}"
