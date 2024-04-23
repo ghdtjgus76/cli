@@ -38,6 +38,7 @@ jobs:
         with:
           publish: pnpm release
           cwd: ${{ env.working-directory }}
+          packages: "design-system-cli"
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
